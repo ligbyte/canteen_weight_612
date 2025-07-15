@@ -10,7 +10,7 @@ import com.stkj.cashier.base.utils.JacksonUtils;
 import com.stkj.cashier.home.helper.HeartBeatHelper;
 import com.stkj.cashier.home.helper.ScreenProtectHelper;
 import com.stkj.cashier.home.helper.SystemEventWatcherHelper;
-import com.stkj.cashier.home.ui.activity.MainBindActivity;
+import com.stkj.cashier.home.ui.activity.MainActivity;
 import com.stkj.cashier.login.callback.LoginCallback;
 import com.stkj.cashier.login.model.UserInfo;
 import com.stkj.cashier.login.ui.fragment.LoginAlertFragment;
@@ -70,8 +70,8 @@ public enum LoginHelper {
         MMKV mmkv = MMKV.mmkvWithID(MMKV_NAME);
         mmkv.putString(MMKV_KEY_USER, JacksonUtils.convertJsonString(userInfo));
         Activity activity = AppManager.INSTANCE.getMainActivity();
-        if (activity instanceof MainBindActivity) {
-            MainBindActivity mainActivity = (MainBindActivity) activity;
+        if (activity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) activity;
             //继续心跳检测、网络检查接口、屏幕保护
             mainActivity.getWeakRefHolder(HeartBeatHelper.class).setForbidHeatBeat(false);
             mainActivity.getWeakRefHolder(SystemEventWatcherHelper.class).setForbidHealthCheck(false);
@@ -87,8 +87,8 @@ public enum LoginHelper {
 
     public void clearUserInfo() {
         Activity activity = AppManager.INSTANCE.getMainActivity();
-        if (activity instanceof MainBindActivity) {
-            MainBindActivity mainActivity = (MainBindActivity) activity;
+        if (activity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) activity;
             //停止心跳检测、网络检查接口、屏幕保护
             mainActivity.getWeakRefHolder(HeartBeatHelper.class).setForbidHeatBeat(true);
             mainActivity.getWeakRefHolder(SystemEventWatcherHelper.class).setForbidHealthCheck(true);
@@ -150,8 +150,8 @@ public enum LoginHelper {
     public void handleLoginValid(boolean needShowLoginValidTips) {
         Activity activity = AppManager.INSTANCE.getMainActivity();
         if (!ActivityUtils.isActivityFinished(activity)) {
-            if (activity instanceof MainBindActivity) {
-                MainBindActivity mainActivity = (MainBindActivity) activity;
+            if (activity instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) activity;
                 //清理用户信息
                 LoginHelper.INSTANCE.clearUserInfo();
                 if (needShowLoginValidTips) {
@@ -177,7 +177,7 @@ public enum LoginHelper {
         }
     }
 
-    private void showLoginFragment(MainBindActivity mainActivity) {
+    private void showLoginFragment(MainActivity mainActivity) {
         loginAlertFragment = new LoginAlertFragment();
         if (handleLoginValidCallback == null) {
             handleLoginValidCallback = new LoginCallback() {
@@ -192,8 +192,8 @@ public enum LoginHelper {
                 @Override
                 public void onLoginError(String msg) {
                     Activity activity = AppManager.INSTANCE.getMainActivity();
-                    if (activity instanceof MainBindActivity) {
-                        MainBindActivity mainActivity = (MainBindActivity) activity;
+                    if (activity instanceof MainActivity) {
+                        MainActivity mainActivity = (MainActivity) activity;
                         if (!ActivityUtils.isActivityFinished(mainActivity)) {
                             CommonAlertDialogFragment alertDialogFragment = CommonAlertDialogFragment.build()
                                     .setAlertTitleTxt("提示")
@@ -211,14 +211,14 @@ public enum LoginHelper {
     /**
      * 添加登录相关占位布局
      */
-    private void addMainLoginPlaceFragment(MainBindActivity activity, Fragment fragment) {
+    private void addMainLoginPlaceFragment(MainActivity activity, Fragment fragment) {
         FragmentUtils.safeAddFragment(activity.getSupportFragmentManager(), fragment, com.stkj.cashier.R.id.fl_login_placeholder);
     }
 
     /**
      * 替换登录相关占位布局
      */
-    private void replaceMainLoginPlaceFragment(MainBindActivity activity, Fragment fragment) {
+    private void replaceMainLoginPlaceFragment(MainActivity activity, Fragment fragment) {
         FragmentUtils.safeReplaceFragment(activity.getSupportFragmentManager(), fragment, R.id.fl_login_placeholder);
     }
 

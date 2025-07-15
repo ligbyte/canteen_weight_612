@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.hardware.usb.UsbDevice;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,12 +27,9 @@ import com.stkj.cashier.R;
 import com.stkj.cashier.base.callback.AppNetCallback;
 import com.stkj.cashier.base.device.DeviceManager;
 import com.stkj.cashier.base.net.AppNetManager;
-import com.stkj.cashier.base.permission.AppPermissionHelper;
 import com.stkj.cashier.base.tts.TTSVoiceHelper;
 import com.stkj.cashier.base.ui.dialog.CommonAlertDialogFragment;
-import com.stkj.cashier.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonInputDialogFragment;
-import com.stkj.cashier.base.utils.CommonDialogUtils;
 import com.stkj.cashier.consumer.ConsumerManager;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
 import com.stkj.cashier.home.callback.OnGetStoreInfoListener;
@@ -58,7 +54,6 @@ import com.stkj.cashier.setting.helper.StoreInfoHelper;
 import com.stkj.common.core.AppManager;
 import com.stkj.common.core.CountDownHelper;
 import com.stkj.common.log.LogHelper;
-import com.stkj.common.permissions.callback.PermissionCallback;
 import com.stkj.common.ui.activity.BaseActivity;
 import com.stkj.common.ui.toast.AppToast;
 import com.stkj.common.utils.ActivityUtils;
@@ -86,7 +81,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MainBindActivity extends BaseActivity implements AppNetCallback, ConsumerListener , DeviceDataCallBlack<ReadCardResulBean>, DeviceStatusListener {
+public class MainActivity extends BaseActivity implements AppNetCallback, ConsumerListener , DeviceDataCallBlack<ReadCardResulBean>, DeviceStatusListener {
 
     public final static String TAG = "MainActivity";
     //当前TAB界面
@@ -334,7 +329,7 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
                             rootPlaceHolderView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    KeyBoardUtils.hideSoftKeyboard(MainBindActivity.this, rootPlaceHolderView);
+                                    KeyBoardUtils.hideSoftKeyboard(MainActivity.this, rootPlaceHolderView);
                                     rootPlaceHolderView.setOnClickListener(null);
                                     rootPlaceHolderView.setClickable(false);
                                     clearMainFocus();
@@ -424,17 +419,17 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
                             showInputServerAddressDialog();
                         }
                     })
-                    .show(MainBindActivity.this);
+                    .show(MainActivity.this);
         } else {
             commonAlertDialogFragment.setRightNavTxt("关闭App")
                     .setRightNavClickListener(new CommonAlertDialogFragment.OnSweetClickListener() {
                         @Override
                         public void onClick(CommonAlertDialogFragment alertDialogFragment) {
                             DeviceManager.INSTANCE.getDeviceInterface().release();
-                            AndroidUtils.killApp(MainBindActivity.this);
+                            AndroidUtils.killApp(MainActivity.this);
                         }
                     })
-                    .show(MainBindActivity.this);
+                    .show(MainActivity.this);
         }
     }
 
@@ -447,7 +442,7 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
                 .setOnInputListener(new CommonInputDialogFragment.OnInputListener() {
                     @Override
                     public void onInputEnd(String input) {
-                        ServerSettingMMKV.handleChangeServerAddress(MainBindActivity.this, input);
+                        ServerSettingMMKV.handleChangeServerAddress(MainActivity.this, input);
                     }
                 }).show(this);
     }
@@ -721,7 +716,7 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
                         flScreenWelcom.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ConsumerManager.INSTANCE.showConsumer(MainBindActivity.this,homeTabPageAdapter.getTabBindHomeFragment() , MainBindActivity.this);
+                                ConsumerManager.INSTANCE.showConsumer(MainActivity.this,homeTabPageAdapter.getTabBindHomeFragment() , MainActivity.this);
                                 homeTabPageAdapter.getTabBindHomeFragment().findViews();
                                 homeTabPageAdapter.getTabBindHomeFragment().onRefreshBindModeEvent(new RefreshBindModeEvent(0));
                             }
