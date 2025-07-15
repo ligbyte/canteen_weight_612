@@ -237,25 +237,10 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
      */
     private void initApp() {
 
-//        vp2Content.setVisibility(View.INVISIBLE);
         flScreenWelcom.setVisibility(View.VISIBLE);
+        initData();
 
-//        flScreenWelcom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                flScreenWelcom.setVisibility(View.GONE);
-//                flScreenWelcom.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ConsumerManager.INSTANCE.showConsumer(MainActivity.this,homeTabPageAdapter.getTabBindHomeFragment() ,MainActivity.this);
-//                        homeTabPageAdapter.getTabBindHomeFragment().findViews();
-//                        EventBus.getDefault().post(new RefreshBindModeEvent(0));
-//                    }
-//                },50);
-//
-//
-//            }
-//        });
+
     }
 
     private void initYxSDK() {
@@ -650,9 +635,6 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     openYxDeviceSDK();
                 }
             },1 * 1000);
-//            openYxDeviceSDK();
-//            vp2Content.setVisibility(View.INVISIBLE);
-//            cbgCameraHelper.releaseCameraHelper();
         }else {
             if (yxDevicePortCtrl != null && yxDevicePortCtrl.isOpen()){
                 yxDevicePortCtrl.closeDevice();
