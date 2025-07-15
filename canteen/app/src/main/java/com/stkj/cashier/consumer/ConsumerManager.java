@@ -1,29 +1,24 @@
 package com.stkj.cashier.consumer;
 
 import android.content.Context;
-import android.hardware.display.DisplayManager;
-import android.view.Display;
 
 import com.stkj.cashier.base.callback.OnConsumerConfirmListener;
 import com.stkj.cashier.consumer.callback.ConsumerController;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
-import com.stkj.cashier.consumer.ui.presentation.ConsumerPresentation;
-import com.stkj.cashier.machine.bind.TabBindHomeFragment;
+import com.stkj.cashier.machine.bind.TabWeightHomeFragment;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.common.core.MainThreadHolder;
-import com.stkj.common.utils.DisplayUtils;
 
 /**
  * 面向消费者屏幕
  */
 public enum ConsumerManager implements ConsumerController {
     INSTANCE;
-    private TabBindHomeFragment consumerPresentation;
+    private TabWeightHomeFragment consumerPresentation;
 
     /**
      * 显示消费者页面
      */
-    public void showConsumer(Context context,TabBindHomeFragment tabBindHomeFragment, ConsumerListener consumerListener) {
+    public void showConsumer(Context context, TabWeightHomeFragment tabBindHomeFragment, ConsumerListener consumerListener) {
 
         consumerPresentation = tabBindHomeFragment;
         consumerPresentation.setConsumerListener(consumerListener);

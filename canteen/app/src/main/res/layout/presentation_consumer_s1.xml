@@ -324,12 +324,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <!-- 人脸取景框 -->
-                <com.stkj.cashier.base.ui.widget.FacePassCameraLayout
-                    android:id="@+id/fpc_face"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fpcl_consume_lay_res="1" />
+
 
                 <!-- 进度展示区域 -->
                 <com.stkj.common.ui.widget.common.CircleProgressBar

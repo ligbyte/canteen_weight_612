@@ -1,6 +1,5 @@
 package com.stkj.cashier.machine.bind;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +26,6 @@ import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
 import com.stkj.cashier.pay.ui.weight.GridSpacingItemDecoration;
 import com.stkj.cashier.setting.callback.FacePassSettingCallback;
 import com.stkj.cashier.setting.helper.AppUpgradeHelper;
-import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.cashier.setting.model.PauseFacePassDetect;
 import com.stkj.common.rx.AutoDisposeUtils;
 import com.stkj.common.rx.DefaultObserver;
@@ -50,7 +48,7 @@ import kotlin.Unit;
 /**
  * 设置页面
  */
-public class TabBindSettingFragment extends BaseRecyclerFragment implements View.OnClickListener, FacePassSettingCallback, AppUpgradeHelper.OnAppUpgradeListener {
+public class TabWeightSettingFragment extends BaseRecyclerFragment implements View.OnClickListener, FacePassSettingCallback, AppUpgradeHelper.OnAppUpgradeListener {
 
     public final static String TAG = "TabBindSettingFragment";
     private RecyclerView rvTopTab;
@@ -100,7 +98,7 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
                     @Override
                     protected void onSuccess(Unit unit) {
                         AppUpgradeHelper appUpgradeHelper = mActivity.getWeakRefHolder(AppUpgradeHelper.class);
-                        appUpgradeHelper.setOnAppUpgradeListener(TabBindSettingFragment.this);
+                        appUpgradeHelper.setOnAppUpgradeListener(TabWeightSettingFragment.this);
                         appUpgradeHelper.checkAppVersion();
                     }
                 });

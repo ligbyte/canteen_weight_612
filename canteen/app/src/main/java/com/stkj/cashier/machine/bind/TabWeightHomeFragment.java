@@ -9,14 +9,12 @@ import android.widget.LinearLayout;
 import com.stkj.cashier.R;
 import com.stkj.cashier.base.callback.OnConsumerConfirmListener;
 import com.stkj.cashier.base.device.DeviceManager;
-import com.stkj.cashier.base.ui.widget.FacePassCameraLayout;
 import com.stkj.cashier.base.utils.EventBusUtils;
 import com.stkj.cashier.consumer.callback.ConsumerController;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
 import com.stkj.cashier.pay.callback.OnConsumerModeListener;
 import com.stkj.cashier.pay.data.PayConstants;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
-import com.stkj.cashier.pay.model.BindFragmentBackEvent;
 import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
 import com.stkj.cashier.pay.model.RefreshBindModeEvent;
 import com.stkj.cashier.pay.model.RefreshConsumerGoodsModeEvent;
@@ -35,11 +33,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
- * 绑盘机页面——首页
+ * 称重机页面——首页
  */
-public class TabBindHomeFragment extends BasePayHelperFragment implements OnConsumerModeListener , ConsumerController {
+public class TabWeightHomeFragment extends BasePayHelperFragment implements OnConsumerModeListener , ConsumerController {
 
-    public final static String TAG = "TabBindHomeFragment";
+    public final static String TAG = "TabWeightHomeFragment";
     //    private LinearLayout llOrderList;
 //    private RecyclerView rvGoodsList;
 //    private LinearLayout llFastPayPresentation;
@@ -47,7 +45,6 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
 //    private TextView tvGoodsPrice;
 //    private ShapeFrameLayout sflOrderList;
 //    private CommonRecyclerAdapter mOrderAdapter;
-    private FacePassCameraLayout fpcFace;
 
     private ConsumerListener consumerListener;
     private OnConsumerConfirmListener facePassConfirmListener;
@@ -86,13 +83,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
             pbConsumer = (CircleProgressBar) findViewById(R.id.pb_consumer);
             stvPayPrice = (ShapeTextView) findViewById(R.id.stv_pay_price);
             stv_pay_price_balance = (ShapeTextView) findViewById(R.id.stv_pay_price_balance);
-            fpcFace = (FacePassCameraLayout) findViewById(R.id.fpc_face);
 
-        }
-
-        if (consumerListener != null) {
-            Log.d(TAG, "limefindViews: " + 187);
-            consumerListener.onCreateFacePreviewView(fpcFace.getFacePreviewFace(), fpcFace.getIrPreviewFace());
         }
 
 //        sflOrderList = (ShapeFrameLayout) findViewById(R.id.sfl_order_list);
@@ -150,17 +141,12 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
 
     @Override
     public void setFacePreview(boolean preview) {
-        if (fpcFace != null) {
-            fpcFace.setPreviewFace(preview);
-        }
+
     }
 
     @Override
     public void setConsumerAuthTips(String tips) {
-        if (fpcFace != null) {
-            isConsumerAuthTips = true;
-            fpcFace.setFaceCameraTips(tips);
-        }
+
     }
 
     @Override
@@ -170,16 +156,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
 
     @Override
     public void setConsumerTips(String tips, int consumerPro) {
-        if (fpcFace != null) {
-            isConsumerAuthTips = false;
-            fpcFace.setFaceCameraTips(tips);
-            if (consumerPro > 0) {
-                pbConsumer.setVisibility(View.VISIBLE);
-                pbConsumer.setProgress(consumerPro);
-            } else {
-                pbConsumer.setVisibility(View.GONE);
-            }
-        }
+
     }
 
     @Override
@@ -192,19 +169,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage(facePassPeopleInfo.getImgData());
-        if (needConfirm) {
-            fpcFace.setFaceCameraTips("识别成功,请确认?");
 
-        } else {
-            if (facePassConfirmListener != null) {
-                if (consumerType == PayConstants.PAY_TYPE_IC_CARD) {
-                    facePassConfirmListener.onConfirmCardNumber(facePassPeopleInfo.getCard_Number());
-                } else {
-                    facePassConfirmListener.onConfirmFacePass(facePassPeopleInfo);
-                }
-            }
-        }
     }
 
     @Override
@@ -212,15 +177,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage("");
-        if (needConfirm) {
-            fpcFace.setFaceCameraTips("读卡成功,请确认?");
 
-        } else {
-            if (facePassConfirmListener != null) {
-                facePassConfirmListener.onConfirmCardNumber(cardNumber);
-            }
-        }
     }
 
     @Override
@@ -228,16 +185,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage("");
-        if (needConfirm) {
-            fpcFace.setFaceCameraTips("扫码成功,请确认?");
 
-
-        } else {
-            if (facePassConfirmListener != null) {
-                facePassConfirmListener.onConfirmScanData(scanData);
-            }
-        }
     }
 
     @Override
@@ -248,13 +196,7 @@ public class TabBindHomeFragment extends BasePayHelperFragment implements OnCons
 
     @Override
     public void resetFaceConsumerLayout() {
-        if (fpcFace != null) {
-            stvCancelPay.setVisibility(View.GONE);
-            pbConsumer.setVisibility(View.GONE);
-            llTakeMealWay.setVisibility(View.GONE);
-            stvPayPrice.setText("¥ 0.00");
-            stvPayPrice.setVisibility(View.GONE);
-        }
+
     }
 
     public void setFacePassConfirmListener(OnConsumerConfirmListener facePassConfirmListener) {

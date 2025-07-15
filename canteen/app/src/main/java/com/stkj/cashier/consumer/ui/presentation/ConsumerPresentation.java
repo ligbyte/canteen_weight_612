@@ -22,11 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.stkj.cashier.R;
 import com.stkj.cashier.base.callback.OnConsumerConfirmListener;
 import com.stkj.cashier.base.device.DeviceManager;
-import com.stkj.cashier.base.model.FoodItemEntity;
 import com.stkj.cashier.base.tts.TTSVoiceHelper;
-import com.stkj.cashier.base.ui.adapter.FaceChooseAdapter;
 import com.stkj.cashier.base.ui.adapter.FoodListShowAdapter;
-import com.stkj.cashier.base.ui.widget.FacePassCameraLayout;
 import com.stkj.cashier.base.utils.EventBusUtils;
 import com.stkj.cashier.base.utils.PriceUtils;
 import com.stkj.cashier.consumer.callback.ConsumerController;
@@ -39,7 +36,6 @@ import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.ChangeConsumerModeEvent;
 import com.stkj.cashier.pay.model.FindViewResumeEvent;
 import com.stkj.cashier.pay.model.GoodsClearAllEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerAmountModeEvent;
 import com.stkj.cashier.pay.model.UpdateBlanceEvent;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.cashier.setting.model.FoodInfoTable;
@@ -53,10 +49,6 @@ import com.stkj.common.ui.widget.shapelayout.ShapeTextView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 食堂收银客户展示页
@@ -72,7 +64,6 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
 //    private ShapeFrameLayout sflOrderList;
 //    private CommonRecyclerAdapter mOrderAdapter;
     private ShapeFrameLayout sflConsumerContent;
-    private FacePassCameraLayout fpcFace;
     private HomeTitleLayout htlConsumer;
 
     private ConsumerListener consumerListener;
@@ -175,7 +166,6 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
         stv_pay_price_balance = (ShapeTextView) findViewById(R.id.stv_pay_price_balance);
         htlConsumer = (HomeTitleLayout) findViewById(R.id.htl_consumer);
         sflConsumerContent = (ShapeFrameLayout) findViewById(R.id.sfl_consumer_content);
-        fpcFace = (FacePassCameraLayout) findViewById(R.id.fpc_face);
         llFaceConfirm = (LinearLayout) findViewById(R.id.ll_face_confirm);
         stvFaceLeftBt = (ShapeTextView) findViewById(R.id.stv_face_left_bt);
         stvFaceRightBt = (ShapeTextView) findViewById(R.id.stv_face_right_bt);
@@ -197,10 +187,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
 
         }
 
-        if (consumerListener != null) {
-            Log.d(TAG, "limefindViews: " + 187);
-            consumerListener.onCreateFacePreviewView(fpcFace.getFacePreviewFace(), fpcFace.getIrPreviewFace());
-        }
+
         if (consumerListener != null) {
             consumerListener.onCreateTitleLayout(htlConsumer);
         }
@@ -315,19 +302,14 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
 
     @Override
     public void setFacePreview(boolean preview) {
-        if (fpcFace != null) {
-            fpcFace.setPreviewFace(preview);
-        }
+
     }
 
     private boolean isConsumerAuthTips;
 
     @Override
     public void setConsumerAuthTips(String tips) {
-        if (fpcFace != null) {
-            isConsumerAuthTips = true;
-            fpcFace.setFaceCameraTips(tips);
-        }
+
     }
 
     @Override
@@ -342,16 +324,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
 
     @Override
     public void setConsumerTips(String tips, int consumerPro) {
-        if (fpcFace != null) {
-            isConsumerAuthTips = false;
-            fpcFace.setFaceCameraTips(tips);
-            if (consumerPro > 0) {
-                pbConsumer.setVisibility(View.VISIBLE);
-                pbConsumer.setProgress(consumerPro);
-            } else {
-                pbConsumer.setVisibility(View.GONE);
-            }
-        }
+
     }
 
     @Override
@@ -359,45 +332,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage(facePassPeopleInfo.getImgData());
-        if (needConfirm) {
-            fpcFace.setFaceCameraTips("识别成功,请确认?");
-            llFaceConfirm.setVisibility(View.VISIBLE);
-            stvFaceLeftBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (facePassConfirmListener != null) {
-                        if (consumerType == PayConstants.PAY_TYPE_IC_CARD) {
-                            facePassConfirmListener.onConfirmCardNumber(facePassPeopleInfo.getCard_Number());
-                        } else {
-                            facePassConfirmListener.onConfirmFacePass(facePassPeopleInfo);
-                        }
-                    }
-                    llFaceConfirm.setVisibility(View.GONE);
-                }
-            });
-            stvFaceRightBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (facePassConfirmListener != null) {
-                        if (consumerType == PayConstants.PAY_TYPE_IC_CARD) {
-                            facePassConfirmListener.onCancelCardNumber(facePassPeopleInfo.getCard_Number());
-                        } else {
-                            facePassConfirmListener.onCancelFacePass(facePassPeopleInfo);
-                        }
-                    }
-                }
-            });
-        } else {
-            if (facePassConfirmListener != null) {
-                if (consumerType == PayConstants.PAY_TYPE_IC_CARD) {
-                    facePassConfirmListener.onConfirmCardNumber(facePassPeopleInfo.getCard_Number());
-                } else {
-                    facePassConfirmListener.onConfirmFacePass(facePassPeopleInfo);
-                }
-            }
-            llFaceConfirm.setVisibility(View.GONE);
-        }
+
     }
 
     @Override
@@ -405,32 +340,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage("");
-        if (needConfirm) {
-            fpcFace.setFaceCameraTips("读卡成功,请确认?");
-            llFaceConfirm.setVisibility(View.VISIBLE);
-            stvFaceLeftBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (facePassConfirmListener != null) {
-                        facePassConfirmListener.onConfirmCardNumber(cardNumber);
-                    }
-                    llFaceConfirm.setVisibility(View.GONE);
-                }
-            });
-            stvFaceRightBt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (facePassConfirmListener != null) {
-                        facePassConfirmListener.onCancelCardNumber(cardNumber);
-                    }
-                }
-            });
-        } else {
-            if (facePassConfirmListener != null) {
-                facePassConfirmListener.onConfirmCardNumber(cardNumber);
-            }
-        }
+
     }
 
     @Override
@@ -438,9 +348,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
         stvCancelPay.setVisibility(View.GONE);
         pbConsumer.setVisibility(View.GONE);
         llTakeMealWay.setVisibility(View.GONE);
-        fpcFace.setFaceImage("");
         if (needConfirm) {
-            fpcFace.setFaceCameraTips("扫码成功,请确认?");
             llFaceConfirm.setVisibility(View.VISIBLE);
             stvFaceLeftBt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -517,36 +425,7 @@ public class ConsumerPresentation extends Presentation implements ConsumerContro
 
     @Override
     public void resetFaceConsumerLayout() {
-        if (fpcFace != null) {
-            stvCancelPay.setVisibility(View.GONE);
-            pbConsumer.setVisibility(View.GONE);
-            sflInputNumber.setVisibility(View.GONE);
-            llTakeMealWay.setVisibility(View.GONE);
-            llFaceConfirm.setVisibility(View.GONE);
-            stvPayPrice.setText("¥ 0.00");
-            stvPayPrice.setVisibility(View.GONE);
-            ConsumerModeHelper consumerModeHelper = new ConsumerModeHelper(AppManager.INSTANCE.getMainActivity());
-            currentConsumerMode = consumerModeHelper.getCurrentConsumerMode();
-            if (currentConsumerMode == PayConstants.CONSUMER_GOODS_MODE){
-                if (foodListShowAdapter != null && foodListShowAdapter.getData().size() > 0){
-                    refreshTotalPrice();
-                }else {
-                    fpcFace.resetFaceInfoLayout();
-                    if (stv_pay_price_balance != null){
-                        stv_pay_price_balance.setVisibility(View.GONE);
-                    }
-                    Log.d(TAG, "limeresetFaceInfoLayout: " + 522);
-                }
-            }else {
-                fpcFace.resetFaceInfoLayout();
-                if (stv_pay_price_balance != null){
-                    stv_pay_price_balance.setVisibility(View.GONE);
-                }
-                Log.d(TAG, "limeresetFaceInfoLayout: " + 526);
 
-            }
-
-        }
     }
 
     @Override
