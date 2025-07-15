@@ -21,7 +21,6 @@ import com.stkj.cashier.pay.model.RefreshConsumerAmountModeEvent;
 import com.stkj.cashier.pay.model.RefreshConsumerNumberModeEvent;
 import com.stkj.cashier.pay.ui.weight.SimpleCalculator;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
 import com.stkj.common.core.AppManager;
 import com.stkj.common.utils.FragmentUtils;
 
@@ -90,7 +89,6 @@ public class AmountConsumerFragment extends BasePayHelperFragment implements OnP
      * 金额结算
      */
     private void goToAmountPay() {
-        CBGFacePassHandlerHelper.imageCache = null;
         ConsumerManager.INSTANCE.resetFaceConsumerLayout();
         String realPayMoney = getAmountRealPayMoney();
         int goToPay = goToPay(realPayMoney);

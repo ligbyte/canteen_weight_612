@@ -1,54 +1,34 @@
 package com.stkj.cashier.pay.ui.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 
-import com.flyco.animation.ZoomEnter.ZoomInEnter;
-import com.flyco.animation.ZoomExit.ZoomInExit;
-import com.flyco.dialog.entity.DialogMenuItem;
-import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.stkj.cashier.MainApplication;
-import com.stkj.cashier.R;
 import com.stkj.cashier.base.callback.TTSVoiceListener;
 import com.stkj.cashier.base.device.DeviceManager;
-import com.stkj.cashier.base.model.FaceChooseItemEntity;
 import com.stkj.cashier.base.tts.TTSVoiceHelper;
 import com.stkj.cashier.base.ui.dialog.FaceChooseDialogFragment;
 import com.stkj.cashier.base.utils.EventBusUtils;
-import com.stkj.cashier.base.utils.UsernameComparator;
 import com.stkj.cashier.consumer.ConsumerManager;
 import com.stkj.cashier.home.helper.CBGCameraHelper;
 import com.stkj.cashier.pay.data.PayConstants;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.FacePassRetryEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerAmountModeEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerNumberModeEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerTakeModeEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerWeightModeEvent;
-import com.stkj.cashier.pay.model.RefreshGoodsModeEvent;
 import com.stkj.cashier.setting.data.PaymentSettingMMKV;
 import com.stkj.cashier.setting.data.TTSSettingMMKV;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.cashier.setting.model.PauseFacePassDetect;
 import com.stkj.cashier.setting.model.RefreshPayType;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
-import com.stkj.cbgfacepass.model.CBGFacePassRecognizeResult;
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.rx.AutoDisposeUtils;
 import com.stkj.common.rx.DefaultDisposeObserver;
 import com.stkj.common.rx.DefaultObserver;
 import com.stkj.common.rx.RxTransformerUtils;
 import com.stkj.common.ui.fragment.BaseRecyclerFragment;
-import com.stkj.common.utils.FileUtils;
 import com.stkj.deviceinterface.callback.OnReadICCardListener;
 import com.stkj.deviceinterface.callback.OnScanQRCodeListener;
 
@@ -56,9 +36,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.hutool.core.util.ReUtil;
@@ -202,20 +179,7 @@ public abstract class IdentityVerificationFragment extends BaseRecyclerFragment 
      */
     private void processReadCardResult(String cardNumber) {
         LogHelper.print("--IdentityVerificationFragment--handleReadCardResult--cardNumber: " + cardNumber);
-        FacePassHelper facePassHelper = mActivity.getWeakRefHolder(FacePassHelper.class);
-        facePassHelper.searchFacePassByCardNumber(cardNumber, new FacePassHelper.OnHandleCardNumberListener() {
-            @Override
-            public void onHandleLocalCardNumber(String cardNumber, FacePassPeopleInfo facePassPeopleInfo) {
-                handleReadICCardSuccess(facePassPeopleInfo);
-                LogHelper.print("--IdentityVerificationFragment--handleReadCardResult confirmFaceInfo");
-            }
 
-            @Override
-            public void onHandleLocalCardNumberError(String cardNumber) {
-                handleReadICCardSuccess(cardNumber);
-                LogHelper.print("--IdentityVerificationFragment--handleReadCardResult confirmCardInfo");
-            }
-        });
     }
 
     /**
@@ -352,18 +316,7 @@ public abstract class IdentityVerificationFragment extends BaseRecyclerFragment 
         Log.d(TAG, "limegoToAllAuth: " + 352);
         ConsumerManager.INSTANCE.setFacePreview(true);
         CBGCameraHelper cbgCameraHelper = mActivity.getWeakRefHolder(CBGCameraHelper.class);
-        cbgCameraHelper.setOnDetectFaceListener(new CBGFacePassHandlerHelper.OnDetectFaceListener() {
-            @Override
-            public void onDetectFaceToken(List<CBGFacePassRecognizeResult> faceTokenList) {
-                processFacePassResult(faceTokenList);
-            }
 
-            @Override
-            public void onNoDetectFaceToken() {
-                processFacePassFailRetryDelay(-1);
-                LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  onNoDetectFaceToken");
-            }
-        });
         Schedulers.io().scheduleDirect(new Runnable() {
             @Override
             public void run() {
@@ -392,170 +345,10 @@ public abstract class IdentityVerificationFragment extends BaseRecyclerFragment 
         cbgCameraHelper.stopFacePassDetect();
     }
 
-    /**
-     * 处理识别人脸结果
-     *
-     */
-    protected void processFacePassResult(List<CBGFacePassRecognizeResult> faceTokenList) {
-
-        if (faceTokenList != null && !faceTokenList.isEmpty()) {
-
-            if (faceTokenList.size() == 1) {
-                FacePassHelper facePassHelper = mActivity.getWeakRefHolder(FacePassHelper.class);
-                CBGFacePassRecognizeResult facePassRecognizeResult = faceTokenList.get(0);
-                if (facePassRecognizeResult.isFacePassSuccess()) {
-                    facePassHelper.searchFacePassByFaceToken(facePassRecognizeResult.getFaceToken(), new FacePassHelper.OnHandleFaceTokenListener() {
-                        @Override
-                        public void onHandleLocalFace(String faceToken, FacePassPeopleInfo facePassPeopleInfo) {
-                            //停止所有的识别检测
-                            stopAllAuth();
-                            handleFacePassSuccess(facePassPeopleInfo);
-                            LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  confirmFaceInfo");
-                        }
-
-                        @Override
-                        public void onHandleLocalFaceError(String faceToken) {
-                            processFacePassFailRetryDelay(-1);
-                            LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  onHandleLocalFaceError");
-                        }
-                    });
-                } else {
-                    processFacePassFailRetryDelay(facePassRecognizeResult.getRecognitionState());
-                }
-            } else {
-
-                CBGFacePassRecognizeResult facePassRecognizeResult = faceTokenList.get(0);
-                if (facePassRecognizeResult.isFacePassSuccess()) {
-                FacePassHelper facePassHelperDuo = mActivity.getWeakRefHolder(FacePassHelper.class);
-                ArrayList<FaceChooseItemEntity> mMenuItems = new ArrayList<>();
-                for (int i = 0; i < faceTokenList.size(); i++) {
-
-                    facePassHelperDuo.searchFacePassByFaceToken(faceTokenList.get(i).getFaceToken(), new FacePassHelper.OnHandleFaceTokenListener() {
-                        @Override
-                        public void onHandleLocalFace(String faceToken, FacePassPeopleInfo facePassPeopleInfo) {
-                            mMenuItems.add(new FaceChooseItemEntity(facePassPeopleInfo.getFull_Name(), facePassPeopleInfo.getPhone(), facePassPeopleInfo.getImgData(), facePassPeopleInfo.getCBGFaceToken(), false));
-                            if (mMenuItems.size() == faceTokenList.size()) {
-                                if (listDialog == null || !listDialog.isShowing()) {
-
-                                    stopAllAuth();
-                                    mMenuItems.sort(new UsernameComparator());
-                                    NormalListDialog(faceTokenList, mMenuItems);
-
-                                }
-
-                            }
-                        }
-
-                        @Override
-                        public void onHandleLocalFaceError(String faceToken) {
-                            processFacePassFailRetryDelay(-1);
-                            LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  onHandleLocalFaceError");
-                        }
-                    });
-
-                }
-                } else {
-                    processFacePassFailRetryDelay(facePassRecognizeResult.getRecognitionState());
-                }
-
-        }
-        }
-    }
 
 
-    /**
-     * 处理单个识别人脸结果
-     *
-     */
-    protected void processFacePassResultSingle(CBGFacePassRecognizeResult facePassRecognizeResult) {
-        FacePassHelper facePassHelper = mActivity.getWeakRefHolder(FacePassHelper.class);
-            if (facePassRecognizeResult.isFacePassSuccess()) {
-                facePassHelper.searchFacePassByFaceToken(facePassRecognizeResult.getFaceToken(), new FacePassHelper.OnHandleFaceTokenListener() {
-                    @Override
-                    public void onHandleLocalFace(String faceToken, FacePassPeopleInfo facePassPeopleInfo) {
-                        //停止所有的识别检测
-                        stopAllAuth();
-                        handleFacePassSuccess(facePassPeopleInfo);
-                        LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  confirmFaceInfo");
-                    }
-
-                    @Override
-                    public void onHandleLocalFaceError(String faceToken) {
-                        processFacePassFailRetryDelay(-1);
-                        LogHelper.print("--IdentityVerificationFragment--handleFacePassResult  onHandleLocalFaceError");
-                    }
-                });
-            } else {
-                processFacePassFailRetryDelay(facePassRecognizeResult.getRecognitionState());
-            }
-    }
 
 
-    private void NormalListDialog(List<CBGFacePassRecognizeResult> faceTokenList,ArrayList<FaceChooseItemEntity> listData) {
-        if (TakeMealConsumerFragment.rvTakeMealListVisibility){
-            return;
-        }
-
-
-        MainApplication.isUnLockFrame = true;
-        if (System.currentTimeMillis() - beforeShowTime < 1000){
-            return;
-        }
-        beforeShowTime = System.currentTimeMillis();
-
-
-       speakTTSVoice("检测到相似人脸，请选择");
-        ConsumerManager.INSTANCE.setConsumerTips("检测到相似人脸");
-        if (faceChooseDialogFragment != null) {
-            faceChooseDialogFragment.dismiss();
-        }
-
-        faceChooseDialogFragment = FaceChooseDialogFragment.build()
-                .setTitle("系统检测到有相似人脸，请选择")
-                .setSelectListData(listData)
-                .setOnSelectListener(new FaceChooseDialogFragment.OnSelectListener() {
-                    @Override
-                    public void onConfirmSelectItem(FaceChooseItemEntity faceChooseItemEntity, int position) {
-                        //changeConsumerMode(commonSelectItem.getTypeInt());
-                        for (int i = 0; i < faceTokenList.size(); i++) {
-                            if (faceTokenList.get(i).getFaceToken().equals(listData.get(position).getFaceToken())){
-                                itemPosition = i;
-                            }
-                        }
-                        MainApplication.isNeedCache = true;
-                        processFacePassResultSingle(faceTokenList.get(itemPosition));
-                    }
-
-                    @Override
-                    public void onDismiss() {
-                        ConsumerModeHelper consumerModeHelper = mActivity.getWeakRefHolder(ConsumerModeHelper.class);
-                        if (consumerModeHelper.getCurrentConsumerMode() ==  PayConstants.CONSUMER_NUMBER_MODE) {
-                            EventBus.getDefault().post(new RefreshConsumerNumberModeEvent());
-                        }
-
-                        if (consumerModeHelper.getCurrentConsumerMode() == PayConstants.CONSUMER_TAKE_MODE) {
-                            EventBus.getDefault().post(new RefreshConsumerTakeModeEvent());
-                        }
-
-
-                        if (consumerModeHelper.getCurrentConsumerMode() == PayConstants.CONSUMER_AMOUNT_MODE) {
-                            EventBus.getDefault().post(new RefreshConsumerAmountModeEvent());
-                        }
-
-
-                        if (consumerModeHelper.getCurrentConsumerMode() == PayConstants.CONSUMER_WEIGHT_MODE) {
-                            EventBus.getDefault().post(new RefreshConsumerWeightModeEvent());
-                        }
-
-                        if (consumerModeHelper.getCurrentConsumerMode() == PayConstants.CONSUMER_GOODS_MODE) {
-                            EventBus.getDefault().post(new RefreshGoodsModeEvent());
-                        }
-
-
-                    }
-                });
-        faceChooseDialogFragment.show(getActivity());
-    }
 
 
     /**

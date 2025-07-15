@@ -29,7 +29,6 @@ import com.stkj.cashier.base.utils.EventBusUtils;
 import com.stkj.cashier.pay.model.GoodsSyncSuccessEvent;
 import com.stkj.cashier.pay.model.RefreshUpdateGoodsEvent;
 import com.stkj.cashier.setting.callback.FacePassSettingCallback;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.cashier.setting.model.FoodBean;
 import com.stkj.cashier.setting.model.FoodInfoTable;
@@ -64,7 +63,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 /**
  * 商品设置
  */
-public class TabGoodsSettingFragment extends BaseRecyclerFragment implements FacePassHelper.OnFacePassListener, FacePassSettingCallback {
+public class TabGoodsSettingFragment extends BaseRecyclerFragment implements  FacePassSettingCallback {
     public final static String TAG = "TabGoodsSettingFragment";
     private LinearLayout llFaceSetting;
     private ShapeTextView stvFacepassSetting;
@@ -201,29 +200,7 @@ public class TabGoodsSettingFragment extends BaseRecyclerFragment implements Fac
         searchFacePassParams.setSearchKey(etPeopleSearch.getText().toString());
         searchFacePassParams.setAccountType(stvAllPeople.getText().toString());
         searchFacePassParams.setDepartment(stvAllDepartment.getText().toString());
-        FacePassHelper facePassHelper = getFacePassHelper();
-        facePassHelper.queryLocalFacePass(searchFacePassParams, new FacePassHelper.OnQueryLocalFacePassListener() {
-            @Override
-            public void onQueryLocalFacePassSuccess(List<FacePassPeopleInfo> facePassPeopleInfoList) {
-                srlFacePassList.finishRefresh();
-                srlFacePassList.finishLoadMore();
-                if (isFirstPage) {
-                    facePassAdapter.removeAllData();
-                }
-                if (facePassPeopleInfoList != null && !facePassPeopleInfoList.isEmpty()) {
-                    facePassAdapter.addDataList(facePassPeopleInfoList);
-                } else {
-                    AppToast.toastMsg("没更多数据了");
-                }
-            }
 
-            @Override
-            public void onQueryLocalFacePassError(String msg) {
-                srlFacePassList.finishRefresh();
-                srlFacePassList.finishLoadMore();
-                CommonDialogUtils.showTipsDialog(mActivity, "查询人脸数据库失败:" + msg);
-            }
-        });
     }
 
     private void setFacePassOperateEnable(boolean enable) {
@@ -420,7 +397,6 @@ public class TabGoodsSettingFragment extends BaseRecyclerFragment implements Fac
 
     private void deleteAllFacePass() {
         setFacePassOperateEnable(false);
-        getFacePassHelper().deleteAllFaceGroup();
     }
 
     @Override
@@ -444,35 +420,11 @@ public class TabGoodsSettingFragment extends BaseRecyclerFragment implements Fac
         EventBusUtils.unRegisterEventBus(this);
     }
 
-    @Override
-    public void onLoadFacePassGroupStart() {
-        setFacePassOperateEnable(false);
-    }
 
-    @Override
-    public void onLoadFacePassGroupEnd(List<FacePassPeopleInfo> facePassPeopleInfoList, String msg, boolean isError) {
-        FacePassHelper.OnFacePassListener.super.onLoadFacePassGroupEnd(facePassPeopleInfoList, msg, isError);
-        //更新人脸库完成
-        if (facePassPeopleInfoList == null) {
-            getFacePassHelper().getFacePassLocalCount();
-            setFacePassOperateEnable(true);
-            if (isError && !TextUtils.isEmpty(msg)) {
-                CommonDialogUtils.showTipsDialog(mActivity, "更新人脸库出错:" + msg);
-            }
-        }
-    }
 
-    @Override
-    public void onDeleteAllFacePassSuccess(boolean needRequestAllFace) {
-        FacePassHelper.OnFacePassListener.super.onDeleteAllFacePassSuccess(needRequestAllFace);
-        handleDeleteAllFacePass(needRequestAllFace);
-    }
 
-    @Override
-    public void onDeleteAllFacePassError(boolean needRequestAllFace, String msg) {
-        FacePassHelper.OnFacePassListener.super.onDeleteAllFacePassError(needRequestAllFace, msg);
-        handleDeleteAllFacePass(needRequestAllFace);
-    }
+
+
 
     /**
      * 统一处理删除人脸库成功和失败
@@ -484,17 +436,8 @@ public class TabGoodsSettingFragment extends BaseRecyclerFragment implements Fac
         }
     }
 
-    @Override
-    public void onGetFacePassLocalCount(long totalCount) {
-        FacePassHelper.OnFacePassListener.super.onGetFacePassLocalCount(totalCount);
-        refreshFacePassTotalCount(totalCount);
-    }
 
-    @Override
-    public void onGetFacePassLocalCountError(String msg) {
-        FacePassHelper.OnFacePassListener.super.onGetFacePassLocalCountError(msg);
-//        refreshFacePassTotalCount(0);
-    }
+
 
     private void refreshFacePassTotalCount(long count) {
         SpanUtils.with(tv_goods_count)
@@ -505,15 +448,11 @@ public class TabGoodsSettingFragment extends BaseRecyclerFragment implements Fac
                 .create();
     }
 
-    private FacePassHelper getFacePassHelper() {
-        return mActivity.getWeakRefHolder(FacePassHelper.class);
-    }
+
 
     @Override
     public void needUpdateFacePass() {
-        FacePassHelper facePassHelper = getFacePassHelper();
-        if (!facePassHelper.isAddOrDeleteLocalFacePass()) {
-        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -11,12 +11,9 @@ import com.stkj.cashier.BuildConfig;
 import com.stkj.cashier.R;
 import com.stkj.cashier.base.ui.dialog.CommonAlertDialogFragment;
 import com.stkj.cashier.base.utils.JacksonUtils;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.common.core.ActivityHolderFactory;
 import com.stkj.common.glide.GlideApp;
 import com.stkj.common.ui.adapter.holder.CommonRecyclerViewHolder;
-import com.stkj.common.ui.toast.AppToast;
 import com.stkj.common.utils.StringUtils;
 
 /**

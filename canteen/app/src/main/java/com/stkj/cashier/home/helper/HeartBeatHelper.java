@@ -23,7 +23,6 @@ import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.GoodsSyncSuccessEvent;
 import com.stkj.cashier.pay.model.RefreshUpdateGoodsEvent;
 import com.stkj.cashier.setting.data.ServerSettingMMKV;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.helper.StoreInfoHelper;
 import com.stkj.cashier.setting.model.FoodBean;
 import com.stkj.cashier.setting.model.FoodInfoTable;
@@ -129,10 +128,7 @@ public class HeartBeatHelper extends ActivityWeakRefHolder implements CountDownH
                                         case COMMAND_UPDATE_FACE_PASS:
                                             Activity activity = getHolderActivityWithCheck();
                                             if (activity != null) {
-                                                FacePassHelper facePassHelper = ActivityHolderFactory.get(FacePassHelper.class, activity);
-                                                if (facePassHelper != null) {
-                                                    facePassHelper.requestFacePass(1, false);
-                                                }
+
                                             }
                                             break;
                                         case COMMAND_INTERVAL_CARD_TYPE:

@@ -18,7 +18,6 @@ import com.stkj.cashier.pay.model.ModifyBalanceResult;
 import com.stkj.cashier.setting.data.PaymentSettingMMKV;
 import com.stkj.cashier.setting.data.TTSSettingMMKV;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.rx.AutoDisposeUtils;
 import com.stkj.common.rx.DefaultDisposeObserver;
@@ -285,24 +284,6 @@ public abstract class BasePayHelperFragment extends IdentityVerificationFragment
     @Override
     public void onPaySuccess(Map<String, String> payRequest, ModifyBalanceResult modifyBalanceResult) {
         Log.d(TAG, "limegoToPay: " + 286);
-        //异步缓存当前用户照片
-        if (MainApplication.isNeedCache) {
-            MainApplication.isNeedCache = false;
-            Schedulers.io().scheduleDirect(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (CBGFacePassHandlerHelper.imageCache != null) {
-                            FileUtils.saveImageCache(CBGFacePassHandlerHelper.imageCache, MainApplication.createOrderNumber);
-                        }
-
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
         Log.d(TAG, "limegoToPay: " + 305);
         MainApplication.isNeedCache = false;
         String successPayTips = "消费成功,谢谢惠顾";

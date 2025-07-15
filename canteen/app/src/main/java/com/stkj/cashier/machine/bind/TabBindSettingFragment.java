@@ -27,7 +27,6 @@ import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
 import com.stkj.cashier.pay.ui.weight.GridSpacingItemDecoration;
 import com.stkj.cashier.setting.callback.FacePassSettingCallback;
 import com.stkj.cashier.setting.helper.AppUpgradeHelper;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.cashier.setting.model.PauseFacePassDetect;
 import com.stkj.common.rx.AutoDisposeUtils;
@@ -51,7 +50,7 @@ import kotlin.Unit;
 /**
  * 设置页面
  */
-public class TabBindSettingFragment extends BaseRecyclerFragment implements View.OnClickListener,FacePassHelper.OnFacePassListener, FacePassSettingCallback, AppUpgradeHelper.OnAppUpgradeListener {
+public class TabBindSettingFragment extends BaseRecyclerFragment implements View.OnClickListener, FacePassSettingCallback, AppUpgradeHelper.OnAppUpgradeListener {
 
     public final static String TAG = "TabBindSettingFragment";
     private RecyclerView rvTopTab;
@@ -145,9 +144,6 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
 
     @Override
     protected void onFragmentResume(boolean isFirstOnResume) {
-        FacePassHelper facePassHelper = getFacePassHelper();
-        facePassHelper.addOnFacePassListener(this);
-        refreshFacePassTotalCount(facePassHelper.getFaceCount());
         if (isFirstOnResume) {
             EventBus.getDefault().register(this);
             initData();
@@ -160,35 +156,11 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onLoadFacePassGroupStart() {
-//        setFacePassOperateEnable(false);
-    }
 
-    @Override
-    public void onLoadFacePassGroupEnd(List<FacePassPeopleInfo> facePassPeopleInfoList, String msg, boolean isError) {
-        FacePassHelper.OnFacePassListener.super.onLoadFacePassGroupEnd(facePassPeopleInfoList, msg, isError);
-        //更新人脸库完成
-        if (facePassPeopleInfoList == null) {
-            getFacePassHelper().getFacePassLocalCount();
-//            setFacePassOperateEnable(true);
-            if (isError && !TextUtils.isEmpty(msg)) {
-                CommonDialogUtils.showTipsDialog(mActivity, "更新人脸库出错:" + msg);
-            }
-        }
-    }
 
-    @Override
-    public void onDeleteAllFacePassSuccess(boolean needRequestAllFace) {
-        FacePassHelper.OnFacePassListener.super.onDeleteAllFacePassSuccess(needRequestAllFace);
-        handleDeleteAllFacePass(needRequestAllFace);
-    }
 
-    @Override
-    public void onDeleteAllFacePassError(boolean needRequestAllFace, String msg) {
-        FacePassHelper.OnFacePassListener.super.onDeleteAllFacePassError(needRequestAllFace, msg);
-        handleDeleteAllFacePass(needRequestAllFace);
-    }
+
+
 
     /**
      * 统一处理删除人脸库成功和失败
@@ -197,17 +169,6 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
         refreshFacePassTotalCount(0);
     }
 
-    @Override
-    public void onGetFacePassLocalCount(long totalCount) {
-        FacePassHelper.OnFacePassListener.super.onGetFacePassLocalCount(totalCount);
-        refreshFacePassTotalCount(totalCount);
-    }
-
-    @Override
-    public void onGetFacePassLocalCountError(String msg) {
-        FacePassHelper.OnFacePassListener.super.onGetFacePassLocalCountError(msg);
-//        refreshFacePassTotalCount(0);
-    }
 
 
 
@@ -265,9 +226,6 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
 
     }
 
-    private FacePassHelper getFacePassHelper() {
-        return mActivity.getWeakRefHolder(FacePassHelper.class);
-    }
 
     private void refreshFacePassTotalCount(long count) {
         SpanUtils.with(tv_face_count)
@@ -278,7 +236,6 @@ public class TabBindSettingFragment extends BaseRecyclerFragment implements View
     }
 
     private void deleteAllFacePass() {
-        getFacePassHelper().deleteAllFaceGroup(true);
     }
 
     @Override

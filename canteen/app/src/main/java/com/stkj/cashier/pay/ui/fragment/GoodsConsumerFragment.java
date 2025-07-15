@@ -72,7 +72,6 @@ import com.stkj.cashier.setting.data.PaymentSettingMMKV;
 import com.stkj.cashier.setting.data.TTSSettingMMKV;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.cashier.setting.model.FoodInfoTable;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
 import com.stkj.common.core.AppManager;
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.net.retrofit.RetrofitManager;
@@ -687,7 +686,6 @@ public class GoodsConsumerFragment extends BasePayHelperFragment implements OnPa
                                 Log.d(TAG, "limeconsumeFoodInfo: " + JSON.toJSONString(consumeFoodInfo));
                                 MainApplication.consumeFoodInfoList.add(consumeFoodInfo);
                             }
-                            CBGFacePassHandlerHelper.imageCache = null;
                             PayHelper payHelper = getPayHelper();
                             payHelper.setOnPayListener(GoodsConsumerFragment.this);
                             double totalPrice = 0;
@@ -748,7 +746,6 @@ public class GoodsConsumerFragment extends BasePayHelperFragment implements OnPa
             Log.i(TAG, "limeconsumeFoodInfo: " + JSON.toJSONString(consumeFoodInfo));
             MainApplication.consumeFoodInfoList.add(consumeFoodInfo);
         }
-        CBGFacePassHandlerHelper.imageCache = null;
         ConsumerManager.INSTANCE.resetFaceConsumerLayout();
         String realPayMoney = getAmountRealPayMoney();
         int goToPay = goToPay(realPayMoney);

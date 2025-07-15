@@ -4,17 +4,8 @@ import androidx.camera.core.ImageProxy;
 
 import java.nio.ByteBuffer;
 
-import mcv.facepass.types.FacePassImage;
 
 public class CBGFacePassUtils {
-    public static FacePassImage convertFacePassImage(ImageProxy imageProxy) {
-        try {
-            return new FacePassImage(yuv420ToNv21(imageProxy), imageProxy.getWidth(), imageProxy.getHeight(), imageProxy.getImageInfo().getRotationDegrees(), 0);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * YUV_420_888转NV21

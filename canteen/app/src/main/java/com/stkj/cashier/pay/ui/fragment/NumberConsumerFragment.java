@@ -11,14 +11,11 @@ import com.stkj.cashier.consumer.ConsumerManager;
 import com.stkj.cashier.pay.callback.OnGetIntervalCardTypeListener;
 import com.stkj.cashier.pay.data.PayConstants;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
-import com.stkj.cashier.pay.model.ConsumerSuccessEvent;
 import com.stkj.cashier.pay.model.IntervalCardType;
 import com.stkj.cashier.pay.model.ModifyBalanceResult;
 import com.stkj.cashier.pay.model.RefreshConsumerNumberModeEvent;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 import com.stkj.common.glide.GlideApp;
-import com.stkj.common.log.LogHelper;
 import com.stkj.common.rx.AutoDisposeUtils;
 import com.stkj.common.rx.DefaultDisposeObserver;
 import com.stkj.common.rx.DefaultObserver;
@@ -129,38 +126,7 @@ public class NumberConsumerFragment extends BasePayHelperFragment {
     }
 
     private void refreshConsumerLay(ModifyBalanceResult modifyBalanceResult) {
-        FacePassHelper facePassHelper = mActivity.getWeakRefHolder(FacePassHelper.class);
-        facePassHelper.searchFacePassByCardNumber(modifyBalanceResult.getCustomerNo(), new FacePassHelper.OnHandleCardNumberListener() {
-            @Override
-            public void onHandleLocalCardNumber(String cardNumber, FacePassPeopleInfo facePassPeopleInfo) {
-                delayShowNoConsumerLayout();
-                tvNoConsumer.setVisibility(View.GONE);
-                tvAmount.setVisibility(View.VISIBLE);
-                GlideApp.with(NumberConsumerFragment.this).load(facePassPeopleInfo.getImgData()).circleCrop().placeholder(R.mipmap.icon_welcome_consumer).into(ivDefaultFace);
-                tvAmount.setText("¥ " + modifyBalanceResult.getConsumption_Mone());
-                if (TextUtils.isEmpty(modifyBalanceResult.getBill_count())) {
-                    tvBillCount.setVisibility(View.GONE);
-                } else {
-                    tvBillCount.setVisibility(View.VISIBLE);
-                    SpanUtils.with(tvBillCount).append("(今日已消费").append(modifyBalanceResult.getBill_count()).setForegroundColor(mResources.getColor(R.color.color_0171F8)).append("次)").create();
-                }
-            }
 
-            @Override
-            public void onHandleLocalCardNumberError(String cardNumber) {
-                delayShowNoConsumerLayout();
-                tvNoConsumer.setVisibility(View.GONE);
-                tvAmount.setVisibility(View.VISIBLE);
-                ivDefaultFace.setImageResource(R.mipmap.icon_welcome_consumer);
-                tvAmount.setText("¥ " + modifyBalanceResult.getConsumption_Mone());
-                if (TextUtils.isEmpty(modifyBalanceResult.getBill_count())) {
-                    tvBillCount.setVisibility(View.GONE);
-                } else {
-                    tvBillCount.setVisibility(View.VISIBLE);
-                    SpanUtils.with(tvBillCount).append("(今日已消费").append(modifyBalanceResult.getBill_count()).setForegroundColor(mResources.getColor(R.color.color_0171F8)).append("次)").create();
-                }
-            }
-        });
     }
 
     private DefaultDisposeObserver<Long> delayShowNoConsumerObserver;

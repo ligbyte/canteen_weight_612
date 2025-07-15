@@ -2,7 +2,6 @@ package com.stkj.cashier.pay.ui.fragment;
 
 import android.graphics.Rect;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,16 +19,13 @@ import com.stkj.cashier.pay.data.PayConstants;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.CanteenCurrentTimeInfo;
 import com.stkj.cashier.pay.model.ConsumerSuccessEvent;
-import com.stkj.cashier.pay.model.RefreshConsumerNumberModeEvent;
 import com.stkj.cashier.pay.model.RefreshConsumerTakeModeEvent;
 import com.stkj.cashier.pay.model.TakeMealListItem;
 import com.stkj.cashier.pay.model.TakeMealListResult;
 import com.stkj.cashier.pay.service.PayService;
 import com.stkj.cashier.pay.ui.adapter.TakeMealViewHolder;
 import com.stkj.cashier.setting.data.PaymentSettingMMKV;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.net.retrofit.RetrofitManager;
 import com.stkj.common.rx.AutoDisposeUtils;
@@ -145,7 +141,6 @@ public class TakeMealConsumerFragment extends IdentityVerificationFragment imple
     }
 
     private void goToAuthGetMealOrder(String extraTips) {
-        CBGFacePassHandlerHelper.imageCache = null;
         ConsumerManager.INSTANCE.resetFaceConsumerLayout();
         ConsumerManager.INSTANCE.setConsumerTakeMealWay();
         ConsumerManager.INSTANCE.setFacePassConfirmListener(this);
@@ -249,22 +244,6 @@ public class TakeMealConsumerFragment extends IdentityVerificationFragment imple
 
             try {
                 MainApplication.createOrderNumber = takeMealListResult.getData().get(0).getOrderNumber();
-                if (MainApplication.isNeedCache) {
-                    MainApplication.isNeedCache = false;
-                    Schedulers.io().scheduleDirect(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                if (CBGFacePassHandlerHelper.imageCache != null) {
-                                    FileUtils.saveImageCache(CBGFacePassHandlerHelper.imageCache, MainApplication.createOrderNumber);
-                                }
-
-                            } catch (Throwable e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
                 MainApplication.isNeedCache = false;
 
             } catch (Exception e) {
@@ -447,18 +426,7 @@ public class TakeMealConsumerFragment extends IdentityVerificationFragment imple
 
     @Override
     public void onConfirmPhone(String phone) {
-        mActivity.getWeakRefHolder(FacePassHelper.class).searchFacePassByPhone(phone, new FacePassHelper.OnHandlePhoneListener() {
-            @Override
-            public void onHandleLocalPhone(String phone, FacePassPeopleInfo facePassPeopleInfo) {
-                ttsVoiceAndConsumerTips("识别成功,正在获取订单");
-                ConsumerManager.INSTANCE.setConsumerConfirmFaceInfo(facePassPeopleInfo, false, PayConstants.PAY_TYPE_FACE);
-            }
 
-            @Override
-            public void onHandleLocalPhoneError(String phone) {
-                delayToGetMealOrder("未查询到订单");
-            }
-        });
     }
 
     @Override

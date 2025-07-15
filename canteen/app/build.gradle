@@ -9,8 +9,6 @@ task initCurrentFlavor(dependsOn: sourceSets) {
     println("当前构建的设备为 taskRequest： " + taskRequest)
     if (taskRequest.contains("vz_k58_youxin_2mipi")) {
         currentFlavor = "vz_k58_youxin_2mipi"
-    } else if  (taskRequest.contains("telpo_c50a")) {
-            currentFlavor = "telpo_c50a"
     }
     println("当前构建的设备为： " + currentFlavor)
 }
@@ -71,14 +69,7 @@ android {
         }
 
 
-        telpo_c50a {
-            keyAlias 'telpo'
-            keyPassword '86337898'
-            storeFile file('../../telpo_c50a/platform_c50a.jks')
-            storePassword '86337898'
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
+
         vz_k58_youxin_2mipi {
             keyAlias 'platform'
             keyPassword 'android'
@@ -117,15 +108,7 @@ android {
             signingConfig signingConfigs.defaultDevice
         }
 
-        telpo_c50a {
-            dimension "device"
-            buildConfigField('String', 'deviceInterface', '\"com.stkj.device.telpo_c50a.DeviceImpl\"')
-            buildConfigField('String', 'deviceType', '\"cashier_telpo_c50a\"')
-            manifestPlaceholders = [
-                    shareUserId: "android.uid.system"
-            ]
-            signingConfig signingConfigs.telpo_c50a
-        }
+
         vz_k58_youxin_2mipi {
             dimension "device"
             buildConfigField('String', 'deviceInterface', '\"com.stkj.device.vz_k58_youxin_2mipi.DeviceImpl\"')
@@ -133,7 +116,7 @@ android {
             manifestPlaceholders = [
                     shareUserId: "android.uid.system"
             ]
-            signingConfig signingConfigs.telpo_c50a
+            signingConfig signingConfigs.vz_k58_youxin_2mipi
         }
     }
 
@@ -167,13 +150,9 @@ dependencies {
     api project(path: ':common')
     //硬件设备接口(不同设备实现该模块)
     api project(path: ':deviceinterface')
-    //旷视人脸识别
-    implementation project(path: ':cbgfacefass')
 
     //不同设备不同实现
-    if ("telpo_c50a" == currentFlavor) {
-        implementation project(path: ':telpo_c50a')
-    } else if ("vz_k58_youxin_2mipi" == currentFlavor) {
+    if ("vz_k58_youxin_2mipi" == currentFlavor) {
         implementation project(path: ':vz_k58_youxin_2mipi')
     }
 

@@ -12,8 +12,6 @@ import com.stkj.cashier.base.ui.widget.CommonSeekProgressBar;
 import com.stkj.cashier.base.utils.CommonDialogUtils;
 import com.stkj.cashier.setting.callback.FacePassSettingCallback;
 import com.stkj.cashier.setting.model.ResumeFacePassDetect;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
-import com.stkj.cbgfacepass.data.CBGFacePassConfigMMKV;
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.ui.fragment.BaseDialogFragment;
 import com.stkj.common.ui.fragment.BaseRecyclerFragment;
@@ -86,7 +84,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 boolean selected = !ivSwitchLiveness.isSelected();
                 ivSwitchLiveness.setSelected(selected);
-                CBGFacePassConfigMMKV.putLivenessEnabled(selected);
                 updateFacePassConfig();
             }
         });
@@ -109,7 +106,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
                                 public void onClick(CommonAlertDialogFragment alertDialogFragment) {
                                     boolean selected = !ivSwitchDualCamera.isSelected();
                                     ivSwitchLiveness.setSelected(selected);
-                                    CBGFacePassConfigMMKV.setOpenDualCamera(selected);
                                     DeviceManager.INSTANCE.getDeviceInterface().release();
                                     AndroidUtils.restartApp();
                                 }
@@ -117,15 +113,7 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
                             .show(mActivity);
                 }
             });
-            //如果开启双目检测 不需要活体开关
-            if (CBGFacePassConfigMMKV.isOpenDualCamera()) {
-                tvLiveness.setVisibility(View.GONE);
-                ivSwitchLiveness.setVisibility(View.GONE);
-                ivSwitchDualCamera.setSelected(true);
-            } else {
-                tvLiveness.setVisibility(View.VISIBLE);
-                ivSwitchLiveness.setVisibility(View.VISIBLE);
-            }
+
         } else {
             tvDualCamera.setVisibility(View.GONE);
             ivSwitchDualCamera.setVisibility(View.GONE);
@@ -136,7 +124,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 boolean selected = !ivSwitchOcclusionMode.isSelected();
                 ivSwitchOcclusionMode.setSelected(selected);
-                CBGFacePassConfigMMKV.putOcclusionMode(selected);
                 updateFacePassConfig();
             }
         });
@@ -146,7 +133,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 boolean selected = !ivSwitchGaThreshold.isSelected();
                 ivSwitchGaThreshold.setSelected(selected);
-                CBGFacePassConfigMMKV.putGaThresholdEnabled(selected);
                 updateFacePassConfig();
             }
         });
@@ -154,7 +140,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarSearchThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                CBGFacePassConfigMMKV.putSearchThreshold(progress);
                 updateFacePassConfig();
             }
         });
@@ -162,7 +147,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarGaThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                CBGFacePassConfigMMKV.putGaThreshold(progress);
                 updateFacePassConfig();
             }
         });
@@ -170,7 +154,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarLivenessThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                CBGFacePassConfigMMKV.putLivenessThreshold(progress);
                 updateFacePassConfig();
             }
         });
@@ -179,7 +162,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarPoseThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                CBGFacePassConfigMMKV.putPoseThreshold(progress);
                 updateFacePassConfig();
             }
         });
@@ -192,13 +174,11 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 unSelectAllFaceMinThreshold();
                 stvDetectMinThreshold50.setShapeSelect(true);
-                CBGFacePassConfigMMKV.putDetectFaceLevel(CBGFacePassConfigMMKV.DETECT_FACE_LEVEL50);
                 int cm50FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get50cmDetectFaceMinThreshold();
                 seekbarDetectFaceMinThreshold.setSeekProgress(cm50FaceMinThreshold);
                 //转换成旷视sdk的识别距离设置
                 int maxProgress = seekbarDetectFaceMinThreshold.getMaxProgress();
                 int cbgFaceMinThreshold = maxProgress - cm50FaceMinThreshold;
-                CBGFacePassConfigMMKV.putDetectFaceMinThreshold(cbgFaceMinThreshold);
                 updateFacePassConfig();
             }
         });
@@ -207,13 +187,11 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 unSelectAllFaceMinThreshold();
                 stvDetectMinThreshold80.setShapeSelect(true);
-                CBGFacePassConfigMMKV.putDetectFaceLevel(CBGFacePassConfigMMKV.DETECT_FACE_LEVEL80);
                 int cm80FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get80cmDetectFaceMinThreshold();
                 seekbarDetectFaceMinThreshold.setSeekProgress(cm80FaceMinThreshold);
                 //转换成旷视sdk的识别距离设置
                 int maxProgress = seekbarDetectFaceMinThreshold.getMaxProgress();
                 int cbgFaceMinThreshold = maxProgress - cm80FaceMinThreshold;
-                CBGFacePassConfigMMKV.putDetectFaceMinThreshold(cbgFaceMinThreshold);
                 updateFacePassConfig();
             }
         });
@@ -223,13 +201,11 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             public void onClick(View v) {
                 unSelectAllFaceMinThreshold();
                 stvDetectMinThreshold100.setShapeSelect(true);
-                CBGFacePassConfigMMKV.putDetectFaceLevel(CBGFacePassConfigMMKV.DETECT_FACE_LEVEL100);
                 int cm100FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get100cmDetectFaceMinThreshold();
                 seekbarDetectFaceMinThreshold.setSeekProgress(cm100FaceMinThreshold);
                 //转换成旷视sdk的识别距离设置
                 int maxProgress = seekbarDetectFaceMinThreshold.getMaxProgress();
                 int cbgFaceMinThreshold = maxProgress - cm100FaceMinThreshold;
-                CBGFacePassConfigMMKV.putDetectFaceMinThreshold(cbgFaceMinThreshold);
                 updateFacePassConfig();
             }
         });
@@ -239,11 +215,9 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
             @Override
             public void onProgressFinished(int progress) {
                 unSelectAllFaceMinThreshold();
-                CBGFacePassConfigMMKV.putDetectFaceLevel(0);
                 //转换成旷视sdk的识别距离设置
                 int maxProgress = seekbarDetectFaceMinThreshold.getMaxProgress();
                 int faceMinThreshold = maxProgress - progress;
-                CBGFacePassConfigMMKV.putDetectFaceMinThreshold(faceMinThreshold);
                 LogHelper.print("---seekbarFaceMinThreshold----new faceMinThreshold: " + faceMinThreshold);
                 updateFacePassConfig();
             }
@@ -253,7 +227,6 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarAddFaceMinThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                CBGFacePassConfigMMKV.putAddFaceMinThreshold(progress);
                 LogHelper.print("---seekbarFaceMinThreshold----new add faceMinThreshold: " + progress);
                 updateAddFacePassConfig();
                 showNeedUpdateFacePass();
@@ -264,62 +237,11 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
         seekbarResultSearchScoreThreshold.setSeekProgressListener(new CommonSeekProgressBar.OnCommonSeekProgressListener() {
             @Override
             public void onProgressFinished(int progress) {
-                //不能低于识别阈值
-                float searchThreshold = CBGFacePassConfigMMKV.getSearchThreshold();
-                if (progress < searchThreshold) {
-                    progress = (int) searchThreshold;
-                    seekbarResultSearchScoreThreshold.setSeekProgress(progress);
-                    CommonDialogUtils.showTipsDialog(mActivity, "识别结果分数不能低于当前识别阈值");
-                }
-                CBGFacePassConfigMMKV.putResultSearchScoreThreshold(progress);
-                LogHelper.print("---seekbarFaceMinThreshold----new resultSearchScoreThreshold: " + progress);
-                updateFacePassConfig();
+
             }
         });
 
-        ivSwitchLiveness.setSelected(CBGFacePassConfigMMKV.getLivenessEnabled());
-        ivSwitchOcclusionMode.setSelected(CBGFacePassConfigMMKV.getOcclusionMode());
-        ivSwitchGaThreshold.setSelected(CBGFacePassConfigMMKV.getGaThresholdEnabled());
-        seekbarSearchThreshold.setSeekProgress((int) CBGFacePassConfigMMKV.getSearchThreshold());
-        seekbarGaThreshold.setSeekProgress((int) CBGFacePassConfigMMKV.getGaThreshold());
-        seekbarLivenessThreshold.setSeekProgress((int) CBGFacePassConfigMMKV.getLivenessThreshold());
-        //识别距离阈值
-        int faceMinThresholdLevel = CBGFacePassConfigMMKV.getDetectFaceLevel();
-        unSelectAllFaceMinThreshold();
-        if (faceMinThresholdLevel == CBGFacePassConfigMMKV.DETECT_FACE_LEVEL50) {
-            stvDetectMinThreshold50.setShapeSelect(true);
-            int cm50FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get50cmDetectFaceMinThreshold();
-            seekbarDetectFaceMinThreshold.setSeekProgress(cm50FaceMinThreshold);
-        } else if (faceMinThresholdLevel == CBGFacePassConfigMMKV.DETECT_FACE_LEVEL80) {
-            stvDetectMinThreshold80.setShapeSelect(true);
-            int cm80FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get80cmDetectFaceMinThreshold();
-            seekbarDetectFaceMinThreshold.setSeekProgress(cm80FaceMinThreshold);
-        } else if (faceMinThresholdLevel == CBGFacePassConfigMMKV.DETECT_FACE_LEVEL100) {
-            stvDetectMinThreshold100.setShapeSelect(true);
-            int cm100FaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().get100cmDetectFaceMinThreshold();
-            seekbarDetectFaceMinThreshold.setSeekProgress(cm100FaceMinThreshold);
-        } else {
-            //为了本地调节方便，进行反向设置识别阈值 (512 - cbgFaceMinThreshold)
-            int maxProgress = seekbarDetectFaceMinThreshold.getMaxProgress();
-            int seekBarFaceMinThreshold = maxProgress - CBGFacePassConfigMMKV.getDetectFaceMinThreshold();
-            seekbarDetectFaceMinThreshold.setSeekProgress(seekBarFaceMinThreshold);
-        }
-        if (BuildConfig.DEBUG) {
-            seekbarDetectFaceMinThreshold.setVisibility(View.VISIBLE);
-            tvDetectFaceMinThresholdTips.setVisibility(View.VISIBLE);
-        } else {
-            seekbarDetectFaceMinThreshold.setVisibility(View.GONE);
-            tvDetectFaceMinThresholdTips.setVisibility(View.GONE);
-        }
-        //人脸入库阈值
-        int addFaceMinThreshold = CBGFacePassConfigMMKV.getAddFaceMinThreshold();
-        seekbarAddFaceMinThreshold.setSeekProgress(addFaceMinThreshold);
-        //人脸角度阈值
-        int poseThreshold = CBGFacePassConfigMMKV.getPoseThreshold();
-        seekbarPoseThreshold.setSeekProgress(poseThreshold);
-        //人脸识别分数
-        int resultSearchScoreThreshold = CBGFacePassConfigMMKV.getResultSearchScoreThreshold();
-        seekbarResultSearchScoreThreshold.setSeekProgress(resultSearchScoreThreshold);
+
     }
 
     /**
@@ -355,20 +277,14 @@ public class FacePassSettingBindAlertFragment extends BaseDialogFragment {
      * 更新人脸识别设置
      */
     private void updateFacePassConfig() {
-        CBGFacePassHandlerHelper facePassHandlerHelper = mActivity.getWeakRefHolder(CBGFacePassHandlerHelper.class);
-        boolean supportDualCamera = DeviceManager.INSTANCE.getDeviceInterface().isSupportDualCamera();
-        facePassHandlerHelper.setCBGFacePassConfig(CBGFacePassConfigMMKV.getFacePassConfig(supportDualCamera));
-        AppToast.toastMsg("设置已生效");
+
     }
 
     /**
      * 更新人脸入库设置
      */
     private void updateAddFacePassConfig() {
-        CBGFacePassHandlerHelper facePassHandlerHelper = mActivity.getWeakRefHolder(CBGFacePassHandlerHelper.class);
-        boolean supportDualCamera = DeviceManager.INSTANCE.getDeviceInterface().isSupportDualCamera();
-        facePassHandlerHelper.setCBGAddFacePassConfig(CBGFacePassConfigMMKV.getFacePassConfig(supportDualCamera));
-        AppToast.toastMsg("设置已生效");
+
     }
 
 

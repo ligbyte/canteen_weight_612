@@ -25,11 +25,7 @@ rootProject.name = "canteen"
 include ':app'
 include ':common'
 project(':common').projectDir = new File('../common')
-include ':cbgfacefass'
-project(':cbgfacefass').projectDir = new File('../cbgfacefass')
 include ':deviceinterface'
 project(':deviceinterface').projectDir = new File('../deviceinterface')
-include ':telpo_c50a'
-project(':telpo_c50a').projectDir = new File('../telpo_c50a')
 include ':vz_k58_youxin_2mipi'
 project(':vz_k58_youxin_2mipi').projectDir = new File('../vz_k58_youxin_2mipi')

@@ -55,10 +55,6 @@ import com.stkj.cashier.pay.model.TTSSpeakEvent;
 import com.stkj.cashier.setting.data.ServerSettingMMKV;
 import com.stkj.cashier.setting.helper.AppUpgradeHelper;
 import com.stkj.cashier.setting.helper.StoreInfoHelper;
-import com.stkj.cbgfacepass.CBGFacePassHandlerHelper;
-import com.stkj.cbgfacepass.data.CBGFacePassConfigMMKV;
-import com.stkj.cbgfacepass.model.CBGFacePassConfig;
-import com.stkj.cbgfacepass.permission.CBGPermissionRequest;
 import com.stkj.common.core.AppManager;
 import com.stkj.common.core.CountDownHelper;
 import com.stkj.common.log.LogHelper;
@@ -245,56 +241,6 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
      * 初始化app
      */
     private void initApp() {
-        //初始化人脸识别
-        CBGFacePassHandlerHelper facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper.class);
-        facePassHelper.setOnInitFacePassListener(new CBGFacePassHandlerHelper.OnInitFacePassListener() {
-            @Override
-            public void onInitSuccess() {
-                hideLoadingDialog();
-                initData();
-            }
-
-            @Override
-            public void onInitError(String msg) {
-                hideLoadingDialog();
-                CommonDialogUtils.showTipsBindDialog(MainBindActivity.this, "提示",msg, "知道了", new CommonBindSignleAlertDialogFragment.OnSweetClickListener() {
-                    @Override
-                    public void onClick(CommonBindSignleAlertDialogFragment alertDialogFragment) {
-                        initData();
-                    }
-                });
-            }
-        });
-        AppPermissionHelper.with(this)
-                .requestPermission(new CBGPermissionRequest(), new PermissionCallback() {
-                    @Override
-                    public void onGranted() {
-                        showLoadingDialog();
-                        //设备识别距离阈值
-                        int defaultFaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().getDefaultDetectFaceMinThreshold();
-                        CBGFacePassConfigMMKV.setDefDetectFaceMinThreshold(defaultFaceMinThreshold);
-                        //设备人脸入库阈值
-                        int defaultAddFaceMinThreshold = DeviceManager.INSTANCE.getDeviceInterface().getDefaultAddFaceMinThreshold();
-                        CBGFacePassConfigMMKV.setDefAddFaceMinThreshold(defaultAddFaceMinThreshold);
-                        //设备人脸角度阈值
-                        int defaultPoseThreshold = DeviceManager.INSTANCE.getDeviceInterface().getDefaultPoseThreshold();
-                        CBGFacePassConfigMMKV.setDefPoseThreshold(defaultPoseThreshold);
-                        boolean supportDualCamera = DeviceManager.INSTANCE.getDeviceInterface().isSupportDualCamera();
-                        CBGFacePassConfig facePassConfig = CBGFacePassConfigMMKV.getFacePassConfig(supportDualCamera);
-                        CBGFacePassHandlerHelper facePassHelper = getWeakRefHolder(CBGFacePassHandlerHelper.class);
-                        facePassHelper.initAndAuthSdk(facePassConfig);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        CommonDialogUtils.showTipsDialog(MainBindActivity.this, "人脸识别功能请求系统权限失败", "知道了", new CommonAlertDialogFragment.OnSweetClickListener() {
-                            @Override
-                            public void onClick(CommonAlertDialogFragment alertDialogFragment) {
-                                initData();
-                            }
-                        });
-                    }
-                });
 
 //        vp2Content.setVisibility(View.INVISIBLE);
         flScreenWelcom.setVisibility(View.VISIBLE);
@@ -364,43 +310,7 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
 //                screenProtectHelper.startScreenProtect();
 //            }
 //        });
-        findViewById(R.id.iv_logo).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String buildInfo = "编译时间: " + BuildConfig.BUILD_TIME + "\n"
-                        + "编译id: " + BuildConfig.GIT_SHA + "\n"
-                        + "编译类型: " + (BuildConfig.DEBUG ? "测试版" : "正式版") + "\n"
-                        + "版本号: " + BuildConfig.VERSION_NAME + "\n"
-                        + "设备名称: " + DeviceManager.INSTANCE.getDeviceInterface().getDeviceName() + "\n"
-                        + "人脸授权: " + (CBGFacePassHandlerHelper.hasFacePassSDKAuth() ? "已授权" : "未授权");
-                CommonAlertDialogFragment commonAlertDialogFragment = CommonAlertDialogFragment.build()
-                        .setAlertTitleTxt("版本信息")
-                        .setAlertContentTxt(buildInfo);
-                if (BuildConfig.DEBUG) {
-                    commonAlertDialogFragment.setLeftNavTxt("切换服务器")
-                            .setLeftNavClickListener(new CommonAlertDialogFragment.OnSweetClickListener() {
-                                @Override
-                                public void onClick(CommonAlertDialogFragment alertDialogFragment) {
-                                    showInputServerAddressDialog();
-                                }
-                            })
-                            .setRightNavTxt("确定")
-                            .show(MainBindActivity.this);
-                } else {
-                    commonAlertDialogFragment.setLeftNavTxt("关闭App")
-                            .setLeftNavClickListener(new CommonAlertDialogFragment.OnSweetClickListener() {
-                                @Override
-                                public void onClick(CommonAlertDialogFragment alertDialogFragment) {
-                                    DeviceManager.INSTANCE.getDeviceInterface().release();
-                                    AndroidUtils.killApp(MainBindActivity.this);
-                                }
-                            })
-                            .setRightNavTxt("确定")
-                            .show(MainBindActivity.this);
-                }
-                return true;
-            }
-        });
+
         View rootPlaceHolderView = findViewById(R.id.root_view_placeholder);
         rootPlaceHolderView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -690,24 +600,7 @@ public class MainBindActivity extends BaseActivity implements AppNetCallback, Co
 
     @Override
     public void onCreateFacePreviewView(SurfaceView previewView, SurfaceView irPreview) {
-        cbgCameraHelper = getWeakRefHolder(CBGCameraHelper.class);
-        boolean isFaceDualCamera = DeviceManager.INSTANCE.getDeviceInterface().isSupportDualCamera() &&
-                CBGFacePassConfigMMKV.isOpenDualCamera();
-        cbgCameraHelper.setPreviewView(previewView, irPreview, Build.MODEL.equals("rk3568_h09") ? true : isFaceDualCamera);
-        //cbgCameraHelper.setPreviewView(previewView, irPreview, true);
-        //异步初始化相机模块
-//        Schedulers.io().scheduleDirect(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//
-//                    //cbgCameraHelper.prepareFacePassDetect();
-//
-//                } catch (Throwable e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+
     }
 
     @Override

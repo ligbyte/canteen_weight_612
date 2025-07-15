@@ -6,10 +6,8 @@ import com.stkj.cashier.base.device.DeviceManager;
 import com.stkj.cashier.base.net.AppNetManager;
 import com.stkj.cashier.base.ui.dialog.BindingPwdAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonAlertDialogFragment;
-import com.stkj.cashier.base.ui.dialog.CommonBindAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.cashier.login.helper.LoginHelper;
-import com.stkj.cashier.setting.helper.FacePassHelper;
 import com.stkj.common.core.ActivityHolderFactory;
 import com.stkj.common.utils.AndroidUtils;
 
@@ -72,27 +70,7 @@ public class CommonDialogUtils {
                         AppNetManager.INSTANCE.clearAppNetCache();
                         //清理用户登录信息
                         LoginHelper.INSTANCE.clearUserInfo();
-                        //清理本地人脸数据库
-                        FacePassHelper facePassHelper = ActivityHolderFactory.get(FacePassHelper.class, context);
-                        if (facePassHelper != null) {
-                            facePassHelper.deleteAllFaceGroup(new FacePassHelper.OnDeleteAllFaceListener() {
-                                @Override
-                                public void onDeleteAllFace() {
-                                    alertDialogFragment.setAlertContentTxt("清理完成,App将自动重启(若失败,请手动重启App)")
-                                            .setLeftNavTxt("重启中")
-                                            .setRightNavTxt("");
-                                    AndroidUtils.restartApp();
-                                }
 
-                                @Override
-                                public void onDeleteAllFaceError(String msg) {
-                                    alertDialogFragment.setAlertContentTxt("清理完成,App将自动重启(若失败,请手动重启App)")
-                                            .setLeftNavTxt("重启中")
-                                            .setRightNavTxt("");
-                                    AndroidUtils.restartApp();
-                                }
-                            });
-                        }
                     }
                 })
                 .setRightNavTxt("取消")
