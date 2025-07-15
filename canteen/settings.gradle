@@ -31,5 +31,5 @@ include ':deviceinterface'
 project(':deviceinterface').projectDir = new File('../deviceinterface')
 include ':telpo_c50a'
 project(':telpo_c50a').projectDir = new File('../telpo_c50a')
-include ':vz_k58_youxin_edp'
-project(':vz_k58_youxin_edp').projectDir = new File('../vz_k58_youxin_edp')
+include ':vz_k58_youxin_2mipi'
+project(':vz_k58_youxin_2mipi').projectDir = new File('../vz_k58_youxin_2mipi')

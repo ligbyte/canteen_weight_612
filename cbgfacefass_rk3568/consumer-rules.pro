@@ -1,2 +1,0 @@
--keep class com.stkj.cbgfacepass.model.**{*;}
--keep class * extends com.stkj.common.core.ActivityWeakRefHolder{*;}

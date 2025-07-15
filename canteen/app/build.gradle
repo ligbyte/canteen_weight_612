@@ -7,8 +7,8 @@ def currentFlavor = "defaultDevice"
 task initCurrentFlavor(dependsOn: sourceSets) {
     def taskRequest = gradle.getStartParameter().getTaskRequests().toString().toLowerCase()
     println("当前构建的设备为 taskRequest： " + taskRequest)
-    if (taskRequest.contains("vz_k58_youxin_edp")) {
-        currentFlavor = "vz_k58_youxin_edp"
+    if (taskRequest.contains("vz_k58_youxin_2mipi")) {
+        currentFlavor = "vz_k58_youxin_2mipi"
     } else if  (taskRequest.contains("telpo_c50a")) {
             currentFlavor = "telpo_c50a"
     }
@@ -79,10 +79,10 @@ android {
             v1SigningEnabled true
             v2SigningEnabled true
         }
-        vz_k58_youxin_edp {
+        vz_k58_youxin_2mipi {
             keyAlias 'platform'
             keyPassword 'android'
-            storeFile file('../../vz_k58_youxin_edp/platform.jks')
+            storeFile file('../../vz_k58_youxin_2mipi/platform.jks')
             storePassword 'android'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -126,10 +126,10 @@ android {
             ]
             signingConfig signingConfigs.telpo_c50a
         }
-        vz_k58_youxin_edp {
+        vz_k58_youxin_2mipi {
             dimension "device"
-            buildConfigField('String', 'deviceInterface', '\"com.stkj.device.vz_k58_youxin_edp.DeviceImpl\"')
-            buildConfigField('String', 'deviceType', '\"cashier_vz_k58_youxin_edp\"')
+            buildConfigField('String', 'deviceInterface', '\"com.stkj.device.vz_k58_youxin_2mipi.DeviceImpl\"')
+            buildConfigField('String', 'deviceType', '\"cashier_vz_k58_youxin_2mipi\"')
             manifestPlaceholders = [
                     shareUserId: "android.uid.system"
             ]
@@ -173,8 +173,8 @@ dependencies {
     //不同设备不同实现
     if ("telpo_c50a" == currentFlavor) {
         implementation project(path: ':telpo_c50a')
-    } else if ("vz_k58_youxin_edp" == currentFlavor) {
-        implementation project(path: ':vz_k58_youxin_edp')
+    } else if ("vz_k58_youxin_2mipi" == currentFlavor) {
+        implementation project(path: ':vz_k58_youxin_2mipi')
     }
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
