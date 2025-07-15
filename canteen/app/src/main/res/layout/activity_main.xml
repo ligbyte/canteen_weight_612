@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/main_background"
+    tools:context=".home.ui.activity.MainBindActivity">
+
+    <View
+        android:id="@+id/scan_holder_view"
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="@dimen/dp_1"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <!-- 左侧整体布局 -->
+    <LinearLayout
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- 顶部logo -->
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_15"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_9"
+            android:src="@mipmap/icon_canteen_label" />
+
+        <!-- 侧边栏 -->
+        <com.stkj.cashier.home.ui.widget.HomeTabLayout
+            android:id="@+id/htl_left_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_19"
+            android:background="@color/white" />
+    </LinearLayout>
+
+    <!-- 内容区域 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_11"
+        android:paddingRight="@dimen/dp_11"
+        android:paddingBottom="@dimen/dp_11" />
+
+
+
+    <!--登录占位布局-->
+    <FrameLayout
+        android:id="@+id/fl_login_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 全局占位 -->
+    <View
+        android:id="@+id/root_view_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 欢迎界面 -->
+    <FrameLayout
+        android:id="@+id/fl_screen_welcom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/main_background"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/main_welcome" />
+
+    </FrameLayout>
+
+
+    <!-- 绑定成功界面 -->
+    <FrameLayout
+        android:id="@+id/fl_screen_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/main_background"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_bind_success" />
+
+            <TextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_8"
+                android:drawablePadding="3dp"
+                android:text="餐盘码:  0202112402"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_70"
+                android:layout_marginTop="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:layout_gravity="center_horizontal"
+                android:background="@mipmap/bg_bind_success"
+                android:orientation="vertical">
+
+                <com.stkj.common.ui.widget.common.CircleImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_welcome_consumer"
+                    android:layout_marginTop="@dimen/dp_15"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_icon"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="normal"
+                    android:textSize="@dimen/sp_12"
+                    android:text="用户姓名：王小明"
+                    android:gravity="center_vertical"/>
+
+
+                <TextView
+                    android:id="@+id/tv_user_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    android:text="餐卡余额：560.55元"
+                    android:gravity="center_vertical"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tv_back_home"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_27"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15"
+                android:text="返回首页(3s)"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_20"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:background="@drawable/btn_gradient_bottom_to_top"/>
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+    <!-- 主布局布局占位(可以将弹窗做到这里不用dialogFragment,节省内存) -->
+    <FrameLayout
+        android:id="@+id/fl_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.stkj.cashier.home.ui.widget.BindingHomeTitleLayout
+        android:id="@+id/htl_consumer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:htl_consume_lay_res="1"
+        app:isLightMode="true" />
+</FrameLayout>

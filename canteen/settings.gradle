@@ -1,0 +1,35 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
+        maven { url "https://jitpack.io" }
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+rootProject.name = "canteen"
+include ':app'
+include ':common'
+project(':common').projectDir = new File('../common')
+include ':cbgfacefass'
+project(':cbgfacefass').projectDir = new File('../cbgfacefass')
+include ':deviceinterface'
+project(':deviceinterface').projectDir = new File('../deviceinterface')
+include ':telpo_c50a'
+project(':telpo_c50a').projectDir = new File('../telpo_c50a')
+include ':vz_k58_youxin_edp'
+project(':vz_k58_youxin_edp').projectDir = new File('../vz_k58_youxin_edp')
