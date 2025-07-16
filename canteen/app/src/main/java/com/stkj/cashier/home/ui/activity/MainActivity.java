@@ -9,7 +9,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.hardware.usb.UsbDevice;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -35,6 +39,7 @@ import com.stkj.cashier.base.net.AppNetManager;
 import com.stkj.cashier.base.tts.TTSVoiceHelper;
 import com.stkj.cashier.base.ui.dialog.CommonAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonInputDialogFragment;
+import com.stkj.cashier.base.utils.PriceUtils;
 import com.stkj.cashier.consumer.ConsumerManager;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
 import com.stkj.cashier.home.callback.OnGetStoreInfoListener;
@@ -94,6 +99,12 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private View scanHolderView;
     private ViewPager2 vp2Content;
     private FrameLayout flScreenWelcom;
+    private TextView tv_food_name;
+    private TextView tv_price_flag;
+    private TextView tv_price;
+    private TextView tv_price_unit;
+    private TextView tv_account_info;
+    private FrameLayout fl_screen_success;
     private HomeTabPageAdapter homeTabPageAdapter;
     private static BindingHomeTitleLayout htlConsumer;
     //是否需要重新恢复消费者页面
@@ -216,7 +227,6 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (needRestartConsumer) {
             needRestartConsumer = false;
-            ConsumerManager.INSTANCE.showConsumer(this,homeTabPageAdapter.getTabBindHomeFragment() , this);
         }
 //        EventBus.getDefault().post(new FindViewResumeEvent());
 //        try {
@@ -260,7 +270,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                         public void run() {
                             openYxDeviceSDK();
                         }
-                    },1 * 1000);
+                    },5 * 1000);
                 }
             });
         }catch (Exception e){
@@ -287,54 +297,43 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         scanHolderView = findViewById(R.id.scan_holder_view);
         htlConsumer = (BindingHomeTitleLayout) findViewById(R.id.htl_consumer);
         flScreenWelcom = findViewById(R.id.fl_screen_welcom);
-//        flScreenProtect.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                flScreenProtect.setVisibility(View.GONE);
-//                ScreenProtectHelper screenProtectHelper = getWeakRefHolder(ScreenProtectHelper.class);
-//                screenProtectHelper.startScreenProtect();
-//            }
-//        });
-
-        View rootPlaceHolderView = findViewById(R.id.root_view_placeholder);
-        rootPlaceHolderView.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        //获取占位view高度
-                        int placeViewHeight = rootPlaceHolderView.getHeight();
-                        if (placeViewHeight <= 0) {
-                            return;
-                        }
-                        Rect rect = new Rect();
-                        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-                        //获取被遮挡高度
-                        int keyBoardHeight = placeViewHeight - rect.height();
-                        LogHelper.print("keyboard onGlobalLayout: placeViewHeight = " + placeViewHeight + " rect.height = " + rect.height());
-                        //软键盘显示或者隐藏
-                        boolean needTouchHideKeyboard = keyBoardHeight >= 200;
-                        if (needTouchHideKeyboard) {
-                            isSoftKeyboardShow = true;
-                            LogHelper.print("show keyboard--offset = " + keyBoardHeight);
-                            rootPlaceHolderView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    KeyBoardUtils.hideSoftKeyboard(MainActivity.this, rootPlaceHolderView);
-                                    rootPlaceHolderView.setOnClickListener(null);
-                                    rootPlaceHolderView.setClickable(false);
-                                    clearMainFocus();
-                                }
-                            });
-                        } else {
-                            isSoftKeyboardShow = false;
-                            LogHelper.print("hide keyboard--offset = " + keyBoardHeight);
-                            rootPlaceHolderView.setOnClickListener(null);
-                            rootPlaceHolderView.setClickable(false);
-                        }
-                    }
-                });
+        tv_food_name = findViewById(R.id.tv_food_name);
+        tv_price_flag = findViewById(R.id.tv_price_flag);
+        tv_price = findViewById(R.id.tv_price);
+        tv_price_unit = findViewById(R.id.tv_price_unit);
+        fl_screen_success = findViewById(R.id.fl_screen_success);
+        tv_account_info =  findViewById(R.id.tv_account_info);
+        setTextViewStyles(tv_account_info);
         vp2Content = findViewById(R.id.vp2_content);
+        initTvDefault();
+        tv_food_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tv_food_name.getText().toString().equals("暂未选择菜品")){
+                    initTvUnit();
+                }else {
+                    fl_screen_success.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
+
+    private void initTvDefault() {
+        tv_food_name.setText("暂未选择菜品");
+        tv_price.setText("--");
+        tv_food_name.setTextColor(Color.parseColor("#FF2C2C"));
+        tv_price_flag.setVisibility(View.GONE);
+        tv_price_unit.setVisibility(View.GONE);
+    }
+
+    private void initTvUnit() {
+        tv_food_name.setText("小炒黄牛肉");
+        tv_price.setText(PriceUtils.formatPrice(99));
+        tv_food_name.setTextColor(Color.parseColor("#FFFFFF"));
+        tv_price_flag.setVisibility(View.VISIBLE);
+        tv_price_unit.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -446,31 +445,13 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initHomeContent() {
         //添加左侧tab列表
         List<HomeTabInfo<HomeMenuList.Menu>> homeTabInfoList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             if (i == 0) {
-                //绑盘
-                HomeTabInfo<HomeMenuList.Menu> paymentTabInfo = new HomeTabInfo<>();
-                paymentTabInfo.setExtraInfo(new HomeMenuList.Menu(HomeTabPageAdapter.TAB_BINDING_TAG, "绑盘"));
-                homeTabInfoList.add(paymentTabInfo);
-
-            } else if (i == 1) {
                 //设置
                 HomeTabInfo<HomeMenuList.Menu> paymentTabInfo = new HomeTabInfo<>();
                 paymentTabInfo.setExtraInfo(new HomeMenuList.Menu(HomeTabPageAdapter.TAB_SETTING_TAG, "设置"));
                 homeTabInfoList.add(paymentTabInfo);
 
-            } else if (i == 2) {
-//                for (HomeMenuList.Menu menu : menuList) {
-//                    if (TextUtils.equals(HomeTabPageAdapter.TAB_COUPON_TAG, menu.getPath())) {
-//                        //优惠
-//                        HomeTabInfo<HomeMenuList.Menu> discountsTabInfo = new HomeTabInfo<>();
-//                        discountsTabInfo.setExtraInfo(menu);
-//                        discountsTabInfo.setSelectRes(R.mipmap.icon_coupon);
-//                        discountsTabInfo.setUnSelectRes(R.mipmap.icon_coupon);
-//                        homeTabInfoList.add(discountsTabInfo);
-//                        break;
-//                    }
-//                }
             } else {
 
             }
@@ -583,6 +564,21 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         clearWeakRefHolder(CBGCameraHelper.class);
     }
 
+
+    /**
+     * 字体颜色渐变
+     * @param textView
+     */
+    private void setTextViewStyles(TextView textView) {
+        float x1=textView.getPaint().measureText(textView.getText().toString());
+        float y1=textView.getPaint().getTextSize();
+        int c1=Color.parseColor("#307EFE");
+        int c2= Color.parseColor("#70DDFF");
+        LinearGradient topToBottomLG = new LinearGradient(0, 0, 0, y1,c1, c2, Shader.TileMode.CLAMP);
+        textView.getPaint().setShader(topToBottomLG);
+        textView.invalidate();
+    }
+
     @Override
     public void onCreateTitleLayout(HomeTitleLayout homeTitleLayout) {
         //系统事件监听
@@ -625,13 +621,16 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     openYxDeviceSDK();
                 }
             },1 * 1000);
+            vp2Content.setVisibility(View.GONE);
+            fl_screen_success.setVisibility(View.GONE);
         }else {
             if (yxDevicePortCtrl != null && yxDevicePortCtrl.isOpen()){
                 yxDevicePortCtrl.closeDevice();
             }
             htlConsumer.setVisibility(View.GONE);
             flScreenWelcom.setVisibility(View.GONE);
-//            vp2Content.setVisibility(View.VISIBLE);
+            fl_screen_success.setVisibility(View.GONE);
+            vp2Content.setVisibility(View.VISIBLE);
         }
     }
 
@@ -719,9 +718,9 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                         flScreenWelcom.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ConsumerManager.INSTANCE.showConsumer(MainActivity.this,homeTabPageAdapter.getTabBindHomeFragment() , MainActivity.this);
-                                homeTabPageAdapter.getTabBindHomeFragment().findViews();
-                                homeTabPageAdapter.getTabBindHomeFragment().onRefreshBindModeEvent(new RefreshBindModeEvent(0));
+//                                ConsumerManager.INSTANCE.showConsumer(MainActivity.this,homeTabPageAdapter.getTabBindHomeFragment() , MainActivity.this);
+//                                homeTabPageAdapter.getTabBindHomeFragment().findViews();
+//                                homeTabPageAdapter.getTabBindHomeFragment().onRefreshBindModeEvent(new RefreshBindModeEvent(0));
                             }
                         },100);
                     }

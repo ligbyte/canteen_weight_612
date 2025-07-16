@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_90"
+    android:layout_margin="@dimen/dp_5"
     android:background="@mipmap/shape_settings_item_bg">
 
     <LinearLayout
@@ -12,8 +13,8 @@
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_45"
             android:layout_gravity="center_horizontal"
             android:src="@mipmap/ic_bind_settings_face"/>
 
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_9"
+            android:textSize="@dimen/sp_12"
             android:textStyle="normal"/>
 
     </LinearLayout>

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.stkj.cashier.base.callback.OnConsumerConfirmListener;
 import com.stkj.cashier.consumer.callback.ConsumerController;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
-import com.stkj.cashier.machine.bind.TabWeightHomeFragment;
+import com.stkj.cashier.machine.fragment.TabWeightHomeFragment;
 import com.stkj.cashier.setting.model.FacePassPeopleInfo;
 
 /**

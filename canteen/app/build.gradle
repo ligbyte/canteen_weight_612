@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.greenrobot.greendao'
+    id 'org.jetbrains.kotlin.android'
 }
 //当前编译的flavor
 def currentFlavor = "defaultDevice"
@@ -140,6 +141,9 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -158,6 +162,7 @@ dependencies {
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'com.github.michaelye.easydialog:easydialog:1.4'
+    implementation 'androidx.core:core-ktx:1.10.1'
 //    implementation 'com.github.wangchenyan:datepicker:Tag'
 
     //调试相关

@@ -63,6 +63,7 @@ public class BindingPwdAlertDialogFragment extends BaseDialogFragment {
                 if (MD5Utils.encrypt(etAlertContent.getText().toString().trim()).equals(MD5Utils.TAG)){
                     //AppToast.toastMsg( "密码正确");
                     tv_pwd_error_tips.setVisibility(View.GONE);
+                    etAlertContent.setText("");
                     EventBus.getDefault().post(new BindFragmentSwitchEvent(1));
 
                 }else {

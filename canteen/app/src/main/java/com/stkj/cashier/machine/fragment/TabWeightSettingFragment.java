@@ -1,4 +1,4 @@
-package com.stkj.cashier.machine.bind;
+package com.stkj.cashier.machine.fragment;
 
 import android.util.Log;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.stkj.cashier.machine.adapter.SettingBindTabInfoViewHolder;
 import com.stkj.cashier.machine.model.SettingBindTabInfo;
 import com.stkj.cashier.pay.model.BindFragmentBackEvent;
 import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
-import com.stkj.cashier.pay.ui.weight.GridSpacingItemDecoration;
 import com.stkj.cashier.setting.callback.FacePassSettingCallback;
 import com.stkj.cashier.setting.helper.AppUpgradeHelper;
 import com.stkj.cashier.setting.model.PauseFacePassDetect;
@@ -174,10 +173,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         Log.d(TAG, "limeTabBindSettingFragment: " + 48);
         //添加设置tab
         List<SettingBindTabInfo> settingTabInfoList = new ArrayList<>();
-        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_SERVER_ADDRESS, SettingBindTabInfo.TAB_TYPE_SERVER_ADDRESS,R.mipmap.ic_bind_settings_face));
-        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_DEVICE_SETTING, SettingBindTabInfo.TAB_TYPE_DEVICE_SETTING,R.mipmap.ic_bind_settings_id));
-        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_WIFI_CONNECT, SettingBindTabInfo.TAB_TYPE_WIFI_CONNECT,R.mipmap.ic_bind_settings));
-        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_PAYMENT_SETTING, SettingBindTabInfo.TAB_TYPE_PAYMENT_SETTING,R.mipmap.ic_bind_settings_canting));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_FOODS, SettingBindTabInfo.TAB_TYPE_FOODS,R.mipmap.ic_settings_foods));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_ID, SettingBindTabInfo.TAB_TYPE_ID,R.mipmap.ic_settings_id));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_WEIGHT, SettingBindTabInfo.TAB_TYPE_WEIGHT,R.mipmap.ic_settings_weight));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_COAST, SettingBindTabInfo.TAB_TYPE_COAST,R.mipmap.ic_settings_coast));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_WARNING, SettingBindTabInfo.TAB_TYPE_WARNING,R.mipmap.ic_settings_warning));
+        settingTabInfoList.add(new SettingBindTabInfo(SettingBindTabInfo.TAB_NAME_SYSTEM, SettingBindTabInfo.TAB_TYPE_SYSTEM,R.mipmap.ic_settings_set));
+
         CommonRecyclerAdapter tabInfoAdapter = new CommonRecyclerAdapter(false);
         tabInfoAdapter.addViewHolderFactory(new SettingBindTabInfoViewHolder.Factory());
 
@@ -185,38 +187,43 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rvTopTab.setAdapter(tabInfoAdapter);
         rvTopTab.setItemAnimator(null);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), settingTabInfoList.size());
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
         rvTopTab.setLayoutManager(layoutManager);
-        rvTopTab.addItemDecoration(new GridSpacingItemDecoration(settingTabInfoList.size(), 40, false));
 
         tabInfoAdapter.addItemEventListener(new CommonRecyclerAdapter.OnItemEventListener() {
             @Override
             public void onClickItemView(View view, Object obj) {
                 SettingBindTabInfo settingTabInfo = (SettingBindTabInfo) obj;
 
-                if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_DEVICE_SETTING)){
+                if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_ID)){
                     CommonDialogUtils.showTipsBindDialog(getActivity(), "设备ID",DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(), "取消", new CommonBindSignleAlertDialogFragment.OnSweetClickListener() {
                         @Override
                         public void onClick(CommonBindSignleAlertDialogFragment alertDialogFragment) {
 
                         }
                     });
-                } else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_PAYMENT_SETTING)){
-                    CommonDialogUtils.showTipsBindDialog(getActivity(), "用餐设置","敬请期待", "取消", new CommonBindSignleAlertDialogFragment.OnSweetClickListener() {
-                        @Override
-                        public void onClick(CommonBindSignleAlertDialogFragment alertDialogFragment) {
-
-                        }
-                    });
-                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WIFI_CONNECT)){
+                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_SYSTEM)){
                     ll_app_settings.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
-                    tv_title_name.setText("应用设置");
-                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_SERVER_ADDRESS)){
-                    ll_app_face.setVisibility(View.VISIBLE);
-                    rvTopTab.setVisibility(View.GONE);
-                    tv_title_name.setText("人脸管理");
+                    tv_title_name.setText("系统设置");
                 }
+
+//                else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_PAYMENT_SETTING)){
+//                    CommonDialogUtils.showTipsBindDialog(getActivity(), "用餐设置","敬请期待", "取消", new CommonBindSignleAlertDialogFragment.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(CommonBindSignleAlertDialogFragment alertDialogFragment) {
+//
+//                        }
+//                    });
+//                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WIFI_CONNECT)){
+//                    ll_app_settings.setVisibility(View.VISIBLE);
+//                    rvTopTab.setVisibility(View.GONE);
+//                    tv_title_name.setText("应用设置");
+//                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_SERVER_ADDRESS)){
+//                    ll_app_face.setVisibility(View.VISIBLE);
+//                    rvTopTab.setVisibility(View.GONE);
+//                    tv_title_name.setText("人脸管理");
+//                }
 
             }
         });

@@ -1,4 +1,4 @@
-package com.stkj.cashier.machine.bind;
+package com.stkj.cashier.machine.fragment;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,7 +13,6 @@ import com.stkj.cashier.base.utils.EventBusUtils;
 import com.stkj.cashier.consumer.callback.ConsumerController;
 import com.stkj.cashier.consumer.callback.ConsumerListener;
 import com.stkj.cashier.pay.callback.OnConsumerModeListener;
-import com.stkj.cashier.pay.data.PayConstants;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
 import com.stkj.cashier.pay.model.RefreshBindModeEvent;

@@ -73,7 +73,7 @@
             <TextView
                 android:id="@+id/stv_left_bt"
                 android:layout_width="@dimen/dp_79"
-                android:layout_height="@dimen/dp_23"
+                android:layout_height="@dimen/dp_27"
                 android:gravity="center"
                 android:text="确定"
                 android:textColor="@color/white"
@@ -83,7 +83,7 @@
             <com.stkj.common.ui.widget.shapelayout.ShapeTextView
                 android:id="@+id/stv_right_bt"
                 android:layout_width="@dimen/dp_79"
-                android:layout_height="@dimen/dp_23"
+                android:layout_height="@dimen/dp_27"
                 android:layout_marginLeft="@dimen/dp_11"
                 android:gravity="center"
                 android:includeFontPadding="false"

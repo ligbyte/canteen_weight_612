@@ -2,15 +2,18 @@ package com.stkj.cashier.machine.model;
 
 public class SettingBindTabInfo {
 
-    public static final int TAB_TYPE_SERVER_ADDRESS = 1;
-    public static final String TAB_NAME_SERVER_ADDRESS = "人脸管理";
-    public static final int TAB_TYPE_DEVICE_SETTING = 2;
-    public static final String TAB_NAME_DEVICE_SETTING = "设备ID";
-    public static final int TAB_TYPE_WIFI_CONNECT = 3;
-    public static final String TAB_NAME_WIFI_CONNECT = "应用设置";
-    public static final int TAB_TYPE_PAYMENT_SETTING = 4;
-    public static final String TAB_NAME_PAYMENT_SETTING = "用餐设置";
-
+    public static final int TAB_TYPE_FOODS = 1;
+    public static final String TAB_NAME_FOODS = "菜品设置";
+    public static final int TAB_TYPE_ID = 2;
+    public static final String TAB_NAME_ID = "设备ID";
+    public static final int TAB_TYPE_WEIGHT = 3;
+    public static final String TAB_NAME_WEIGHT = "称重校准";
+    public static final int TAB_TYPE_COAST = 4;
+    public static final String TAB_NAME_COAST = "消费设置";
+    public static final int TAB_TYPE_WARNING = 5;
+    public static final String TAB_NAME_WARNING = "报警设置";
+    public static final int TAB_TYPE_SYSTEM = 6;
+    public static final String TAB_NAME_SYSTEM = "系统设置";
 
 
 

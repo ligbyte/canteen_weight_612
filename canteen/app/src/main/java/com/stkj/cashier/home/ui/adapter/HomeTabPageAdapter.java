@@ -9,8 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.stkj.cashier.home.model.HomeMenuList;
 import com.stkj.cashier.home.model.HomeTabInfo;
-import com.stkj.cashier.machine.bind.TabWeightHomeFragment;
-import com.stkj.cashier.machine.bind.TabWeightSettingFragment;
+import com.stkj.cashier.machine.fragment.TabWeightSettingFragment;
 import com.stkj.common.ui.adapter.CommonFragmentPageAdapter;
 
 import java.util.List;
@@ -27,7 +26,6 @@ public class HomeTabPageAdapter extends CommonFragmentPageAdapter {
     public static final String TAB_SETTING_TAG = "set";
     private List<HomeTabInfo<HomeMenuList.Menu>> homeTabInfoList;
     private FragmentActivity fragmentActivity = null;
-    private TabWeightHomeFragment tabBindHomeFragment = new TabWeightHomeFragment();
     public HomeTabPageAdapter(@NonNull FragmentActivity fragmentActivity, List<HomeTabInfo<HomeMenuList.Menu>> tabInfoList) {
         super(fragmentActivity);
         homeTabInfoList = tabInfoList;
@@ -46,16 +44,13 @@ public class HomeTabPageAdapter extends CommonFragmentPageAdapter {
         Log.d(TAG, "limeonPageSelected 56: ");
         if (TextUtils.equals(path, TAB_BINDING_TAG)) {
             Log.d(TAG, "limeonPageSelected 58: ");
-            return tabBindHomeFragment;
+            return new TabWeightSettingFragment();
         } else {
             Log.d(TAG, "limeonPageSelected 60: ");
             return new TabWeightSettingFragment();
         }
     }
 
-    public TabWeightHomeFragment getTabBindHomeFragment() {
-        return tabBindHomeFragment;
-    }
 
     @Override
     public int getItemCount() {
