@@ -4,9 +4,14 @@ import static com.youxin.myseriallib.base.Constants.ReadDeviceType.READ_DEVICE3;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.hardware.usb.UsbDevice;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -90,7 +95,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private ViewPager2 vp2Content;
     private FrameLayout flScreenWelcom;
     private HomeTabPageAdapter homeTabPageAdapter;
-    private BindingHomeTitleLayout htlConsumer;
+    private static BindingHomeTitleLayout htlConsumer;
     //是否需要重新恢复消费者页面
     private boolean needRestartConsumer;
     //是否初始化了菜单数据
@@ -368,6 +373,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initData() {
         initYxSDK();
         initHomeContent();
+        initMinuteAlarm();
     }
 
     @Override
@@ -516,23 +522,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         //网络状态回调
         SystemEventWatcherHelper systemEventWatcherHelper = getWeakRefHolder(SystemEventWatcherHelper.class);
         countDownHelper.addCountDownListener(systemEventWatcherHelper);
-        //usb设备初始化
-        boolean supportUSBDevice = DeviceManager.INSTANCE.getDeviceInterface().isSupportUSBDevice();
-        if (supportUSBDevice) {
-            UsbDeviceHelper usbDeviceHelper = getWeakRefHolder(UsbDeviceHelper.class);
-            usbDeviceHelper.addUsbListener(new UsbDeviceListener() {
-                @Override
-                public void onAttachDevice(UsbDevice device, HashMap<String, UsbDevice> allDevices) {
-                    DeviceManager.INSTANCE.getDeviceInterface().attachUsbDevice(device);
-                }
 
-                @Override
-                public void onDetachDevice(UsbDevice device, HashMap<String, UsbDevice> allDevices) {
-                    DeviceManager.INSTANCE.getDeviceInterface().detachUsbDevice(device);
-                }
-            });
-            DeviceManager.INSTANCE.getDeviceInterface().initUsbDevices(usbDeviceHelper.getUsbDeviceMap());
-        }
         //启动检查升级
         AppUpgradeHelper appUpgradeHelper = getWeakRefHolder(AppUpgradeHelper.class);
         appUpgradeHelper.checkAppVersion();
@@ -644,6 +634,37 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 //            vp2Content.setVisibility(View.VISIBLE);
         }
     }
+
+    private AlarmManager mAlarmManager;
+    private PendingIntent mPendingIntent;
+
+    private void initMinuteAlarm() {
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, MinuteReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(
+                this, 0, intent, PendingIntent.FLAG_IMMUTABLE
+        );
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.MINUTE, 1);
+
+        mAlarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                60 * 1000,
+                mPendingIntent
+        );
+    }
+
+    public static class MinuteReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            htlConsumer.onDateChange();
+        }
+    }
+
 
 
 

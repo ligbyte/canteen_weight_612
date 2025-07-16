@@ -31,9 +31,10 @@
             android:screenOrientation="landscape"
             android:theme="@style/MainTheme"
             android:windowSoftInputMode="adjustPan|stateHidden">
-            <intent-filter>
+            <intent-filter  android:priority="1">
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,6 +49,8 @@
                 <action android:name="stkj.intent.action.silenceInstallApk" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name="com.stkj.cashier.home.ui.activity.MainActivity$MinuteReceiver" />
     </application>
 
 </manifest>
