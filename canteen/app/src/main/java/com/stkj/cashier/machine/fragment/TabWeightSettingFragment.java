@@ -21,6 +21,7 @@ import com.stkj.cashier.base.ui.dialog.CommonBindAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.FacePassSettingBindAlertFragment;
 import com.stkj.cashier.base.utils.CommonDialogUtils;
+import com.stkj.cashier.home.ui.widget.ToastUtil;
 import com.stkj.cashier.machine.adapter.SettingBindTabInfoViewHolder;
 import com.stkj.cashier.machine.model.SettingBindTabInfo;
 import com.stkj.cashier.pay.model.BindFragmentBackEvent;
@@ -233,6 +234,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     ll_app_coast.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("消费设置");
+                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_FOODS)){
+                    ll_app_coast.setVisibility(View.VISIBLE);
+                    rvTopTab.setVisibility(View.GONE);
+                    tv_title_name.setText("菜品设置");
+
+//                    ToastUtil toastUtil2 = new ToastUtil(getActivity(), R.layout.toast_center_horizontal, "菜品更新成功");
+//                    toastUtil2.show();
                 }
 
             }
