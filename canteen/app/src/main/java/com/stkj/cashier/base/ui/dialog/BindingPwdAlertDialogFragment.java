@@ -26,7 +26,7 @@ public class BindingPwdAlertDialogFragment extends BaseDialogFragment {
     private EditText etAlertContent;
     private TextView stvLeftBt;
     private TextView tv_pwd_error_tips;
-    private ShapeTextView stvRightBt;
+    private TextView stvRightBt;
     private boolean needHandleDismiss;
 
     @Override
@@ -47,7 +47,7 @@ public class BindingPwdAlertDialogFragment extends BaseDialogFragment {
             etAlertContent.setText(alertContentTxt);
         }
         stvLeftBt = (TextView) findViewById(R.id.stv_left_bt);
-        stvRightBt = (ShapeTextView) findViewById(R.id.stv_right_bt);
+        stvRightBt = (TextView) findViewById(R.id.stv_right_bt);
         if (!TextUtils.isEmpty(leftNavTxt)) {
             stvLeftBt.setText(leftNavTxt);
         }

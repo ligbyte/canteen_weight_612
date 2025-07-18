@@ -45,14 +45,118 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_title"/>
 
+<!--   称重校准 -->
+        <LinearLayout
+            android:id="@+id/ll_app_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_title"
+            android:paddingLeft="@dimen/dp_25"
+            android:paddingRight="@dimen/dp_25"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <RelativeLayout
+                android:id="@+id/rl_weight_calibration"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_100"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_gravity="center_horizontal"
+                android:background="@mipmap/bg_calibration">
+
+
+                <TextView
+                    android:id="@+id/tv_g"
+                    android:layout_width="@dimen/dp_69"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="暂未读值"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_13"
+                    android:background="@null"
+                    android:textStyle="bold"/>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/stv_left_bt"
+                android:layout_width="@dimen/dp_69"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="开始读值"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
+                android:background="@drawable/btn_gradient_bottom_to_top"/>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_weight_reset"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@null">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_weight_reset_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="重置"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/tv_weight_reset_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:text="物品固定好后，将初始值归零"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/arrow_right_reset"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:includeFontPadding="false"
+                    android:src="@mipmap/arrow" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+<!-- 系统设置 -->
     <LinearLayout
         android:id="@+id/ll_app_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_title"
-        android:paddingLeft="@dimen/dp_5"
-        android:paddingRight="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_25"
+        android:paddingRight="@dimen/dp_25"
         android:orientation="vertical"
         android:visibility="gone">
         <RelativeLayout
@@ -175,6 +279,308 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+        <!-- 报警设置 -->
+        <LinearLayout
+            android:id="@+id/ll_app_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_title"
+            android:paddingLeft="@dimen/dp_25"
+            android:paddingRight="@dimen/dp_25"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <RelativeLayout
+                android:id="@+id/rl_warning"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@null">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_warning_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="设备报警"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/tv_warning_summary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:text="关闭后减重、没识别用户等场景均不会报警"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="@dimen/sp_9"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <com.stkj.cashier.home.ui.widget.switchbutton.LimeSwitchButton
+                    android:layout_width="58dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    app:tbOnColor="#3584FF"
+                    app:tbOffColor="#dddddd"
+                    app:tbSpotColor="#FFFFFF"
+                    app:tbOffBorderColor="#dddddd"
+                    app:tbBorderWidth="2dp"
+                     />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_warning_time_summary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@null">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_centerVertical="true"
+                    android:text="报警时长"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/rl_warning_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:layout_toLeftOf="@+id/arrow_right_warning"
+                    android:text="15秒"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:id="@+id/arrow_right_warning"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:includeFontPadding="false"
+                    android:src="@mipmap/arrow" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_warning_yuzhi_summary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@null">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="重量变动报警阀值"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:text="重量减少目标克重以上即会报警"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="@dimen/sp_9"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rl_warning_g"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:layout_toLeftOf="@+id/arrow_right_warning_g"
+                    android:text="5g"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:id="@+id/arrow_right_warning_g"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:includeFontPadding="false"
+                    android:src="@mipmap/arrow" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- 消费设置 -->
+        <LinearLayout
+            android:id="@+id/ll_app_coast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_title"
+            android:paddingLeft="@dimen/dp_25"
+            android:paddingRight="@dimen/dp_25"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <RelativeLayout
+                android:id="@+id/rl_coast"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@null">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_coast_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="余额报警"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/tv_coast_summary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:text="用户餐盘进入或离开时，检测当前用户超出余额，则警报与语音提示"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="@dimen/sp_9"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <com.stkj.cashier.home.ui.widget.switchbutton.LimeSwitchButton
+                    android:layout_width="58dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    app:tbOnColor="#3584FF"
+                    app:tbOffColor="#dddddd"
+                    app:tbSpotColor="#FFFFFF"
+                    app:tbOffBorderColor="#dddddd"
+                    app:tbBorderWidth="2dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_coast_total"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@null">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="营业统计"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:text="点击查看该设备今日应收营业额度"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="@dimen/sp_9"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+
+
+                <ImageView
+                    android:id="@+id/arrow_right_coast_g"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:includeFontPadding="false"
+                    android:src="@mipmap/arrow" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#1AFFFFFF" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_app_face"

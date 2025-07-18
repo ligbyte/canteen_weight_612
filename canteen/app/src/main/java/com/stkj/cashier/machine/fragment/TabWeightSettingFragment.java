@@ -15,6 +15,8 @@ import com.stkj.cashier.BuildConfig;
 import com.stkj.cashier.R;
 import com.stkj.cashier.base.device.DeviceManager;
 import com.stkj.cashier.base.net.AppNetManager;
+import com.stkj.cashier.base.ui.dialog.BindingCoastAlertDialogFragment;
+import com.stkj.cashier.base.ui.dialog.BindingPwdAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonBindAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.cashier.base.ui.dialog.FacePassSettingBindAlertFragment;
@@ -53,13 +55,17 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private RecyclerView rvTopTab;
     private ImageView iv_back;
     private LinearLayout ll_app_settings;
+    private LinearLayout ll_app_warning;
     private LinearLayout ll_app_face;
+    private LinearLayout ll_app_coast;
     private TextView tv_title_name;
     private RelativeLayout rl_server_addr;
     private RelativeLayout rl_version;
     private RelativeLayout rl_restart_app;
     private RelativeLayout rl_face_value;
     private RelativeLayout rl_face_sync;
+    private RelativeLayout rl_coast_total;
+    private LinearLayout ll_app_weight;
     private TextView tv_face_count;
     private TextView tv_app_version;
     private TextView tv_server_addr;
@@ -85,6 +91,10 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rl_face_sync = (RelativeLayout) findViewById(R.id.rl_face_sync);
         tv_app_version = (TextView) findViewById(R.id.tv_app_version);
         tv_server_addr = (TextView) findViewById(R.id.tv_server_addr);
+        ll_app_weight = (LinearLayout) findViewById(R.id.ll_app_weight);
+        ll_app_warning = (LinearLayout) findViewById(R.id.ll_app_warning);
+        ll_app_coast = (LinearLayout) findViewById(R.id.ll_app_coast);
+        rl_coast_total = (RelativeLayout) findViewById(R.id.rl_coast_total);
         if (BuildConfig.DEBUG) {
             tv_server_addr.setText(AppNetManager.API_TEST_URL);
         } else {
@@ -101,6 +111,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                         appUpgradeHelper.checkAppVersion();
                     }
                 });
+        rl_coast_total.setOnClickListener(this);
         rl_server_addr.setOnClickListener(this);
         rl_version.setOnClickListener(this);
         rl_restart_app.setOnClickListener(this);
@@ -122,9 +133,12 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             return ;
         }
 
-        if (ll_app_settings.getVisibility() == View.VISIBLE || ll_app_face.getVisibility() == View.VISIBLE){
+        if (ll_app_coast.getVisibility() == View.VISIBLE || ll_app_settings.getVisibility() == View.VISIBLE || ll_app_face.getVisibility() == View.VISIBLE|| ll_app_weight.getVisibility() == View.VISIBLE|| ll_app_warning.getVisibility() == View.VISIBLE){
             ll_app_face.setVisibility(View.GONE);
             ll_app_settings.setVisibility(View.GONE);
+            ll_app_weight.setVisibility(View.GONE);
+            ll_app_warning.setVisibility(View.GONE);
+            ll_app_coast.setVisibility(View.GONE);
             rvTopTab.setVisibility(View.VISIBLE);
             tv_title_name.setText("后台管理");
         }else {
@@ -206,24 +220,20 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     ll_app_settings.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("系统设置");
+                } else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WEIGHT)){
+                    ll_app_weight.setVisibility(View.VISIBLE);
+                    rvTopTab.setVisibility(View.GONE);
+                    tv_title_name.setText("称重校准");
                 }
-
-//                else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_PAYMENT_SETTING)){
-//                    CommonDialogUtils.showTipsBindDialog(getActivity(), "用餐设置","敬请期待", "取消", new CommonBindSignleAlertDialogFragment.OnSweetClickListener() {
-//                        @Override
-//                        public void onClick(CommonBindSignleAlertDialogFragment alertDialogFragment) {
-//
-//                        }
-//                    });
-//                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WIFI_CONNECT)){
-//                    ll_app_settings.setVisibility(View.VISIBLE);
-//                    rvTopTab.setVisibility(View.GONE);
-//                    tv_title_name.setText("应用设置");
-//                }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_SERVER_ADDRESS)){
-//                    ll_app_face.setVisibility(View.VISIBLE);
-//                    rvTopTab.setVisibility(View.GONE);
-//                    tv_title_name.setText("人脸管理");
-//                }
+                else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WARNING)){
+                    ll_app_warning.setVisibility(View.VISIBLE);
+                    rvTopTab.setVisibility(View.GONE);
+                    tv_title_name.setText("报警设置");
+                } else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_COAST)){
+                    ll_app_coast.setVisibility(View.VISIBLE);
+                    rvTopTab.setVisibility(View.GONE);
+                    tv_title_name.setText("消费设置");
+                }
 
             }
         });
@@ -251,8 +261,11 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.rl_server_addr){
-
+        if (v.getId() == R.id.rl_coast_total){
+            BindingCoastAlertDialogFragment.build()
+                    .setAlertTitleTxt("营业统计")
+                    .setRightNavTxt("取消")
+                    .show(getActivity());
         }else if (v.getId() == R.id.rl_version){
 
         }else if (v.getId() == R.id.rl_restart_app){

@@ -12,7 +12,10 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
         app:radiusT="@dimen/dp_5"
         app:solidColorT="#161E35">
 
@@ -20,15 +23,15 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_11"
+            android:layout_marginBottom="@dimen/dp_20"
             android:text="标题"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_11"
+            android:textSize="@dimen/sp_12"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_alert_content"
-            android:layout_width="@dimen/dp_180"
+            android:layout_width="@dimen/dp_160"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:includeFontPadding="false"
@@ -37,7 +40,7 @@
             android:scrollbarThumbVertical="@drawable/shape_scroll_bar_style"
             android:scrollbars="vertical"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_10"
+            android:textSize="@dimen/sp_12"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -48,8 +51,8 @@
 
             <com.stkj.common.ui.widget.shapelayout.ShapeTextView
                 android:id="@+id/stv_left_bt"
-                android:layout_width="@dimen/dp_180"
-                android:layout_height="@dimen/dp_23"
+                android:layout_width="@dimen/dp_160"
+                android:layout_height="@dimen/dp_27"
                 android:gravity="center"
                 android:text="确定"
                 android:textColor="@color/white"

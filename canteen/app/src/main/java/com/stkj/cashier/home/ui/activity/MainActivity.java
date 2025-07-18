@@ -270,7 +270,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                         public void run() {
                             openYxDeviceSDK();
                         }
-                    },5 * 1000);
+                    },1 * 1000);
                 }
             });
         }catch (Exception e){
@@ -370,7 +370,13 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     }
 
     private void initData() {
-        initYxSDK();
+
+        flScreenWelcom.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initYxSDK();
+            }
+        },60 * 1000);
         initHomeContent();
         initMinuteAlarm();
     }
@@ -378,6 +384,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     @Override
     public void onNetInitSuccess() {
         hideLoadingDialog();
+        Log.d(TAG, "limeonNetInitSuccess: " + 387);
     }
 
     @Override
