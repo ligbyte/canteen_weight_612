@@ -47,12 +47,14 @@ import com.stkj.cashier.home.helper.CBGCameraHelper;
 import com.stkj.cashier.home.helper.HeartBeatHelper;
 import com.stkj.cashier.home.helper.ScreenProtectHelper;
 import com.stkj.cashier.home.helper.SystemEventWatcherHelper;
+import com.stkj.cashier.home.helper.WarningTipsHelper;
 import com.stkj.cashier.home.model.HomeMenuList;
 import com.stkj.cashier.home.model.HomeTabInfo;
 import com.stkj.cashier.home.model.StoreInfo;
 import com.stkj.cashier.home.ui.adapter.HomeTabPageAdapter;
 import com.stkj.cashier.home.ui.widget.BindingHomeTitleLayout;
 import com.stkj.cashier.home.ui.widget.HomeTitleLayout;
+import com.stkj.cashier.home.ui.widget.WarningTipsView;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.BindFragmentBackEvent;
 import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
@@ -105,6 +107,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private TextView tv_price_unit;
     private TextView tv_account_info;
     private FrameLayout fl_screen_success;
+    private WarningTipsView warning_tips_view;
     private HomeTabPageAdapter homeTabPageAdapter;
     private static BindingHomeTitleLayout htlConsumer;
     //是否需要重新恢复消费者页面
@@ -299,6 +302,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         flScreenWelcom = findViewById(R.id.fl_screen_welcom);
         tv_food_name = findViewById(R.id.tv_food_name);
         tv_price_flag = findViewById(R.id.tv_price_flag);
+        warning_tips_view = findViewById(R.id.warning_tips_view);
         tv_price = findViewById(R.id.tv_price);
         tv_price_unit = findViewById(R.id.tv_price_unit);
         fl_screen_success = findViewById(R.id.fl_screen_success);
@@ -322,14 +326,24 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         tv_food_name.setText("暂未选择菜品");
         tv_price.setText("--");
         tv_food_name.setTextColor(Color.parseColor("#FF2C2C"));
+        warning_tips_view.setVisibility(View.VISIBLE);
         tv_price_flag.setVisibility(View.GONE);
         tv_price_unit.setVisibility(View.GONE);
+        warning_tips_view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                warning_tips_view.delayHideTipsView();
+                getWeakRefHolder(TTSVoiceHelper.class).speakByTTSVoice("请先选择菜品");
+            }
+        }, 6 * 1000);
+
     }
 
     private void initTvUnit() {
         tv_food_name.setText("小炒黄牛肉");
         tv_price.setText(PriceUtils.formatPrice(99));
         tv_food_name.setTextColor(Color.parseColor("#FFFFFF"));
+        warning_tips_view.setVisibility(View.GONE);
         tv_price_flag.setVisibility(View.VISIBLE);
         tv_price_unit.setVisibility(View.VISIBLE);
     }

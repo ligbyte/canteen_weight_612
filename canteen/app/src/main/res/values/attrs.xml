@@ -52,4 +52,9 @@
         </attr>
 
     </declare-styleable>
+
+
+    <declare-styleable name="CommonTipsView">
+        <attr name="ctv_style" format="integer" />
+    </declare-styleable>
 </resources>

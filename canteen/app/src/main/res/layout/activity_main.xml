@@ -374,4 +374,14 @@
         android:background="@null"
         app:htl_consume_lay_res="1"
         app:isLightMode="true" />
+
+    <!--提示布局-->
+    <com.stkj.cashier.home.ui.widget.WarningTipsView
+        android:id="@+id/warning_tips_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+
 </FrameLayout>
