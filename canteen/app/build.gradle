@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 //当前编译的flavor
-def currentFlavor = "defaultDevice"
+def currentFlavor = "vz_k58_youxin_2mipi"
 task initCurrentFlavor(dependsOn: sourceSets) {
     def taskRequest = gradle.getStartParameter().getTaskRequests().toString().toLowerCase()
     println("当前构建的设备为 taskRequest： " + taskRequest)
@@ -23,17 +23,10 @@ if (gitMainSha.isEmpty()) {
     gitMainSha = 'git rev-parse --short HEAD'.execute().text.trim()
     gitCommonSha = 'git -C common rev-parse --short HEAD'.execute().text.trim()
     gitDeviceInterfaceSha = 'git -C deviceinterface rev-parse --short HEAD'.execute().text.trim()
-    if (currentFlavor == 'defaultDevice') {
-        gitDeviceImplSha = gitMainSha
-    } else {
         gitDeviceImplSha = "git -C ${currentFlavor} rev-parse --short HEAD".execute().text.trim()
-    }
 } else {
-    if (currentFlavor == 'defaultDevice') {
-        gitDeviceImplSha = gitMainSha
-    } else {
+
         gitDeviceImplSha = "git -C ${currentFlavor} rev-parse --short HEAD".execute([], project.rootDir).text.trim()
-    }
 }
 def gitSha = gitMainSha + "_" + gitCommonSha + "_" + gitDeviceInterfaceSha + "_" + gitDeviceImplSha
 println("--gitSha--" + gitSha)
@@ -60,17 +53,6 @@ android {
     }
 
     signingConfigs {
-        defaultDevice {
-            keyAlias 'canteen'
-            keyPassword '123456'
-            storeFile file('keystore')
-            storePassword '123456'
-            v1SigningEnabled true
-            v2SigningEnabled true
-        }
-
-
-
         vz_k58_youxin_2mipi {
             keyAlias 'platform'
             keyPassword 'android'
@@ -99,16 +81,6 @@ android {
 
     flavorDimensions = ["device"]
     productFlavors {
-        defaultDevice {
-            dimension "device"
-            buildConfigField('String', 'deviceInterface', '\"\"')
-            buildConfigField('String', 'deviceType', '\"defaultDevice\"')
-            manifestPlaceholders = [
-                    shareUserId: ""
-            ]
-            signingConfig signingConfigs.defaultDevice
-        }
-
 
         vz_k58_youxin_2mipi {
             dimension "device"

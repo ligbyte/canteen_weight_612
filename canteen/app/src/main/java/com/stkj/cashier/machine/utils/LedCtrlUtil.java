@@ -9,6 +9,8 @@ import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RED_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RG_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_WHITE_TYPE;
 
+import android.util.Log;
+
 import com.stkj.cashier.MainApplication;
 import com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi;
 
@@ -187,6 +189,7 @@ public class LedCtrlUtil {
 
             @Override
             public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                Log.d(TAG, "limeopenLed 192 ledType: " + ledType);
                 switch (ledType){
                     case LED_RED_TYPE:
                         LedCtrlApi.getInstance().openRedLed();

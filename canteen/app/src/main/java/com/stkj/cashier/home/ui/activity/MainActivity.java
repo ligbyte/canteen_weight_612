@@ -55,11 +55,13 @@ import com.stkj.cashier.home.ui.adapter.HomeTabPageAdapter;
 import com.stkj.cashier.home.ui.widget.BindingHomeTitleLayout;
 import com.stkj.cashier.home.ui.widget.HomeTitleLayout;
 import com.stkj.cashier.home.ui.widget.WarningTipsView;
+import com.stkj.cashier.machine.utils.LedCtrlUtil;
 import com.stkj.cashier.pay.helper.ConsumerModeHelper;
 import com.stkj.cashier.pay.model.BindFragmentBackEvent;
 import com.stkj.cashier.pay.model.BindFragmentSwitchEvent;
 import com.stkj.cashier.pay.model.RefreshBindModeEvent;
 import com.stkj.cashier.pay.model.TTSSpeakEvent;
+import com.stkj.cashier.setting.data.DeviceSettingMMKV;
 import com.stkj.cashier.setting.data.ServerSettingMMKV;
 import com.stkj.cashier.setting.helper.AppUpgradeHelper;
 import com.stkj.cashier.setting.helper.StoreInfoHelper;
@@ -92,6 +94,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_ALARM;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_BLUE_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_GB_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_GREEN_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RB_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RED_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RG_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_WHITE_TYPE;
+
+
 
 public class MainActivity extends BaseActivity implements AppNetCallback, ConsumerListener , DeviceDataCallBlack<ReadCardResulBean>, DeviceStatusListener {
 
@@ -317,6 +329,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     initTvUnit();
                 }else {
                     fl_screen_success.setVisibility(View.VISIBLE);
+                    ledLightShow(LED_GREEN_TYPE);
                 }
             }
         });
@@ -325,6 +338,8 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initTvDefault() {
         tv_food_name.setText("暂未选择菜品");
         tv_price.setText("--");
+        AppToast.toastMsg("limeopenLed 341");
+        ledLightShow(LED_RED_TYPE);
         tv_food_name.setTextColor(Color.parseColor("#FF2C2C"));
         warning_tips_view.setVisibility(View.VISIBLE);
         tv_price_flag.setVisibility(View.GONE);
@@ -346,6 +361,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         warning_tips_view.setVisibility(View.GONE);
         tv_price_flag.setVisibility(View.VISIBLE);
         tv_price_unit.setVisibility(View.VISIBLE);
+        ledLightShow(LED_WHITE_TYPE);
     }
 
 
@@ -567,6 +583,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     protected void onDestroy() {
         AppManager.INSTANCE.clearMainActivity();
         EventBus.getDefault().unregister(this);
+        LedCtrlUtil.getInstance().closeLedThread();
         super.onDestroy();
     }
 
@@ -644,6 +661,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             },1 * 1000);
             vp2Content.setVisibility(View.GONE);
             fl_screen_success.setVisibility(View.GONE);
+            ledLightShow(LED_WHITE_TYPE);
         }else {
             if (yxDevicePortCtrl != null && yxDevicePortCtrl.isOpen()){
                 yxDevicePortCtrl.closeDevice();
@@ -652,6 +670,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             flScreenWelcom.setVisibility(View.GONE);
             fl_screen_success.setVisibility(View.GONE);
             vp2Content.setVisibility(View.VISIBLE);
+            ledLightShow(LED_BLUE_TYPE);
         }
     }
 
@@ -792,5 +811,13 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     @Override
     public void onClose() {
 
+    }
+
+
+    private void ledLightShow(final int ledType){
+        Log.d(TAG, "limeopenLed 817 ledType: " + ledType);
+        if (DeviceSettingMMKV.isOpenWarning()) {
+            LedCtrlUtil.getInstance().openLed(ledType);
+        }
     }
 }

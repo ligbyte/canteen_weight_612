@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
+        android:layout_height="@dimen/dp_45"
         android:background="@null">
 
         <ImageView
@@ -35,6 +35,21 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
             android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tv_sync_foods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_centerVertical="true"
+            android:text="更新菜品"
+            android:textColor="#317FFF"
+            android:textSize="@dimen/sp_10"
+            android:textStyle="normal"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -684,6 +699,310 @@
                 android:background="#1AFFFFFF" />
 
         </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <!-- 菜品设置 -->
+        <LinearLayout
+            android:id="@+id/ll_app_foods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_title"
+            android:background="@null"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@null">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@null">
+
+                        <!-- 菜品标题 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_0"
+                            android:layout_marginRight="@dimen/dp_8"
+                            android:layout_marginTop="@dimen/dp_58"
+                            android:orientation="horizontal">
+
+                            <com.stkj.common.ui.widget.tabs.RoundTabLayout
+                                android:id="@+id/sliding_tablayoutt"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dp_25"
+                                android:background="@null"
+                                app:accent="#0087FA"
+                                app:corner1Radius="rounded"
+                                app:withStroke="false" />
+
+                        </LinearLayout>
+
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vp"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            />
+                        <!--  选择入库商品列表 -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_goods_storage_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/dp_1"
+                            android:layout_marginLeft="@dimen/dp_8"
+                            android:layout_marginRight="@dimen/dp_8"
+                            android:layout_marginBottom="@dimen/dp_1"
+                            android:layout_weight="1"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <LinearLayout
+                            android:id="@+id/rv_goods_storage_list_empty"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginBottom="@dimen/dp_25"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_160"
+                                android:layout_height="@dimen/dp_88"
+                                android:src="@mipmap/goods_empty_box" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_5"
+                                android:text="该分类下暂无商品"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/sp_7" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_1"
+                                android:text="请先添加商品"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/sp_7" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ll_kg_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dp_33"
+                                android:layout_marginLeft="@dimen/dp_7"
+                                android:orientation="horizontal"
+                                android:layout_marginRight="@dimen/dp_7"
+                                android:layout_marginBottom="@dimen/dp_5"
+                                android:visibility="gone">
+
+                                <com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout
+                                    android:layout_width="@dimen/dp_0"
+                                    android:layout_height="@dimen/dp_33"
+                                    android:layout_marginLeft="@dimen/dp_3"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical"
+                                    app:solidColorT="@color/color_E3E9F5"
+                                    app:radiusT="@dimen/dp_4"
+                                    app:strokeColorT="@color/color_E3E9F5"
+                                    app:strokeWidthT="@dimen/dp_1" >
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@null">
+                                        <TextView
+                                            android:id="@+id/tv_goods_price"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/dp_8"
+                                            android:layout_centerVertical="true"
+                                            android:textColor="@color/color_333333"
+                                            android:textSize="@dimen/sp_9"
+                                            android:text="价格:"
+                                            android:textStyle="bold"/>
+
+
+                                        <TextView
+                                            android:id="@+id/tv_yuan"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="@dimen/dp_8"
+                                            android:layout_centerVertical="true"
+                                            android:layout_alignParentRight="true"
+                                            android:textColor="@color/color_333333"
+                                            android:textSize="@dimen/sp_9"
+                                            android:text="元"
+                                            android:textStyle="normal"/>
+
+
+                                        <EditText
+                                            android:id="@+id/et_price"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/dp_5"
+                                            android:layout_marginRight="@dimen/dp_5"
+                                            android:background="@null"
+                                            android:editable="false"
+                                            android:layout_centerVertical="true"
+                                            android:layout_toRightOf="@+id/tv_goods_price"
+                                            android:layout_toLeftOf="@+id/tv_yuan"
+                                            android:textColorHint="@color/color_cccccc"
+                                            android:textColor="@color/color_333333"
+                                            android:textSize="@dimen/sp_11"
+                                            android:hint="0.00"
+                                            android:textStyle="bold"/>
+
+                                    </RelativeLayout>
+
+                                </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dp_25"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="@dimen/dp_5">
+
+                                <TextView
+                                    android:id="@+id/tv_total_count"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center_vertical"
+                                    android:minWidth="@dimen/dp_33"
+                                    android:text="共 0 件"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/sp_10"
+                                    android:textStyle="normal" />
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dp_25"
+                                    android:layout_weight="3"
+                                    android:orientation="horizontal">
+                                    <com.stkj.common.ui.widget.shapelayout.ShapeTextView
+                                        android:id="@+id/stv_page_back"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_toLeftOf="@+id/tv_page_index"
+                                        android:layout_marginRight="@dimen/dp_5"
+                                        android:gravity="center"
+                                        android:text="上一页"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_10"
+                                        android:textStyle="normal"
+                                        app:solidColorT="@color/color_253050"
+                                        app:radiusT="@dimen/dp_4"
+                                        app:strokeColorT="@color/color_253050"/>
+
+                                    <TextView
+                                        android:id="@+id/tv_page_index"
+                                        android:layout_width="@dimen/dp_30"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:gravity="center_horizontal"
+                                        android:text="1/1"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_10"
+                                        android:textStyle="normal" />
+
+                                    <com.stkj.common.ui.widget.shapelayout.ShapeTextView
+                                        android:id="@+id/stv_page_next"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_toRightOf="@+id/tv_page_index"
+                                        android:layout_marginLeft="@dimen/dp_5"
+                                        android:gravity="center"
+                                        android:text="下一页"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_10"
+                                        android:textStyle="normal"
+                                        app:radiusT="@dimen/dp_4"
+                                        app:solidColorT="@color/color_253050" />
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dp_25"
+                                    android:layout_weight="5"/>
+
+                                <!-- 添加商品 -->
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/dp_25"
+                                    android:layout_weight="1.3"
+                                    android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/btn_add_food"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerVertical="true"
+                                    android:layout_alignParentRight="true"
+                                    android:paddingLeft="@dimen/dp_10"
+                                    android:paddingRight="@dimen/dp_10"
+                                    android:text="新增菜品"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/sp_10"
+                                    android:background="@drawable/btn_gradient_add"/>
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!-- 搜索标题 -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+
+                                <com.stkj.cashier.pay.ui.weight.GoodsAutoSearchLayout
+                                    android:id="@+id/goods_auto_search"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="5"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </FrameLayout>
+
+            </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
 
 
         </LinearLayout>
