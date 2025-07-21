@@ -85,8 +85,10 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private LinearLayout ll_app_face;
     private LinearLayout ll_app_coast;
     private LinearLayout ll_app_foods;
+    private LinearLayout ll_app_food_add;
     private TextView tv_title_name;
     private TextView tv_sync_foods;
+    private TextView tv_add_food;
     private RelativeLayout rl_server_addr;
     private RelativeLayout rl_version;
     private RelativeLayout rl_restart_app;
@@ -113,8 +115,10 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         iv_back = (ImageView) findViewById(R.id.iv_back);
         ll_app_settings = (LinearLayout) findViewById(R.id.ll_app_settings);
         ll_app_face = (LinearLayout) findViewById(R.id.ll_app_face);
+        ll_app_food_add = (LinearLayout) findViewById(R.id.ll_app_food_add);
         tv_title_name = (TextView) findViewById(R.id.tv_title_name);
         tv_sync_foods = (TextView) findViewById(R.id.tv_sync_foods);
+        tv_add_food = (TextView) findViewById(R.id.tv_add_food);
         tv_face_count = (TextView) findViewById(R.id.tv_face_count);
         rl_server_addr = (RelativeLayout) findViewById(R.id.rl_server_addr);
         rl_version = (RelativeLayout) findViewById(R.id.rl_version);
@@ -146,6 +150,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 });
         rl_coast_total.setOnClickListener(this);
         rl_server_addr.setOnClickListener(this);
+        tv_add_food.setOnClickListener(this);
         rl_version.setOnClickListener(this);
         rl_restart_app.setOnClickListener(this);
         rl_face_value.setOnClickListener(this);
@@ -355,6 +360,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                         }
                     }).setRightNavTxt("取消");
             dialogFragment.show(mActivity);
+        }else if (v.getId() == R.id.tv_add_food){
+            ll_app_foods.setVisibility(View.GONE);
+            tv_sync_foods.setVisibility(View.VISIBLE);
+            ll_app_food_add.setVisibility(View.VISIBLE);
+            rvTopTab.setVisibility(View.GONE);
+            tv_title_name.setText("新增菜品");
+            tv_sync_foods.setText("保存");
         }
 
 

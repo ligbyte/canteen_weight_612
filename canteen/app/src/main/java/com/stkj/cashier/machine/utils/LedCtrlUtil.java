@@ -12,6 +12,7 @@ import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_WHITE_TYPE;
 import android.util.Log;
 
 import com.stkj.cashier.MainApplication;
+import com.stkj.common.ui.toast.AppToast;
 import com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi;
 
 import io.reactivex.Observable;

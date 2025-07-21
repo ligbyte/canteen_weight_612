@@ -280,6 +280,11 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                 @Override
                 public void initStatus(boolean isInit, String message) {
                     Log.d("settingTAG", "isInit : " + isInit + "   mesg : " + message);
+                    if (tv_food_name.getText().toString().equals("暂未选择菜品")){
+                        ledLightShow(LED_RED_TYPE);
+                    }else {
+                        ledLightShow(LED_WHITE_TYPE);
+                    }
                     flScreenWelcom.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -338,7 +343,6 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initTvDefault() {
         tv_food_name.setText("暂未选择菜品");
         tv_price.setText("--");
-        AppToast.toastMsg("limeopenLed 341");
         ledLightShow(LED_RED_TYPE);
         tv_food_name.setTextColor(Color.parseColor("#FF2C2C"));
         warning_tips_view.setVisibility(View.VISIBLE);
@@ -400,14 +404,21 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     }
 
     private void initData() {
-
         flScreenWelcom.postDelayed(new Runnable() {
             @Override
             public void run() {
                 initYxSDK();
+                htlConsumer.onDateChange();
             }
-        },60 * 1000);
-        initHomeContent();
+        },30 * 1000);
+
+        flScreenWelcom.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initHomeContent();
+            }
+        },1 * 1000);
+
         initMinuteAlarm();
     }
 
@@ -661,7 +672,13 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             },1 * 1000);
             vp2Content.setVisibility(View.GONE);
             fl_screen_success.setVisibility(View.GONE);
-            ledLightShow(LED_WHITE_TYPE);
+            initTvDefault();
+            if (tv_food_name.getText().toString().equals("暂未选择菜品")){
+                ledLightShow(LED_RED_TYPE);
+            }else {
+                ledLightShow(LED_WHITE_TYPE);
+            }
+
         }else {
             if (yxDevicePortCtrl != null && yxDevicePortCtrl.isOpen()){
                 yxDevicePortCtrl.closeDevice();
