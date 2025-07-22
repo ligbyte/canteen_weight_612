@@ -230,7 +230,7 @@
         <attr name="accent" format="color"/>
         <attr name="corner1Radius" format="integer|string">
             <flag name="rectangle" value="0"/>
-            <flag name="rounded" value="10"/>
+            <flag name="rounded" value="8"/>
             <flag name="circle1" value="50"/>
         </attr>
         <attr name="src" format="reference"/>

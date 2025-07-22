@@ -407,7 +407,6 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         flScreenWelcom.postDelayed(new Runnable() {
             @Override
             public void run() {
-                initYxSDK();
                 htlConsumer.onDateChange();
             }
         },30 * 1000);
@@ -415,6 +414,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         flScreenWelcom.postDelayed(new Runnable() {
             @Override
             public void run() {
+                initYxSDK();
                 initHomeContent();
             }
         },1 * 1000);

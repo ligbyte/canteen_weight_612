@@ -735,14 +735,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_38"
+                            android:layout_marginTop="@dimen/dp_35"
                             android:orientation="horizontal">
 
                             <com.stkj.common.ui.widget.tabs.RoundTabLayout
                                 android:id="@+id/sliding_tablayoutt"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp_27"
-                                android:layout_marginLeft="-5dp"
+                                android:layout_height="@dimen/dp_30"
+                                android:layout_marginLeft="-8dp"
                                 android:background="@null"
                                 app:accent="#0087FA"
                                 app:corner1Radius="rounded"

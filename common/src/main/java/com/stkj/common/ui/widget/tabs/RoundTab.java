@@ -77,7 +77,7 @@ public class RoundTab extends View {
     public RoundTab initTab(String tabText) {
         this.tabText = tabText;
 
-        textPaint.setTextSize(DimensUtils.spToPx(getContext(), 15));
+        textPaint.setTextSize(DimensUtils.spToPx(getContext(), 14));
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setColor(tabTextColor);
         textPaint.setAntiAlias(true);
