@@ -13,15 +13,15 @@ import android.graphics.PorterDuff;
 import com.stkj.common.utils.DimensUtils;
 public class RoundTab extends View {
 
-    private final float INNER_VERTICAL_PADDING = DimensUtils.dpToPx(getContext(), 12f);
-    private final float INNER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 16f) * 2;
+    private final float INNER_VERTICAL_PADDING = DimensUtils.dpToPx(getContext(), 10f);
+    private final float INNER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 10f) * 2;
 
-    private final float OUTER_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 16f);
+    private final float OUTER_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 10f);
     private final float OUTER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 6f);
 
     private final int ICON_SIZE = DimensUtils.dpToPx(getContext(), 24);
     private final int ICON_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 8);
-    private final int ICON_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 16);
+    private final int ICON_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 10);
 
     private RectF tab;
     private Paint tabPaint;
@@ -77,11 +77,11 @@ public class RoundTab extends View {
     public RoundTab initTab(String tabText) {
         this.tabText = tabText;
 
-        textPaint.setTextSize(DimensUtils.spToPx(getContext(), 13));
+        textPaint.setTextSize(DimensUtils.spToPx(getContext(), 15));
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setColor(tabTextColor);
         textPaint.setAntiAlias(true);
-        textPaint.setFakeBoldText(true);
+        textPaint.setFakeBoldText(false);
         textPaint.getTextBounds(tabText, 0, tabText.length(), textBounds);
 
         tabStrokePaint.setStyle(Paint.Style.STROKE);

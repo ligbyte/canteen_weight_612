@@ -2,7 +2,6 @@ package com.stkj.common.ui.toast;
 
 import android.text.TextUtils;
 import android.widget.Toast;
-
 import com.stkj.common.core.AppManager;
 import com.stkj.common.core.MainThreadHolder;
 
@@ -55,5 +54,8 @@ public class AppToast {
             }
         });
     }
+
+
+
 
 }

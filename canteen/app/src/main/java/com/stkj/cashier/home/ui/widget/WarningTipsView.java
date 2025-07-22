@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.stkj.cashier.R;
 public class WarningTipsView extends FrameLayout {
 
     private ImageView ivTips;
+    private ImageView iv_common_close;
     private TextView tvTips;
 
     public WarningTipsView(@NonNull Context context) {
@@ -44,7 +46,14 @@ public class WarningTipsView extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.include_warning_tips, this);
         typedArray.recycle();
         ivTips = (ImageView) findViewById(R.id.iv_common_tips);
+        iv_common_close = (ImageView) findViewById(R.id.iv_common_close);
         tvTips = (TextView) findViewById(R.id.tv_common_tips);
+        iv_common_close.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideTipsView();
+            }
+        });
     }
 
     public void setTips(String tips) {

@@ -27,26 +27,26 @@ public class FoodGridAdapter extends BaseQuickAdapter<FoodInfoTable, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder holder, FoodInfoTable item) {
-        holder.setText(R.id.tv_cai_name, item.getName());
-        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()));
-        if (!TextUtils.isEmpty(item.getImgpath())) {
-            Glide.with(context).load(item.getImgpath()).into((RoundImageView) holder.getView(R.id.iv_cai_icon));
-        }else {
-            ((RoundImageView) holder.getView(R.id.iv_cai_icon)).setImageResource(R.mipmap.ic_cai_default);
-        }
-
-        if (item.getPricingMethod() == 2) {
-            if (MainApplication.hasWeight) {
-                holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#333333"));
-                holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#333333"));
-            } else {
-                holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#CCCCCC"));
-                holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#CCCCCC"));
-            }
-        }else {
-            holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#333333"));
-            holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#333333"));
-        }
+//        holder.setText(R.id.tv_cai_name, item.getName());
+//        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()));
+//        if (!TextUtils.isEmpty(item.getImgpath())) {
+//            Glide.with(context).load(item.getImgpath()).into((RoundImageView) holder.getView(R.id.iv_cai_icon));
+//        }else {
+//            ((RoundImageView) holder.getView(R.id.iv_cai_icon)).setImageResource(R.mipmap.ic_cai_default);
+//        }
+//
+//        if (item.getPricingMethod() == 2) {
+//            if (MainApplication.hasWeight) {
+//                holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#333333"));
+//                holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#333333"));
+//            } else {
+//                holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#CCCCCC"));
+//                holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#CCCCCC"));
+//            }
+//        }else {
+//            holder.setTextColor(R.id.tv_cai_name, Color.parseColor("#333333"));
+//            holder.setTextColor(R.id.tv_cai_price, Color.parseColor("#333333"));
+//        }
 
 //        //((CheckBox)holder.getView(R.id.cb_status)).setChecked(item.isChecked());
 //        if (item.isChecked()){

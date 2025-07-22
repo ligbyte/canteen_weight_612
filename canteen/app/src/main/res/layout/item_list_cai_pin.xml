@@ -4,28 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_cai_pin_bg"
+    android:layout_height="@dimen/dp_55"
+    android:background="@mipmap/bg_unselect"
     android:orientation="vertical">
-
-    <com.stkj.common.ui.widget.common.RoundImageView
-        android:id="@+id/iv_cai_icon"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/dp_4"
-        app:type="round"
-        app:srcCompat="@mipmap/ic_cai_default"
-        app:leftBottom_corner_radius="5dp"
-        app:leftTop_corner_radius="5dp"
-        app:rightBottom_corner_radius="5dp"
-        app:rightTop_corner_radius="5dp"
-        tools:ignore="MissingClass" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_cai_icon"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
@@ -36,10 +22,10 @@
         android:layout_below="@+id/iv_icon"
         android:singleLine="true"
         android:maxLines="1"
-        android:textColor="#333333"
+        android:textColor="@color/white"
         android:text="青椒肉丝"
         android:textStyle="bold"
-        android:textSize="@dimen/sp_8"/>
+        android:textSize="@dimen/sp_12"/>
 
 
     <TextView
@@ -48,9 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_4"
         android:singleLine="true"
-        android:textColor="#333333"
-        android:text="¥ 28.88"
-        android:textSize="@dimen/sp_8"
+        android:textColor="@color/white"
+        android:text="¥5.00/50g"
+        android:textSize="@dimen/sp_11"
         android:gravity="center_vertical"/>
 
 </LinearLayout>

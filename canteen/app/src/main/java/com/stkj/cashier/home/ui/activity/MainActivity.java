@@ -680,6 +680,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             }
 
         }else {
+            warning_tips_view.hideTipsView();
             if (yxDevicePortCtrl != null && yxDevicePortCtrl.isOpen()){
                 yxDevicePortCtrl.closeDevice();
             }

@@ -341,6 +341,7 @@
                 </LinearLayout>
 
                 <com.stkj.cashier.home.ui.widget.switchbutton.LimeSwitchButton
+                    android:id="@+id/switch_warning"
                     android:layout_width="58dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
@@ -734,15 +735,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_0"
-                            android:layout_marginRight="@dimen/dp_8"
-                            android:layout_marginTop="@dimen/dp_58"
+                            android:layout_marginTop="@dimen/dp_38"
                             android:orientation="horizontal">
 
                             <com.stkj.common.ui.widget.tabs.RoundTabLayout
                                 android:id="@+id/sliding_tablayoutt"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp_25"
+                                android:layout_height="@dimen/dp_27"
+                                android:layout_marginLeft="-5dp"
                                 android:background="@null"
                                 app:accent="#0087FA"
                                 app:corner1Radius="rounded"
@@ -762,8 +762,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginTop="@dimen/dp_1"
-                            android:layout_marginLeft="@dimen/dp_8"
-                            android:layout_marginRight="@dimen/dp_8"
                             android:layout_marginBottom="@dimen/dp_1"
                             android:layout_weight="1"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -787,17 +785,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dp_5"
-                                android:text="该分类下暂无商品"
-                                android:textColor="@color/color_999999"
-                                android:textSize="@dimen/sp_7" />
+                                android:text="暂无菜品"
+                                android:textColor="#99FFFFFF"
+                                android:textSize="@dimen/sp_10" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dp_1"
-                                android:text="请先添加商品"
-                                android:textColor="@color/color_999999"
-                                android:textSize="@dimen/sp_7" />
+                                android:text="请先添加菜品"
+                                android:textColor="#99FFFFFF"
+                                android:textSize="@dimen/sp_10" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -883,7 +881,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_25"
                                 android:orientation="horizontal"
-                                android:layout_marginBottom="@dimen/dp_5">
+                                android:layout_marginTop="@dimen/dp_10">
 
                                 <TextView
                                     android:id="@+id/tv_total_count"
