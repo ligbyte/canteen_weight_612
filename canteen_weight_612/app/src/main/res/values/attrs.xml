@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HomeTitleLayout">
+        <attr name="isLightMode" format="boolean" />
+        <attr name="htl_consume_lay_res" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="FacePassCameraXLayout">
+        <attr name="faceXPreview" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="FacePassCameraLayout">
+        <attr name="facePreview" format="boolean" />
+        <attr name="fpcl_consume_lay_res" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="CommonSeekProgressBar">
+        <attr name="cspb_progress" format="integer" />
+        <attr name="cspb_max_progress" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="SimpleCalculator">
+        <attr name="sc_confirm_txt" format="string" />
+    </declare-styleable>
+    <declare-styleable name="SimpleInputNumber">
+        <attr name="sin_number_count" format="integer" />
+        <attr name="sin_consume_lay_res" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="ConsumerBottomTipsLayout">
+        <attr name="cbtl_consume_lay_res" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="GoodsDetailInfoLayout">
+        <attr name="layout_type" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ChartView">
+        <attr name="axis_line_count" format="integer" />
+        <attr name="axis_line_color" format="color" />
+        <attr name="axis_line_height" format="dimension" />
+
+        <attr name="axis_text_size" format="dimension" />
+        <attr name="axis_text_color" format="color" />
+        <attr name="axis_text_width" format="dimension" />
+
+        <attr name="bottom_height" format="dimension" />
+
+        <attr name="axis_texts_margin" format="dimension" />
+        <attr name="item_margin" format="dimension" />
+        <attr name="item_parent_margin" format="dimension" />
+
+        <attr name="axis_align" format="enum">
+            <enum name="SINGLE_LEFT" value="0" />
+            <enum name="SINGLE_RIGHT" value="1" />
+            <enum name="LEFT_RIGHT" value="2" />
+        </attr>
+
+    </declare-styleable>
+
+
+    <declare-styleable name="CommonTipsView">
+        <attr name="ctv_style" format="integer" />
+    </declare-styleable>
+</resources>

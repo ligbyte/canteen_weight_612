@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_88000000"
+    android:clickable="true">
+
+    <com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:radiusT="@dimen/dp_5"
+        app:solidColorT="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_8">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="退款记录"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            android:textStyle="bold" />
+
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_15"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@mipmap/icon_close_gray" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#E8EAED" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_120"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_360"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:orientation="vertical">
+
+            <!-- 商品库标题 -->
+            <com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_5"
+                android:gravity="center_vertical"
+                app:radiusT="@dimen/dp_3"
+                app:solidColorT="@color/color_D3EAFF">
+
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    android:layout_weight="2"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:singleLine="true"
+                    android:text="退款时间"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="退款商品"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:text="商品单价"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="退款件数"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="退款金额(元)"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="normal" />
+
+            </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_list_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
+                    android:src="@mipmap/goods_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无退款记录"
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/sp_9" />
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="@dimen/dp_8"-->
+                <!--                        android:text="注意：首次入库需完成【新增商品】操作"-->
+                <!--                        android:textColor="@color/color_FF7373"-->
+                <!--                        android:textSize="@dimen/sp_7" />-->
+            </LinearLayout>
+            <!-- 商品库列表 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_goods_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_90" />
+
+        </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_10"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rl_bottom"
+                android:layout_width="@dimen/dp_360"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_EDF0F5">
+
+                <TextView
+                    android:id="@+id/tv_goods_total_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="合计"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_9"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:background="@color/color_EDF0F5">
+
+                        <TextView
+                            android:id="@+id/yingshou_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="退款总件数:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_9"
+                            android:textStyle="normal" />
+
+
+                        <TextView
+                            android:id="@+id/tv_total_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/yingshou_summary"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:text="0"
+                            android:textColor="@color/color_0087FA"
+                            android:textSize="@dimen/sp_9"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@color/color_EDF0F5">
+
+                        <TextView
+                            android:id="@+id/shishou_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="退款总金额:"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_9"
+                            android:textStyle="normal" />
+
+
+                        <TextView
+                            android:id="@+id/tv_total_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/shishou_summary"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:text="￥ 0.00"
+                            android:textColor="@color/color_0087FA"
+                            android:textSize="@dimen/sp_9"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
+
+</FrameLayout>

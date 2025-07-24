@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#0087FA"/> <!-- 蓝色填充 -->
+
+    <pathData
+        android:pathData="M80,0
+        a10,10 0 0 1 0,10
+        L40,10
+        L40,40
+        L80,40
+        Z"
+        android:strokeWidth="0"/>
+
+</shape>

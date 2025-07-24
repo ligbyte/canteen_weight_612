@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:text="按次补贴场景中，补贴金额不分摊至单个菜品，退款时仅回退扣除补贴后的实际支付金额至账户" />
+
+</LinearLayout>

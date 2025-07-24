@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 线性渐变，角度270°表示从底部到顶部 -->
+    <gradient
+        android:type="linear"
+        android:angle="270"
+        android:startColor="#3584FF"
+        android:endColor="#70DDFF" />
+
+    <!-- 可选：圆角 -->
+    <corners android:radius="@dimen/dp_4" />
+    <!-- 可选：内边距 -->
+    <padding
+        android:left="6dp"
+        android:top="6dp"
+        android:right="6dp"
+        android:bottom="6dp" />
+</shape>

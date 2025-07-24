@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_3"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:radiusT="@dimen/dp_0">
+
+
+        <TextView
+            android:id="@+id/tv_order_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:singleLine="true"
+            android:text="2024-04-14"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+        <TextView
+            android:id="@+id/tv_order_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="150"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+        <TextView
+            android:id="@+id/tv_order_food_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="100"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+
+        <com.stkj.common.ui.widget.common.AutoScaleItemTextView
+            android:id="@+id/tv_order_ys"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="100.00"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+
+        <com.stkj.common.ui.widget.common.AutoScaleItemTextView
+            android:id="@+id/tv_order_ss"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="100.00"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_7" />
+
+    </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#EDF0F5"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
