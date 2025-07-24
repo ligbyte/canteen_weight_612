@@ -19,7 +19,7 @@
         app:strokeColorT="@color/color_E8EAED"
         app:strokeWidthT="2px">
 
-        <com.stkj.cashier.base.ui.widget.CommonActionDoneEditText
+        <com.stkj.plate.weight.base.ui.widget.CommonActionDoneEditText
             android:id="@+id/et_goods_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -30,7 +30,7 @@
             android:textSize="@dimen/sp_11"
             android:textStyle="bold" />
 
-        <com.stkj.cashier.base.ui.widget.CommonActionDoneEditText
+        <com.stkj.plate.weight.base.ui.widget.CommonActionDoneEditText
             android:id="@+id/et_input"
             android:layout_width="@dimen/dp_180"
             android:layout_height="wrap_content"

@@ -101,7 +101,7 @@
             android:textSize="@dimen/sp_8"
             android:background="@null"/>
 
-        <com.stkj.cashier.home.ui.widget.charview.ChartBarView
+        <com.stkj.plate.weight.home.ui.widget.charview.ChartBarView
             android:id="@+id/chartbarview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_170"

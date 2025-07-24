@@ -34,7 +34,7 @@
             android:textColor="@color/color_666666"
             android:textSize="@dimen/sp_8" />
 
-        <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+        <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
             android:id="@+id/seekbar_voice_size"
             android:layout_width="@dimen/dp_180"
             android:layout_height="@dimen/dp_19"
@@ -57,7 +57,7 @@
             android:textColor="@color/color_666666"
             android:textSize="@dimen/sp_8" />
 
-        <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+        <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
             android:id="@+id/seekbar_voice_speed"
             android:layout_width="@dimen/dp_180"
             android:layout_height="@dimen/dp_19"

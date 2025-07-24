@@ -33,7 +33,7 @@
             android:src="@mipmap/icon_canteen_label" />
 
         <!-- 侧边栏 -->
-        <com.stkj.cashier.home.ui.widget.HomeTabLayout
+        <com.stkj.plate.weight.home.ui.widget.HomeTabLayout
             android:id="@+id/htl_left_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -367,7 +367,7 @@
         android:layout_height="match_parent" />
 
 
-    <com.stkj.cashier.home.ui.widget.BindingHomeTitleLayout
+    <com.stkj.plate.weight.home.ui.widget.BindingHomeTitleLayout
         android:id="@+id/htl_consumer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -376,7 +376,7 @@
         app:isLightMode="true" />
 
     <!--提示布局-->
-    <com.stkj.cashier.home.ui.widget.WarningTipsView
+    <com.stkj.plate.weight.home.ui.widget.WarningTipsView
         android:id="@+id/warning_tips_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

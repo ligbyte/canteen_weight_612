@@ -87,7 +87,7 @@
         </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
 
         <!-- 订单列表 -->
-        <com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout
+        <com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout
             android:id="@+id/srl_record_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout>
+        </com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout>
 
     </com.stkj.common.ui.widget.shapelayout.ShapeLinearLayout>
 
@@ -162,7 +162,7 @@
                 android:textSize="@dimen/sp_8"
                 android:textStyle="bold" />
 
-            <com.stkj.cashier.stat.ui.weight.StatPieChart
+            <com.stkj.plate.weight.stat.ui.weight.StatPieChart
                 android:id="@+id/chart_consumer_amount"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

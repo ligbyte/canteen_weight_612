@@ -106,7 +106,7 @@
                     app:radiusT="@dimen/dp_4"
                     app:solidColorT="#EDF0F5" />
 
-            <com.stkj.cashier.pay.ui.weight.GoodsDetailInfoLayout
+            <com.stkj.plate.weight.pay.ui.weight.GoodsDetailInfoLayout
                 android:id="@+id/goods_detail_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

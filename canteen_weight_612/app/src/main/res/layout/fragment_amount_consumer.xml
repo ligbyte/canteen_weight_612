@@ -10,7 +10,7 @@
         android:layout_width="@dimen/dp_210"
         android:layout_height="match_parent" />
 
-    <com.stkj.cashier.pay.ui.weight.SimpleCalculator
+    <com.stkj.plate.weight.pay.ui.weight.SimpleCalculator
         android:id="@+id/sc_calc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

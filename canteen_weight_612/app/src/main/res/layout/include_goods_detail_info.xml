@@ -694,13 +694,13 @@
                 app:solidColorT="@color/white"
                 app:topLeftRadiusT="@dimen/dp_4" />
 
-            <com.stkj.cashier.pay.ui.weight.UploadPicItemLayout
+            <com.stkj.plate.weight.pay.ui.weight.UploadPicItemLayout
                 android:id="@+id/upload_item_pic1"
                 android:layout_width="@dimen/dp_66"
                 android:layout_height="@dimen/dp_66"
                 android:layout_marginLeft="@dimen/dp_11" />
 
-            <com.stkj.cashier.pay.ui.weight.UploadPicItemLayout
+            <com.stkj.plate.weight.pay.ui.weight.UploadPicItemLayout
                 android:id="@+id/upload_item_pic2"
                 android:layout_width="@dimen/dp_66"
                 android:layout_height="@dimen/dp_66"

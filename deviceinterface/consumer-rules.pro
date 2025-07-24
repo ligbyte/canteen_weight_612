@@ -1,1 +1,1 @@
--keep class com.stkj.deviceinterface.**{*;}
+-keep class com.plate.deviceinterface.**{*;}

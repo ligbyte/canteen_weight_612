@@ -293,7 +293,7 @@
                     android:textSize="@dimen/sp_7" />
 
             </LinearLayout>
-            <com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout
+            <com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout
                 android:id="@+id/srl_record_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -304,7 +304,7 @@
                     android:layout_height="match_parent"
                     android:scrollbars="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout>
+            </com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout>
             </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -343,7 +343,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="3"
                             android:layout_height="match_parent">
-                        <com.stkj.cashier.pay.ui.weight.OrderNameAutoSearchLayout
+                        <com.stkj.plate.weight.pay.ui.weight.OrderNameAutoSearchLayout
                             android:id="@+id/set_query_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -381,7 +381,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="3"
                             android:layout_height="match_parent">
-                        <com.stkj.cashier.pay.ui.weight.OrderNoAutoSearchLayout
+                        <com.stkj.plate.weight.pay.ui.weight.OrderNoAutoSearchLayout
                             android:id="@+id/set_query_order"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

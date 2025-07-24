@@ -145,7 +145,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_searchThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"
@@ -168,7 +168,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_GaThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"
@@ -191,7 +191,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_livenessThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"
@@ -214,7 +214,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_poseThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"
@@ -298,7 +298,7 @@
                         app:shapeSelectColor="@color/color_2261E0" />
                 </LinearLayout>
 
-                <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                     android:id="@+id/seekbar_detect_faceMinThreshold"
                     android:layout_width="@dimen/dp_180"
                     android:layout_height="@dimen/dp_19"
@@ -331,7 +331,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_resultSearchScoreThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"
@@ -356,7 +356,7 @@
                         android:textColor="@color/color_666666"
                         android:textSize="@dimen/sp_8" />
 
-                    <com.stkj.cashier.base.ui.widget.CommonSeekProgressBar
+                    <com.stkj.plate.weight.base.ui.widget.CommonSeekProgressBar
                         android:id="@+id/seekbar_add_faceMinThreshold"
                         android:layout_width="@dimen/dp_180"
                         android:layout_height="@dimen/dp_19"

@@ -156,7 +156,7 @@
         </LinearLayout>
         </FrameLayout>
 
-            <com.stkj.cashier.pay.ui.weight.CashierCalculator
+            <com.stkj.plate.weight.pay.ui.weight.CashierCalculator
                 android:id="@+id/sc_calc"
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_250"

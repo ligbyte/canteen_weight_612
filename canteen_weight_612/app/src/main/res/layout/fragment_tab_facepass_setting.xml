@@ -393,7 +393,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout
+            <com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout
                 android:id="@+id/srl_face_pass_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -403,7 +403,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </com.stkj.cashier.base.ui.widget.AppSmartRefreshLayout>
+            </com.stkj.plate.weight.base.ui.widget.AppSmartRefreshLayout>
 
             <TextView
                 android:id="@+id/tv_face_pass_empty"
