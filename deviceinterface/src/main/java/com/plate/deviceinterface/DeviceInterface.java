@@ -363,7 +363,7 @@ public abstract class DeviceInterface {
     }
 
     public ComponentName getLaunchActivity() {
-        return new ComponentName("com.stkj.cashier2", "com.stkj.cashier.home.ui.activity.MainActivity");
+        return new ComponentName("com.stkj.plate.weight", "com.stkj.plate.weight.home.ui.activity.MainActivity");
     }
 
     public int getConsumeLayRes() {

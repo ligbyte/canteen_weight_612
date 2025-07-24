@@ -148,6 +148,6 @@ dependencies {
 
 greendao {
     schemaVersion 1 // 数据库版本号
-    daoPackage 'com.stkj.cashier.base.greendao.generate'  // 设置 DaoMaster、DaoSession、Dao 包名
+    daoPackage 'com.stkj.plate.weight.base.greendao.generate'  // 设置 DaoMaster、DaoSession、Dao 包名
     targetGenDir 'src/main/java'  // 设置 DaoMaster、DaoSession、Dao 目录
 }
