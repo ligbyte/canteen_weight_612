@@ -33,6 +33,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.fastjson.JSON;
+import com.stkj.common.rx.AutoDisposeUtils;
+import com.stkj.common.rx.DefaultDisposeObserver;
 import com.stkj.plate.weight.BuildConfig;
 import com.stkj.plate.weight.MainApplication;
 import com.stkj.plate.weight.R;
@@ -68,6 +70,7 @@ import com.stkj.plate.weight.machine.utils.ToastUtils;
 import com.stkj.plate.weight.pay.helper.ConsumerModeHelper;
 import com.stkj.plate.weight.pay.model.BindFragmentBackEvent;
 import com.stkj.plate.weight.pay.model.BindFragmentSwitchEvent;
+import com.stkj.plate.weight.pay.model.FacePassRetryEvent;
 import com.stkj.plate.weight.pay.model.TTSSpeakEvent;
 import com.stkj.plate.weight.setting.data.DeviceSettingMMKV;
 import com.stkj.plate.weight.setting.data.ServerSettingMMKV;
@@ -103,7 +106,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -138,6 +143,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private String currentTrayNo;
     private int lossCount;
     private int totalCount;
+    private DefaultDisposeObserver<Long> canSpeakFacePassFailObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -880,17 +886,15 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                                 ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
                                 onTTSSpeakEvent(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));
                                 //flScreenWelcom.setVisibility(View.VISIBLE);
-
-
-//                                canSpeakFacePassFailObserver = new DefaultDisposeObserver<Long>() {
-//                                    @Override
-//                                    protected void onSuccess(Long aLong) {
-//                                        canSpeakFacePassFailObserver = null;
-//                                        EventBus.getDefault().post(new FacePassRetryEvent());
-//                                    }
-//                                };
-//                                //1秒之后重置
-//                                Observable.timer(3, TimeUnit.SECONDS).compose(RxTransformerUtils.mainSchedulers()).to(AutoDisposeUtils.onDestroyDispose(MainActivity.this)).subscribe(canSpeakFacePassFailObserver);
+                                canSpeakFacePassFailObserver = new DefaultDisposeObserver<Long>() {
+                                    @Override
+                                    protected void onSuccess(Long aLong) {
+                                        canSpeakFacePassFailObserver = null;
+                                        openYxDeviceSDK();
+                                    }
+                                };
+                                //3秒之后重置
+                                Observable.timer(3, TimeUnit.SECONDS).compose(RxTransformerUtils.mainSchedulers()).to(AutoDisposeUtils.onDestroyDispose(MainActivity.this)).subscribe(canSpeakFacePassFailObserver);
 
                             }
                         } catch (Exception e) {
@@ -903,6 +907,19 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     public void onError(Throwable e) {
                         //AppToast.toastMsg(e.getMessage());
                         Log.e(TAG, "limeplateBinding: " + e.getMessage());
+                        ToastUtils.toastMsgError("系统异常,请联系管理员");
+                        onTTSSpeakEvent(new TTSSpeakEvent("系统异常,请联系管理员"));
+                        //flScreenWelcom.setVisibility(View.VISIBLE);
+                        canSpeakFacePassFailObserver = new DefaultDisposeObserver<Long>() {
+                            @Override
+                            protected void onSuccess(Long aLong) {
+                                canSpeakFacePassFailObserver = null;
+                                openYxDeviceSDK();
+                            }
+                        };
+                        //3秒之后重置
+                        Observable.timer(3, TimeUnit.SECONDS).compose(RxTransformerUtils.mainSchedulers()).to(AutoDisposeUtils.onDestroyDispose(MainActivity.this)).subscribe(canSpeakFacePassFailObserver);
+
                     }
                 });
     }

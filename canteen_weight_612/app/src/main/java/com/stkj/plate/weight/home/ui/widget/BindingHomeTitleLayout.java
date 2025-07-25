@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import com.stkj.plate.weight.BuildConfig;
 import com.stkj.plate.weight.R;
 import com.stkj.plate.weight.base.device.DeviceManager;
+import com.stkj.plate.weight.base.ui.dialog.BindingPwdAlertDialogFragment;
+import com.stkj.plate.weight.base.utils.CommonDialogUtils;
 import com.stkj.plate.weight.home.callback.OnGetStoreInfoListener;
 import com.stkj.plate.weight.home.helper.SystemEventWatcherHelper;
 import com.stkj.plate.weight.home.model.StoreInfo;
@@ -121,11 +123,11 @@ public class BindingHomeTitleLayout extends FrameLayout implements SystemEventWa
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new BindFragmentSwitchEvent(1));
-//                CommonDialogUtils.showBindTipsDialog(context,"管理员密码", new BindingPwdAlertDialogFragment.OnSweetClickListener() {
-//                    @Override
-//                    public void onClick(BindingPwdAlertDialogFragment alertDialogFragment) {
-//                    }
-//                });
+                CommonDialogUtils.showBindTipsDialog(context,"管理员密码", new BindingPwdAlertDialogFragment.OnSweetClickListener() {
+                    @Override
+                    public void onClick(BindingPwdAlertDialogFragment alertDialogFragment) {
+                    }
+                });
             }
         });
         refreshDate();
