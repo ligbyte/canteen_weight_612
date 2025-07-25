@@ -107,7 +107,7 @@ public class HeartBeatHelper extends ActivityWeakRefHolder implements CountDownH
         }
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(HomeService.class)
-                .heartBeat(ParamsUtils.newMachineParamsMap())
+                .reportDeviceStatus(ParamsUtils.newMachineParamsMap())
                 .compose(RxTransformerUtils.mainSchedulers())
                 .to(AutoDisposeUtils.onDestroyDispose((LifecycleOwner) activityWithCheck))
                 .subscribe(new DefaultObserver<BaseNetResponse<HeartBeatInfo>>() {
@@ -297,6 +297,7 @@ public class HeartBeatHelper extends ActivityWeakRefHolder implements CountDownH
                                                 foodInfo.getUnitPriceMoney().getAmount(),
                                                 foodInfo.getUnitPriceMoney().getCentFactor(),
                                                 Integer.parseInt(TextUtils.isEmpty(foodInfo.getSort()) ?  "0" : foodInfo.getSort()),
+                                                0,
                                                 false,
                                                 foodInfo.getStatus(),
                                                 foodInfo.getTemplateId(),

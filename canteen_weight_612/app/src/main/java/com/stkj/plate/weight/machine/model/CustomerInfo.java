@@ -68,6 +68,7 @@ public class CustomerInfo {
     private String positionName;
     private String directorName;
     private String faceImg;
+    private String beginTime;
     private String endTime;
     private String customerNo;
     private int firstLogin;

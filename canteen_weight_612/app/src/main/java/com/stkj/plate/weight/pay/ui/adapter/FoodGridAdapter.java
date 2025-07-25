@@ -5,6 +5,7 @@ import android.content.Context;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.stkj.plate.weight.R;
+import com.stkj.plate.weight.base.utils.PriceUtils;
 import com.stkj.plate.weight.setting.model.FoodInfoTable;
 
 public class FoodGridAdapter extends BaseQuickAdapter<FoodInfoTable, BaseViewHolder> {
@@ -19,8 +20,14 @@ public class FoodGridAdapter extends BaseQuickAdapter<FoodInfoTable, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder holder, FoodInfoTable item) {
-//        holder.setText(R.id.tv_cai_name, item.getName());
-//        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()));
+        holder.setText(R.id.tv_cai_name, item.getName());
+        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()) + "/50g");
+
+        if (item.getHasChoose() == 1){
+            holder.setBackgroundResource(R.id.rl_root,R.mipmap.bg_selected);
+        }else {
+            holder.setBackgroundResource(R.id.rl_root,R.mipmap.bg_unselect);
+        }
 //        if (!TextUtils.isEmpty(item.getImgpath())) {
 //            Glide.with(context).load(item.getImgpath()).into((RoundImageView) holder.getView(R.id.iv_cai_icon));
 //        }else {

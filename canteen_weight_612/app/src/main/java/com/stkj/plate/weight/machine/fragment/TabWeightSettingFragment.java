@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -20,8 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.jakewharton.rxbinding4.view.RxView;
+import com.stkj.common.utils.TimeUtils;
 import com.stkj.plate.weight.BuildConfig;
 import com.stkj.plate.weight.MainApplication;
 import com.stkj.plate.weight.R;
@@ -94,6 +98,7 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
@@ -138,6 +143,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private TextView tv_app_version;
     private TextView tv_server_addr;
     private TextView tv_total_count;
+    private TextView tv_page_index;
     private BaseDialogFragment dialogFragment;
     private FoodGridAdapter foodGridAdapter;
     private FoodInfoTableDao foodInfoTableDao;
@@ -190,6 +196,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         ll_app_coast = (LinearLayout) findViewById(R.id.ll_app_coast);
         rl_coast_total = (RelativeLayout) findViewById(R.id.rl_coast_total);
         tv_total_count = (TextView) findViewById(R.id.tv_total_count);
+        tv_page_index = (TextView) findViewById(R.id.tv_page_index);
         rv_goods_storage_list_empty = (LinearLayout) findViewById(R.id.rv_goods_storage_list_empty);
         rv_goods_storage_list = (RecyclerView) findViewById(R.id.rv_goods_storage_list);
         stv_page_back = (ShapeTextView) findViewById(R.id.stv_page_back);
@@ -253,25 +260,41 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rv_goods_storage_list.addItemDecoration(new GridSpacingItemDecoration(4, 20, false));
         rv_goods_storage_list.setClipToPadding(false);
         rv_goods_storage_list.setClipChildren(false);
-//        rv_goods_storage_list.setVisibility(View.GONE);
-//        rv_goods_storage_list_empty.setVisibility(View.VISIBLE);
-        List<FoodInfoTable> foods = new ArrayList<>();
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foods.add(new FoodInfoTable());
-        foodGridAdapter.getData().clear();
-        foodGridAdapter.addData(foods);
-        foodGridAdapter.notifyDataSetChanged();
+        rv_goods_storage_list.setVisibility(View.GONE);
+        rv_goods_storage_list_empty.setVisibility(View.VISIBLE);
+//        List<FoodInfoTable> foods = new ArrayList<>();
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foods.add(new FoodInfoTable());
+//        foodGridAdapter.getData().clear();
+//        foodGridAdapter.addData(foods);
+//        foodGridAdapter.notifyDataSetChanged();
+        foodGridAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                foodGridAdapter.getData().get(position).setHasChoose(1);
+                daoSession.runInTx(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateChooseFood(position);
 
+                    }
+                });
+
+
+                foodGridAdapter.notifyDataSetChanged();
+
+            }
+        });
         rl_coast_total.setOnClickListener(this);
         rl_server_addr.setOnClickListener(this);
         tv_add_food.setOnClickListener(this);
@@ -304,6 +327,49 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         initTab();
         foodCategory("2");
     }
+
+    public void updateChooseFood(final int position) {
+        if (foodInfoTableDao == null){
+            initFoodInfoTableDao();
+        }
+        Schedulers.io().scheduleDirect(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "limenextPage refreshFourPageData: " + 355);
+                //totalCount = foodInfoTableDao.queryBuilder().where(FoodInfoTableDao.Properties.Status.eq(1)).count();
+                QueryBuilder<FoodInfoTable> qbCount   = foodInfoTableDao.queryBuilder();
+                qbCount.where(FoodInfoTableDao.Properties.Status.eq(1));
+                qbCount.where(FoodInfoTableDao.Properties.DeleteFlag.eq("NOT_DELETE"));
+
+                if (!TextUtils.isEmpty(queryPricingMethod)) {
+                    qbCount.where(FoodInfoTableDao.Properties.PricingMethod.eq(queryPricingMethod));
+                }
+
+                qbCount.where(FoodInfoTableDao.Properties.HasChoose.eq(1));
+
+                long totalCount = qbCount.count();
+                if (totalCount > 0){
+                    List<FoodInfoTable> foods   =  qbCount.list();
+                    for (FoodInfoTable foodInfoTable : foods) {
+                        foodInfoTable.setHasChoose(0);
+                        foodInfoTableDao.insertOrReplace(foodInfoTable);
+                    }
+
+
+                }
+
+                foodInfoTableDao.update(((FoodInfoTable)foodGridAdapter.getData().get(position)));
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        foodGridAdapter.notifyDataSetChanged();
+                    }
+                });
+
+            }
+        });
+    }
+
 
     private void initTab(){
 
@@ -475,9 +541,10 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     tv_sync_foods.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("菜品设置");
-
-//                    ToastUtil toastUtil2 = new ToastUtil(getActivity(), R.layout.toast_center_horizontal, "菜品更新成功");
-//                    toastUtil2.show();
+                    pageNumberGlobal = 0;
+                    initFoodInfoTableDao();
+                    foodInfoTableDao.detachAll();
+                    nextPage(pageNumberGlobal);
                 }
 
             }
@@ -551,7 +618,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 dialogFragment = CommonBindAlertDialogFragment.build()
                         .setAlertTitleTxt("提示")
                         .setAlertContentTxt("全量更新将删除本地数据库?")
-                        .setLeftNavTxt("确认重启")
+                        .setLeftNavTxt("确认")
                         .setLeftNavClickListener(new CommonBindAlertDialogFragment.OnSweetClickListener() {
                             @Override
                             public void onClick(CommonBindAlertDialogFragment alertDialogFragment) {
@@ -832,6 +899,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                                                 foodInfo.getUnitPriceMoney().getAmount(),
                                                 foodInfo.getUnitPriceMoney().getCentFactor(),
                                                 Integer.parseInt(TextUtils.isEmpty(foodInfo.getSort()) ?  "0" : foodInfo.getSort()),
+                                                0,
                                                 false,
                                                 foodInfo.getStatus(),
                                                 foodInfo.getTemplateId(),
@@ -944,7 +1012,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     }
 
     private void refreshPageCount(long currentPage,long totalPages) {
-        SpanUtils.with(tv_total_count)
+        SpanUtils.with(tv_page_index)
                 .append(String.valueOf(currentPage))
                 .setForegroundColor(mResources.getColor(R.color.color_3489F5))
                 .append(" /" + totalPages)
@@ -1035,19 +1103,19 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
                         if (totalPages == 1){
                             stv_page_back.setEnabled(false);
-                            stv_page_back.setTextColor(getActivity().getColor(R.color.color_999999));
-                            stv_page_back.setSolidColor(getActivity().getColor(R.color.color_E3E9F5));
+                            stv_page_back.setTextColor(getActivity().getColor(R.color.color_666666));
+                            stv_page_back.setSolidColor(getActivity().getColor(R.color.color_151C31));
                             stv_page_next.setEnabled(false);
-                            stv_page_next.setTextColor(getActivity().getColor(R.color.color_999999));
-                            stv_page_next.setSolidColor(getActivity().getColor(R.color.color_E3E9F5));
+                            stv_page_next.setTextColor(getActivity().getColor(R.color.color_666666));
+                            stv_page_next.setSolidColor(getActivity().getColor(R.color.color_151C31));
                         } else {
                             if (currentPage == totalPages) {
                                 stv_page_back.setEnabled(true);
-                                stv_page_back.setTextColor(getActivity().getColor(com.stkj.common.R.color.color_333333));
-                                stv_page_back.setSolidColor(getActivity().getColor(R.color.white));
+                                stv_page_back.setTextColor(getActivity().getColor(com.stkj.common.R.color.white));
+                                stv_page_back.setSolidColor(getActivity().getColor(R.color.color_253050));
                                 stv_page_next.setEnabled(false);
-                                stv_page_next.setTextColor(getActivity().getColor(R.color.color_999999));
-                                stv_page_next.setSolidColor(getActivity().getColor(R.color.color_E3E9F5));
+                                stv_page_next.setTextColor(getActivity().getColor(R.color.color_666666));
+                                stv_page_next.setSolidColor(getActivity().getColor(R.color.color_151C31));
 
                             } else if (currentPage == 1) {
                                 stv_page_back.setEnabled(false);
@@ -1059,11 +1127,11 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
                             } else if (currentPage < totalPages) {
                                 stv_page_back.setEnabled(true);
-                                stv_page_back.setTextColor(getActivity().getColor(com.stkj.common.R.color.color_333333));
-                                stv_page_back.setSolidColor(getActivity().getColor(R.color.white));
+                                stv_page_back.setTextColor(getActivity().getColor(com.stkj.common.R.color.white));
+                                stv_page_back.setSolidColor(getActivity().getColor(R.color.color_253050));
                                 stv_page_next.setEnabled(true);
-                                stv_page_next.setTextColor(getActivity().getColor(com.stkj.common.R.color.color_333333));
-                                stv_page_next.setSolidColor(getActivity().getColor(R.color.white));
+                                stv_page_next.setTextColor(getActivity().getColor(com.stkj.common.R.color.white));
+                                stv_page_next.setSolidColor(getActivity().getColor(R.color.color_253050));
 
                             }
 

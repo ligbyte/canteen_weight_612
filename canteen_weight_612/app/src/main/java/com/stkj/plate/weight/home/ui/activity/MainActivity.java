@@ -6,6 +6,8 @@ import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_GREEN_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RED_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_WHITE_TYPE;
 
+import static java.lang.Math.ceil;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -40,6 +42,11 @@ import com.stkj.plate.weight.MainApplication;
 import com.stkj.plate.weight.R;
 import com.stkj.plate.weight.base.callback.AppNetCallback;
 import com.stkj.plate.weight.base.device.DeviceManager;
+import com.stkj.plate.weight.base.greendao.AppGreenDaoOpenHelper;
+import com.stkj.plate.weight.base.greendao.GreenDBConstants;
+import com.stkj.plate.weight.base.greendao.generate.DaoMaster;
+import com.stkj.plate.weight.base.greendao.generate.DaoSession;
+import com.stkj.plate.weight.base.greendao.generate.FoodInfoTableDao;
 import com.stkj.plate.weight.base.model.BaseNetResponse;
 import com.stkj.plate.weight.base.net.AppNetManager;
 import com.stkj.plate.weight.base.net.ParamsUtils;
@@ -61,6 +68,7 @@ import com.stkj.plate.weight.home.ui.adapter.HomeTabPageAdapter;
 import com.stkj.plate.weight.home.ui.widget.BindingHomeTitleLayout;
 import com.stkj.plate.weight.home.ui.widget.HomeTitleLayout;
 import com.stkj.plate.weight.home.ui.widget.WarningTipsView;
+import com.stkj.plate.weight.machine.model.AddFoodPreBean;
 import com.stkj.plate.weight.machine.model.AddOrderFoodResult;
 import com.stkj.plate.weight.machine.model.DeviceFoodConsumeParam;
 import com.stkj.plate.weight.machine.model.PlateBinding;
@@ -88,6 +96,7 @@ import com.stkj.common.utils.ActivityUtils;
 import com.stkj.common.utils.AndroidUtils;
 import com.stkj.common.utils.FileUtils;
 import com.stkj.common.utils.KeyBoardUtils;
+import com.stkj.plate.weight.setting.model.FoodInfoTable;
 import com.youxin.myseriallib.base.Constants;
 import com.youxin.myseriallib.bean.DeviceDataCallBlack;
 import com.youxin.myseriallib.bean.DeviceInitCallBlack;
@@ -99,6 +108,8 @@ import com.youxin.myseriallib.serialDevices.YxDeviceSDK;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.database.Database;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -123,9 +134,14 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private FrameLayout flScreenWelcom;
     private TextView tv_food_name;
     private TextView tv_price_flag;
+    private TextView tv_success_name;
+    private TextView tv_success_unit_price;
     private TextView tv_price;
     private TextView tv_price_unit;
     private TextView tv_account_info;
+    private TextView tv_success_weight;
+    private TextView tv_success_price;
+    private TextView tv_success_order_price;
     private FrameLayout fl_screen_success;
     private WarningTipsView warning_tips_view;
     private HomeTabPageAdapter homeTabPageAdapter;
@@ -141,9 +157,11 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private YxDeviceSDK yxDeviceSDK;
     private YxDevicePortCtrl yxDevicePortCtrl;
     private String currentTrayNo;
-    private int lossCount;
-    private int totalCount;
+    public static String queryPricingMethod =  "2";
+    private FoodInfoTableDao foodInfoTableDao;
+    private DaoSession daoSession;
     private DefaultDisposeObserver<Long> canSpeakFacePassFailObserver;
+    private List<FoodInfoTable>  foods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,6 +235,55 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
     }
 
+    private void initFoodInfoTableDao() {
+
+        AppGreenDaoOpenHelper daoOpenHelper = new AppGreenDaoOpenHelper(AppManager.INSTANCE.getApplication(), GreenDBConstants.FACE_DB_NAME, null);
+        Database database = daoOpenHelper.getWritableDb();
+        DaoMaster daoMaster = new DaoMaster(database);
+        daoSession = daoMaster.newSession();
+        foodInfoTableDao = daoSession.getFoodInfoTableDao();
+
+    }
+
+    public void getChooseFood() {
+        if (foodInfoTableDao == null){
+            initFoodInfoTableDao();
+        }
+        Schedulers.io().scheduleDirect(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "limenextPage refreshFourPageData: " + 355);
+                //totalCount = foodInfoTableDao.queryBuilder().where(FoodInfoTableDao.Properties.Status.eq(1)).count();
+                QueryBuilder<FoodInfoTable> qbCount   = foodInfoTableDao.queryBuilder();
+                qbCount.where(FoodInfoTableDao.Properties.Status.eq(1));
+                qbCount.where(FoodInfoTableDao.Properties.DeleteFlag.eq("NOT_DELETE"));
+
+                if (!TextUtils.isEmpty(queryPricingMethod)) {
+                    qbCount.where(FoodInfoTableDao.Properties.PricingMethod.eq(queryPricingMethod));
+                }
+
+                qbCount.where(FoodInfoTableDao.Properties.HasChoose.eq(1));
+
+                long totalCount = qbCount.count();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (totalCount <= 0){
+                              initTvDefault();
+                        }else {
+                            foods   =  qbCount.list();
+                            initTvUnit(foods.get(0));
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+
     private void openYxDeviceSDK() {
         yxDeviceSDK = new YxDeviceSDK();
         if (yxDeviceSDK != null && (yxDevicePortCtrl == null || !yxDevicePortCtrl.isOpen())) {
@@ -285,6 +352,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initYxSDK() {
         try {
             Log.e("settingTAG", "isInit SN: " + DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber());
+            ToastUtils.toastMsgSuccess("sninit:" + DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber());
             YxDeviceSDK.InitSDK(this, DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(), new DeviceInitCallBlack() {
                 @Override
                 public void initStatus(boolean isInit, String message) {
@@ -334,20 +402,26 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         tv_price_unit = findViewById(R.id.tv_price_unit);
         fl_screen_success = findViewById(R.id.fl_screen_success);
         tv_account_info =  findViewById(R.id.tv_account_info);
+        tv_success_weight = findViewById(R.id.tv_success_weight);
+        tv_success_order_price = findViewById(R.id.tv_success_order_price);
+        tv_success_price = findViewById(R.id.tv_success_price);
+        tv_success_unit_price = findViewById(R.id.tv_success_unit_price);
+        tv_success_name = findViewById(R.id.tv_success_name);
+
         setTextViewStyles(tv_account_info);
         vp2Content = findViewById(R.id.vp2_content);
-        initTvDefault();
-        tv_food_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tv_food_name.getText().toString().equals("暂未选择菜品")){
-                    initTvUnit();
-                }else {
-                    fl_screen_success.setVisibility(View.VISIBLE);
-                    ledLightShow(LED_GREEN_TYPE);
-                }
-            }
-        });
+        getChooseFood();
+//        tv_food_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (tv_food_name.getText().toString().equals("暂未选择菜品")){
+//                    initTvUnit();
+//                }else {
+//                    fl_screen_success.setVisibility(View.VISIBLE);
+//                    ledLightShow(LED_GREEN_TYPE);
+//                }
+//            }
+//        });
     }
 
     private void initTvDefault() {
@@ -368,9 +442,11 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
     }
 
-    private void initTvUnit() {
-        tv_food_name.setText("小炒黄牛肉");
-        tv_price.setText(PriceUtils.formatPrice(99));
+    private void initTvUnit(FoodInfoTable foodInfoTable) {
+        tv_food_name.setText(foodInfoTable.getName());
+        tv_price.setText(PriceUtils.formatPrice(foodInfoTable.getUnitPriceMoney_amount()));
+        tv_success_name.setText(foodInfoTable.getName());
+        tv_success_unit_price.setText("￥" +  PriceUtils.formatPrice(foodInfoTable.getUnitPriceMoney_amount()) + "/1000g");
         tv_food_name.setTextColor(Color.parseColor("#FFFFFF"));
         warning_tips_view.setVisibility(View.GONE);
         tv_price_flag.setVisibility(View.VISIBLE);
@@ -688,7 +764,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             },1 * 1000);
             vp2Content.setVisibility(View.GONE);
             fl_screen_success.setVisibility(View.GONE);
-            initTvDefault();
+            getChooseFood();
             if (tv_food_name.getText().toString().equals("暂未选择菜品")){
                 ledLightShow(LED_RED_TYPE);
             }else {
@@ -765,16 +841,16 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
             if (!TextUtils.equals(currentTrayNo, message) && !TextUtils.isEmpty(message)){
                 currentTrayNo = message;
-                lossCount = 0;
-                totalCount = 0;
+//                lossCount = 0;
+//                totalCount = 0;
             }
 
             if (!TextUtils.isEmpty(currentTrayNo)){
-                if (!TextUtils.isEmpty(message)) {
-                    totalCount++;
-                }else{
-                    lossCount++;
-                }
+//                if (!TextUtils.isEmpty(message)) {
+//                    totalCount++;
+//                }else{
+//                    lossCount++;
+//                }
             }
 
             runOnUiThread(new Runnable() {
@@ -858,29 +934,23 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         paramsMap.put("plateCode", MainApplication.barcode);
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(MachineService.class)
-                .plateBinding(ParamsUtils.signSortParamsMap(paramsMap))
+                .addFoodPre(ParamsUtils.signSortParamsMap(paramsMap))
                 .compose(RxTransformerUtils.mainSchedulers())
-                .subscribe(new DefaultObserver<BaseNetResponse<PlateBinding>>() {
+                .subscribe(new DefaultObserver<BaseNetResponse<AddFoodPreBean>>() {
                     @Override
-                    protected void onSuccess(BaseNetResponse<PlateBinding> baseNetResponse) {
+                    protected void onSuccess(BaseNetResponse<AddFoodPreBean> baseNetResponse) {
                         Log.i(TAG, "limeplateBinding 336: " + JSON.toJSONString(baseNetResponse));
                         try {
 
-                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null && baseNetResponse.getData().getCustomerInfo() != null) {
+                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null && baseNetResponse.getData().getUser() != null) {
 
                                 flScreenWelcom.setVisibility(View.GONE);
                                 fl_screen_success.setVisibility(View.VISIBLE);
-//                                if (TextUtils.isEmpty(baseNetResponse.getData().getCustomerInfo().getFaceImg())){
-//                                    iv_icon.setImageResource(R.mipmap.icon_welcome_consumer);
-//                                }else {
-//                                    GlideApp.with(MainActivity.this).load(baseNetResponse.getData().getCustomerInfo().getFaceImg()).into(iv_icon);
-//                                }
-//                                tv_tips.setText("餐盘码:  " + MainApplication.barcode);
-//                                tv_user_name.setText("用户姓名：" + baseNetResponse.getData().getCustomerInfo().getName());
-//                                tv_user_balance.setText("餐卡余额：" + PriceUtils.formatPrice(baseNetResponse.getData().getAmount().getAmount()) + "元");
-//                                onTTSSpeakEvent(new TTSSpeakEvent("绑定成功，欢迎就餐"));
-//
-//                                startVerificationCountdown();
+                                ledLightShow(LED_GREEN_TYPE);
+                                tv_account_info.setText(baseNetResponse.getData().getUser().getName() + " · 账户余额：￥" +PriceUtils.formatPrice(baseNetResponse.getData().getAmount().getAmount()));
+                                updateWeightAndPrice(0,0,0);
+                                onTTSSpeakEvent(new TTSSpeakEvent("绑定成功，请取餐"));
+
 
                             } else {
                                 ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
@@ -922,6 +992,12 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
                     }
                 });
+    }
+
+    private void updateWeightAndPrice(double weight,double price,double orderPrice) {
+        tv_success_weight.setText(PriceUtils.formatPrice(weight));
+        tv_success_price.setText(PriceUtils.formatPrice(price));
+        tv_success_order_price.setText(PriceUtils.formatPrice(orderPrice));
     }
 
     /**

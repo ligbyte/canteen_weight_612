@@ -31,6 +31,12 @@ public interface HomeService {
     Observable<BaseNetResponse<HeartBeatInfo>> heartBeat(@QueryMap Map<String, String> params);
 
     /**
+     * 设备查询心跳接口
+     */
+    @GET("home/v2/index")
+    Observable<BaseNetResponse<HeartBeatInfo>> reportDeviceStatus(@QueryMap Map<String, String> params);
+
+    /**
      * 设备录入公司名称接口
      */
     @GET("home/v2/index")

@@ -36,7 +36,7 @@ public class BaseNetResponse<T> {
     }
 
     public boolean isSuccess() {
-        return TextUtils.equals("200", Code);
+        return TextUtils.equals("10000", Code);
     }
 
     public boolean isTokenInvalid() {

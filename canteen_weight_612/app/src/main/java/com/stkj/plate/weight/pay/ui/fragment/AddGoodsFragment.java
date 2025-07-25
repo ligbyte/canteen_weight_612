@@ -400,6 +400,7 @@ public class AddGoodsFragment extends BaseRecyclerFragment {
                                                 foodInfo.getUnitPriceMoney().getAmount(),
                                                 foodInfo.getUnitPriceMoney().getCentFactor(),
                                                 Integer.parseInt(TextUtils.isEmpty(foodInfo.getSort()) ?  "0" : foodInfo.getSort()),
+                                                0,
                                                 false,
                                                 foodInfo.getStatus(),
                                                 foodInfo.getTemplateId(),

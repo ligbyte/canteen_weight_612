@@ -44,13 +44,14 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
         public final static Property UnitPriceMoney_amount = new Property(17, double.class, "unitPriceMoney_amount", false, "UNIT_PRICE_MONEY_AMOUNT");
         public final static Property UnitPriceMoney_centFactor = new Property(18, String.class, "unitPriceMoney_centFactor", false, "UNIT_PRICE_MONEY_CENT_FACTOR");
         public final static Property Sort = new Property(19, int.class, "sort", false, "SORT");
-        public final static Property IsSelected = new Property(20, boolean.class, "isSelected", false, "IS_SELECTED");
-        public final static Property Status = new Property(21, int.class, "status", false, "STATUS");
-        public final static Property TemplateId = new Property(22, String.class, "templateId", false, "TEMPLATE_ID");
-        public final static Property Remark = new Property(23, String.class, "remark", false, "REMARK");
-        public final static Property InputGoodsInitPrice = new Property(24, String.class, "inputGoodsInitPrice", false, "INPUT_GOODS_INIT_PRICE");
-        public final static Property StandardGoodsCount = new Property(25, String.class, "standardGoodsCount", false, "STANDARD_GOODS_COUNT");
-        public final static Property WeightGoodsCount = new Property(26, String.class, "weightGoodsCount", false, "WEIGHT_GOODS_COUNT");
+        public final static Property HasChoose = new Property(20, int.class, "hasChoose", false, "HAS_CHOOSE");
+        public final static Property IsSelected = new Property(21, boolean.class, "isSelected", false, "IS_SELECTED");
+        public final static Property Status = new Property(22, int.class, "status", false, "STATUS");
+        public final static Property TemplateId = new Property(23, String.class, "templateId", false, "TEMPLATE_ID");
+        public final static Property Remark = new Property(24, String.class, "remark", false, "REMARK");
+        public final static Property InputGoodsInitPrice = new Property(25, String.class, "inputGoodsInitPrice", false, "INPUT_GOODS_INIT_PRICE");
+        public final static Property StandardGoodsCount = new Property(26, String.class, "standardGoodsCount", false, "STANDARD_GOODS_COUNT");
+        public final static Property WeightGoodsCount = new Property(27, String.class, "weightGoodsCount", false, "WEIGHT_GOODS_COUNT");
     }
 
 
@@ -86,13 +87,14 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
                 "\"UNIT_PRICE_MONEY_AMOUNT\" REAL NOT NULL ," + // 17: unitPriceMoney_amount
                 "\"UNIT_PRICE_MONEY_CENT_FACTOR\" TEXT," + // 18: unitPriceMoney_centFactor
                 "\"SORT\" INTEGER NOT NULL ," + // 19: sort
-                "\"IS_SELECTED\" INTEGER NOT NULL ," + // 20: isSelected
-                "\"STATUS\" INTEGER NOT NULL ," + // 21: status
-                "\"TEMPLATE_ID\" TEXT," + // 22: templateId
-                "\"REMARK\" TEXT," + // 23: remark
-                "\"INPUT_GOODS_INIT_PRICE\" TEXT," + // 24: inputGoodsInitPrice
-                "\"STANDARD_GOODS_COUNT\" TEXT," + // 25: standardGoodsCount
-                "\"WEIGHT_GOODS_COUNT\" TEXT);"); // 26: weightGoodsCount
+                "\"HAS_CHOOSE\" INTEGER NOT NULL ," + // 20: hasChoose
+                "\"IS_SELECTED\" INTEGER NOT NULL ," + // 21: isSelected
+                "\"STATUS\" INTEGER NOT NULL ," + // 22: status
+                "\"TEMPLATE_ID\" TEXT," + // 23: templateId
+                "\"REMARK\" TEXT," + // 24: remark
+                "\"INPUT_GOODS_INIT_PRICE\" TEXT," + // 25: inputGoodsInitPrice
+                "\"STANDARD_GOODS_COUNT\" TEXT," + // 26: standardGoodsCount
+                "\"WEIGHT_GOODS_COUNT\" TEXT);"); // 27: weightGoodsCount
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_FOOD_INFO_TABLE_DELETE_FLAG ON \"FOOD_INFO_TABLE\"" +
                 " (\"DELETE_FLAG\" ASC);");
@@ -106,6 +108,8 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
                 " (\"TYPE\" ASC);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_FOOD_INFO_TABLE_SORT ON \"FOOD_INFO_TABLE\"" +
                 " (\"SORT\" ASC);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_FOOD_INFO_TABLE_HAS_CHOOSE ON \"FOOD_INFO_TABLE\"" +
+                " (\"HAS_CHOOSE\" ASC);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_FOOD_INFO_TABLE_STATUS ON \"FOOD_INFO_TABLE\"" +
                 " (\"STATUS\" ASC);");
     }
@@ -199,32 +203,33 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
             stmt.bindString(19, unitPriceMoney_centFactor);
         }
         stmt.bindLong(20, entity.getSort());
-        stmt.bindLong(21, entity.getIsSelected() ? 1L: 0L);
-        stmt.bindLong(22, entity.getStatus());
+        stmt.bindLong(21, entity.getHasChoose());
+        stmt.bindLong(22, entity.getIsSelected() ? 1L: 0L);
+        stmt.bindLong(23, entity.getStatus());
  
         String templateId = entity.getTemplateId();
         if (templateId != null) {
-            stmt.bindString(23, templateId);
+            stmt.bindString(24, templateId);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(24, remark);
+            stmt.bindString(25, remark);
         }
  
         String inputGoodsInitPrice = entity.getInputGoodsInitPrice();
         if (inputGoodsInitPrice != null) {
-            stmt.bindString(25, inputGoodsInitPrice);
+            stmt.bindString(26, inputGoodsInitPrice);
         }
  
         String standardGoodsCount = entity.getStandardGoodsCount();
         if (standardGoodsCount != null) {
-            stmt.bindString(26, standardGoodsCount);
+            stmt.bindString(27, standardGoodsCount);
         }
  
         String weightGoodsCount = entity.getWeightGoodsCount();
         if (weightGoodsCount != null) {
-            stmt.bindString(27, weightGoodsCount);
+            stmt.bindString(28, weightGoodsCount);
         }
     }
 
@@ -311,32 +316,33 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
             stmt.bindString(19, unitPriceMoney_centFactor);
         }
         stmt.bindLong(20, entity.getSort());
-        stmt.bindLong(21, entity.getIsSelected() ? 1L: 0L);
-        stmt.bindLong(22, entity.getStatus());
+        stmt.bindLong(21, entity.getHasChoose());
+        stmt.bindLong(22, entity.getIsSelected() ? 1L: 0L);
+        stmt.bindLong(23, entity.getStatus());
  
         String templateId = entity.getTemplateId();
         if (templateId != null) {
-            stmt.bindString(23, templateId);
+            stmt.bindString(24, templateId);
         }
  
         String remark = entity.getRemark();
         if (remark != null) {
-            stmt.bindString(24, remark);
+            stmt.bindString(25, remark);
         }
  
         String inputGoodsInitPrice = entity.getInputGoodsInitPrice();
         if (inputGoodsInitPrice != null) {
-            stmt.bindString(25, inputGoodsInitPrice);
+            stmt.bindString(26, inputGoodsInitPrice);
         }
  
         String standardGoodsCount = entity.getStandardGoodsCount();
         if (standardGoodsCount != null) {
-            stmt.bindString(26, standardGoodsCount);
+            stmt.bindString(27, standardGoodsCount);
         }
  
         String weightGoodsCount = entity.getWeightGoodsCount();
         if (weightGoodsCount != null) {
-            stmt.bindString(27, weightGoodsCount);
+            stmt.bindString(28, weightGoodsCount);
         }
     }
 
@@ -368,13 +374,14 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
             cursor.getDouble(offset + 17), // unitPriceMoney_amount
             cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // unitPriceMoney_centFactor
             cursor.getInt(offset + 19), // sort
-            cursor.getShort(offset + 20) != 0, // isSelected
-            cursor.getInt(offset + 21), // status
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // templateId
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // remark
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // inputGoodsInitPrice
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // standardGoodsCount
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26) // weightGoodsCount
+            cursor.getInt(offset + 20), // hasChoose
+            cursor.getShort(offset + 21) != 0, // isSelected
+            cursor.getInt(offset + 22), // status
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // templateId
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // remark
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // inputGoodsInitPrice
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // standardGoodsCount
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27) // weightGoodsCount
         );
         return entity;
     }
@@ -401,13 +408,14 @@ public class FoodInfoTableDao extends AbstractDao<FoodInfoTable, String> {
         entity.setUnitPriceMoney_amount(cursor.getDouble(offset + 17));
         entity.setUnitPriceMoney_centFactor(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
         entity.setSort(cursor.getInt(offset + 19));
-        entity.setIsSelected(cursor.getShort(offset + 20) != 0);
-        entity.setStatus(cursor.getInt(offset + 21));
-        entity.setTemplateId(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setRemark(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setInputGoodsInitPrice(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
-        entity.setStandardGoodsCount(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setWeightGoodsCount(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setHasChoose(cursor.getInt(offset + 20));
+        entity.setIsSelected(cursor.getShort(offset + 21) != 0);
+        entity.setStatus(cursor.getInt(offset + 22));
+        entity.setTemplateId(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setRemark(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setInputGoodsInitPrice(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setStandardGoodsCount(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setWeightGoodsCount(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
      }
     
     @Override

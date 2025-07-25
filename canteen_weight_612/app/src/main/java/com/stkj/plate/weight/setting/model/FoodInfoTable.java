@@ -39,6 +39,9 @@ public class FoodInfoTable {
     @Index
     private int sort;
 
+    @Index
+    private int hasChoose = 0;
+
     private boolean isSelected = false;
     @Index
     private int status;
@@ -55,16 +58,22 @@ public class FoodInfoTable {
 
 
 
-    @Generated(hash = 1363088206)
+
+
+
+
+
+
+    @Generated(hash = 1894828291)
     public FoodInfoTable(String id, String tenantId, String deleteFlag,
             String createTime, String createUser, String updateTime,
             String updateUser, String restaurantId, String categoryMap, String name,
             String imgpath, String deviceId, int pricingMethod, String pricingUnit,
             int type, long unitPriceMoney_cent, String unitPriceMoney_currency,
             double unitPriceMoney_amount, String unitPriceMoney_centFactor,
-            int sort, boolean isSelected, int status, String templateId,
-            String remark, String inputGoodsInitPrice, String standardGoodsCount,
-            String weightGoodsCount) {
+            int sort, int hasChoose, boolean isSelected, int status,
+            String templateId, String remark, String inputGoodsInitPrice,
+            String standardGoodsCount, String weightGoodsCount) {
         this.id = id;
         this.tenantId = tenantId;
         this.deleteFlag = deleteFlag;
@@ -85,6 +94,7 @@ public class FoodInfoTable {
         this.unitPriceMoney_amount = unitPriceMoney_amount;
         this.unitPriceMoney_centFactor = unitPriceMoney_centFactor;
         this.sort = sort;
+        this.hasChoose = hasChoose;
         this.isSelected = isSelected;
         this.status = status;
         this.templateId = templateId;
@@ -97,6 +107,12 @@ public class FoodInfoTable {
     @Generated(hash = 431731772)
     public FoodInfoTable() {
     }
+
+
+
+
+
+
 
 
 
@@ -364,5 +380,13 @@ public class FoodInfoTable {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public int getHasChoose() {
+        return this.hasChoose;
+    }
+
+    public void setHasChoose(int hasChoose) {
+        this.hasChoose = hasChoose;
     }
 }

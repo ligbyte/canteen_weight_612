@@ -1,6 +1,7 @@
 package com.stkj.plate.weight.machine.service;
 
 import com.stkj.plate.weight.base.model.BaseNetResponse;
+import com.stkj.plate.weight.machine.model.AddFoodPreBean;
 import com.stkj.plate.weight.machine.model.AddOrderFoodResult;
 import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
 import com.stkj.plate.weight.machine.model.PlateBinding;
@@ -17,7 +18,7 @@ public interface MachineService {
      * 绑盘接口
      */
     @GET("home/v2/index")
-    Observable<BaseNetResponse<PlateBinding>> plateBinding(@QueryMap Map<String, String> requestParams);
+    Observable<BaseNetResponse<AddFoodPreBean>> addFoodPre(@QueryMap Map<String, String> requestParams);
 
 
     /**
@@ -27,7 +28,7 @@ public interface MachineService {
     Observable<BaseNetResponse<ConsumeDaySummaryResponse>> consumeDaySummary(@QueryMap Map<String, String> requestParams);
 
     /**
-     * 获取当日营业情况
+     * 加菜
      */
     @GET("home/v2/index")
     Observable<BaseNetResponse<AddOrderFoodResult>> addOrderFood(@QueryMap Map<String, String> requestParams);
