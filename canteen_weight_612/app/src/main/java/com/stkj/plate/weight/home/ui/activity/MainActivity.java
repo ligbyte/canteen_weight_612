@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -58,7 +59,10 @@ import com.stkj.plate.weight.home.ui.adapter.HomeTabPageAdapter;
 import com.stkj.plate.weight.home.ui.widget.BindingHomeTitleLayout;
 import com.stkj.plate.weight.home.ui.widget.HomeTitleLayout;
 import com.stkj.plate.weight.home.ui.widget.WarningTipsView;
+import com.stkj.plate.weight.machine.model.AddOrderFoodResult;
+import com.stkj.plate.weight.machine.model.DeviceFoodConsumeParam;
 import com.stkj.plate.weight.machine.model.PlateBinding;
+import com.stkj.plate.weight.machine.service.MachineService;
 import com.stkj.plate.weight.machine.utils.LedCtrlUtil;
 import com.stkj.plate.weight.machine.utils.ToastUtils;
 import com.stkj.plate.weight.pay.helper.ConsumerModeHelper;
@@ -69,7 +73,6 @@ import com.stkj.plate.weight.setting.data.DeviceSettingMMKV;
 import com.stkj.plate.weight.setting.data.ServerSettingMMKV;
 import com.stkj.plate.weight.setting.helper.AppUpgradeHelper;
 import com.stkj.plate.weight.setting.helper.StoreInfoHelper;
-import com.stkj.plate.weight.setting.service.SettingService;
 import com.stkj.common.core.AppManager;
 import com.stkj.common.core.CountDownHelper;
 import com.stkj.common.log.LogHelper;
@@ -95,7 +98,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -846,7 +851,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("addFoodPre");
         paramsMap.put("plateCode", MainApplication.barcode);
         RetrofitManager.INSTANCE.getDefaultRetrofit()
-                .create(SettingService.class)
+                .create(MachineService.class)
                 .plateBinding(ParamsUtils.signSortParamsMap(paramsMap))
                 .compose(RxTransformerUtils.mainSchedulers())
                 .subscribe(new DefaultObserver<BaseNetResponse<PlateBinding>>() {
@@ -888,6 +893,54 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 //                                Observable.timer(3, TimeUnit.SECONDS).compose(RxTransformerUtils.mainSchedulers()).to(AutoDisposeUtils.onDestroyDispose(MainActivity.this)).subscribe(canSpeakFacePassFailObserver);
 
                             }
+                        } catch (Exception e) {
+                            Log.e(TAG, "limeplateBinding 342: " + e.getMessage());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //AppToast.toastMsg(e.getMessage());
+                        Log.e(TAG, "limeplateBinding: " + e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * 加菜
+     */
+    @SuppressLint("AutoDispose")
+    public void addOrderFood() {
+        Log.i(TAG, "limefoodSyncCallback: " + 177);
+        TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("addOrderFood");
+
+        DeviceFoodConsumeParam deviceFoodConsumeParam = new DeviceFoodConsumeParam(DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(),
+                "customerId", MainApplication.barcode, "foodId", "foodName", 0, 0, new BigDecimal("0"), new BigDecimal("0"));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            paramsMap.put("deviceFoodConsumeParam", Base64.getEncoder().encodeToString(JSON.toJSONString(deviceFoodConsumeParam).getBytes()));
+        }
+        RetrofitManager.INSTANCE.getDefaultRetrofit()
+                .create(MachineService.class)
+                .addOrderFood(ParamsUtils.signSortParamsMap(paramsMap))
+                .compose(RxTransformerUtils.mainSchedulers())
+                .subscribe(new DefaultObserver<BaseNetResponse<AddOrderFoodResult>>() {
+                    @Override
+                    protected void onSuccess(BaseNetResponse<AddOrderFoodResult> baseNetResponse) {
+                        Log.i(TAG, "limeplateBinding 336: " + JSON.toJSONString(baseNetResponse));
+                        try {
+
+//                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null && baseNetResponse.getData().getCustomerInfo() != null) {
+//
+//
+//                            } else {
+//                                ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
+//                                EventBus.getDefault().post(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));
+//
+//                            }
+
                         } catch (Exception e) {
                             Log.e(TAG, "limeplateBinding 342: " + e.getMessage());
                         }

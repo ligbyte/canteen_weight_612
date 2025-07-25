@@ -35,6 +35,13 @@ public interface SettingService {
 
 
     /**
+     * 获取当日营业情况
+     */
+    @GET("home/v2/index")
+    Observable<BaseNetResponse<PlateBinding>> consumeDaySummary(@QueryMap Map<String, String> requestParams);
+
+
+    /**
      * 设备录入人员回调(同步)
      */
     @GET("home/v2/index")

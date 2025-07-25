@@ -41,7 +41,10 @@ import com.stkj.plate.weight.base.ui.dialog.FacePassSettingBindAlertFragment;
 import com.stkj.plate.weight.base.utils.CommonDialogUtils;
 import com.stkj.plate.weight.home.ui.widget.switchbutton.LimeSwitchButton;
 import com.stkj.plate.weight.machine.adapter.SettingBindTabInfoViewHolder;
+import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
+import com.stkj.plate.weight.machine.model.PlateBinding;
 import com.stkj.plate.weight.machine.model.SettingBindTabInfo;
+import com.stkj.plate.weight.machine.service.MachineService;
 import com.stkj.plate.weight.machine.utils.ToastUtils;
 import com.stkj.plate.weight.pay.data.PayConstants;
 import com.stkj.plate.weight.pay.goods.callback.GoodsAutoSearchListener;
@@ -1117,5 +1120,45 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 }
             }
         });
+    }
+
+
+    /**
+     * 获取当日营业情况
+     */
+    @SuppressLint("AutoDispose")
+    public void consumeDaySummary() {
+        Log.i(TAG, "limefoodSyncCallback: " + 177);
+        TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("consumeDaySummary");
+        RetrofitManager.INSTANCE.getDefaultRetrofit()
+                .create(MachineService.class)
+                .consumeDaySummary(ParamsUtils.signSortParamsMap(paramsMap))
+                .compose(RxTransformerUtils.mainSchedulers())
+                .subscribe(new DefaultObserver<BaseNetResponse<ConsumeDaySummaryResponse>>() {
+                    @Override
+                    protected void onSuccess(BaseNetResponse<ConsumeDaySummaryResponse> baseNetResponse) {
+                        Log.i(TAG, "limeplateBinding 336: " + JSON.toJSONString(baseNetResponse));
+                        try {
+
+//                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null && baseNetResponse.getData().getCustomerInfo() != null) {
+//
+//
+//                            } else {
+//                                ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
+//                                EventBus.getDefault().post(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));
+//
+//                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "limeplateBinding 342: " + e.getMessage());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //AppToast.toastMsg(e.getMessage());
+                        Log.e(TAG, "limeplateBinding: " + e.getMessage());
+                    }
+                });
     }
 }
