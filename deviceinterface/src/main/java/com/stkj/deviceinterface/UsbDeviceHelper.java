@@ -1,4 +1,4 @@
-package com.plate.deviceinterface;
+package com.stkj.deviceinterface;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.stkj.common.core.ActivityWeakRefHolder;
 import com.stkj.common.log.LogHelper;
-import com.plate.deviceinterface.callback.UsbDeviceListener;
+import com.stkj.deviceinterface.callback.UsbDeviceListener;
 
 import java.util.HashMap;
 import java.util.HashSet;

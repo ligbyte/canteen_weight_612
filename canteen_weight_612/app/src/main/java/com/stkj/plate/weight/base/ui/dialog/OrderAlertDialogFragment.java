@@ -26,8 +26,8 @@ import com.stkj.common.log.LogHelper;
 import com.stkj.common.ui.fragment.BaseDialogFragment;
 import com.stkj.common.ui.toast.AppToast;
 import com.stkj.common.ui.widget.shapelayout.ShapeTextView;
-import com.plate.deviceinterface.callback.OnPrintListener;
-import com.plate.deviceinterface.model.PrinterData;
+import com.stkj.deviceinterface.callback.OnPrintListener;
+import com.stkj.deviceinterface.model.PrinterData;
 
 import org.greenrobot.eventbus.EventBus;
 

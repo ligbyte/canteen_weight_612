@@ -84,7 +84,7 @@ import com.stkj.common.ui.widget.shapelayout.ShapeTextView;
 import com.stkj.common.ui.widget.tabs.RoundTabLayout;
 import com.stkj.common.utils.BigDecimalUtils;
 import com.stkj.common.utils.SpanUtils;
-import com.plate.deviceinterface.callback.OnReadWeightListener;
+import com.stkj.deviceinterface.callback.OnReadWeightListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

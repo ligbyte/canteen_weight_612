@@ -3,7 +3,7 @@ package com.stkj.plate.weight.setting.data;
 import com.stkj.plate.weight.base.utils.JacksonUtils;
 import com.stkj.plate.weight.pay.data.PayConstants;
 import com.stkj.plate.weight.pay.model.LocalConsumerRecord;
-import com.plate.deviceinterface.model.DeviceHardwareInfo;
+import com.stkj.deviceinterface.model.DeviceHardwareInfo;
 import com.tencent.mmkv.MMKV;
 
 /**

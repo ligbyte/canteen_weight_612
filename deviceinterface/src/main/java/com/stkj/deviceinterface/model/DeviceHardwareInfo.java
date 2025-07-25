@@ -1,4 +1,4 @@
-package com.plate.deviceinterface.model;
+package com.stkj.deviceinterface.model;
 
 import android.hardware.usb.UsbDevice;
 

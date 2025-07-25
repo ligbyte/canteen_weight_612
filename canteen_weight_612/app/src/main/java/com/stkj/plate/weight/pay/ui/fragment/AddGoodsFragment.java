@@ -42,7 +42,7 @@ import com.stkj.common.ui.fragment.BaseRecyclerFragment;
 import com.stkj.common.ui.toast.AppToast;
 import com.stkj.common.ui.widget.shapelayout.ShapeTextView;
 import com.stkj.common.utils.TimeUtils;
-import com.plate.deviceinterface.callback.OnScanQRCodeListener;
+import com.stkj.deviceinterface.callback.OnScanQRCodeListener;
 import com.stkj.plate.weight.pay.goods.callback.OnGoodsCateSpecListener;
 import com.stkj.plate.weight.pay.goods.model.GoodsBaseInfo;
 

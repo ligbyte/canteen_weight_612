@@ -1,4 +1,4 @@
-package com.plate.telpo_d2;
+package com.stkj.plate.telpo_d2;
 
 import android.content.Context;
 

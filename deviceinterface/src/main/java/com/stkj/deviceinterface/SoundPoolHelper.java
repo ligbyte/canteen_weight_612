@@ -1,9 +1,8 @@
-package com.plate.deviceinterface;
+package com.stkj.deviceinterface;
 
 import android.media.SoundPool;
 
 import com.stkj.common.core.AppManager;
-import com.stkj.deviceinterface.R;
 
 public enum SoundPoolHelper {
     INSTANCE;

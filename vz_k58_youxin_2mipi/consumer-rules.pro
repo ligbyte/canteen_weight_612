@@ -1,1 +1,1 @@
--keep class com.plate.device.**{*;}
+-keep class com.stkj.device.**{*;}

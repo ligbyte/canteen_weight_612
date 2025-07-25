@@ -3,7 +3,7 @@ package com.stkj.plate.weight.base.device;
 import android.content.Context;
 import android.util.Log;
 
-import com.plate.deviceinterface.DeviceInterface;
+import com.stkj.deviceinterface.DeviceInterface;
 import com.stkj.plate.weight.BuildConfig;
 
 public enum DeviceManager {

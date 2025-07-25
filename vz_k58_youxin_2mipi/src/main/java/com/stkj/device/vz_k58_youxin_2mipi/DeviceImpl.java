@@ -1,4 +1,4 @@
-package com.plate.device.vz_k58_youxin_2mipi;
+package com.stkj.device.vz_k58_youxin_2mipi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,15 +9,15 @@ import android.view.KeyEvent;
 
 import com.stkj.common.log.LogHelper;
 import com.stkj.common.ui.toast.AppToast;
-import com.plate.deviceinterface.DeviceInterface;
-import com.plate.deviceinterface.ScanKeyManager;
-import com.plate.deviceinterface.callback.OnMoneyBoxListener;
-import com.plate.deviceinterface.callback.OnPrintListener;
-import com.plate.deviceinterface.callback.OnReadICCardListener;
-import com.plate.deviceinterface.callback.OnReadWeightListener;
-import com.plate.deviceinterface.callback.OnScanQRCodeListener;
-import com.plate.deviceinterface.model.DeviceHardwareInfo;
-import com.plate.deviceinterface.model.PrinterData;
+import com.stkj.deviceinterface.DeviceInterface;
+import com.stkj.deviceinterface.ScanKeyManager;
+import com.stkj.deviceinterface.callback.OnMoneyBoxListener;
+import com.stkj.deviceinterface.callback.OnPrintListener;
+import com.stkj.deviceinterface.callback.OnReadICCardListener;
+import com.stkj.deviceinterface.callback.OnReadWeightListener;
+import com.stkj.deviceinterface.callback.OnScanQRCodeListener;
+import com.stkj.deviceinterface.model.DeviceHardwareInfo;
+import com.stkj.deviceinterface.model.PrinterData;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

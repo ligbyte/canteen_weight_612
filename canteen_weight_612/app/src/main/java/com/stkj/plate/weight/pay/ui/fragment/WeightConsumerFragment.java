@@ -25,7 +25,7 @@ import com.stkj.common.ui.toast.AppToast;
 import com.stkj.common.ui.widget.common.CircleProgressBar;
 import com.stkj.common.utils.BigDecimalUtils;
 import com.stkj.common.utils.FragmentUtils;
-import com.plate.deviceinterface.callback.OnReadWeightListener;
+import com.stkj.deviceinterface.callback.OnReadWeightListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

@@ -1,4 +1,4 @@
-package com.plate.deviceinterface;
+package com.stkj.deviceinterface;
 
 import android.view.KeyEvent;
 

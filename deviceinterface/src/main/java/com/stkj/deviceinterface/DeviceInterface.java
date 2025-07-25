@@ -1,4 +1,4 @@
-package com.plate.deviceinterface;
+package com.stkj.deviceinterface;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -14,14 +14,14 @@ import com.stkj.common.log.LogHelper;
 import com.stkj.common.ui.activity.BaseActivity;
 import com.stkj.common.utils.ActivityUtils;
 import com.stkj.common.utils.AndroidUtils;
-import com.plate.deviceinterface.callback.DeviceStatusListener;
-import com.plate.deviceinterface.callback.OnMoneyBoxListener;
-import com.plate.deviceinterface.callback.OnPrintListener;
-import com.plate.deviceinterface.callback.OnReadICCardListener;
-import com.plate.deviceinterface.callback.OnReadWeightListener;
-import com.plate.deviceinterface.callback.OnScanQRCodeListener;
-import com.plate.deviceinterface.model.DeviceHardwareInfo;
-import com.plate.deviceinterface.model.PrinterData;
+import com.stkj.deviceinterface.callback.DeviceStatusListener;
+import com.stkj.deviceinterface.callback.OnMoneyBoxListener;
+import com.stkj.deviceinterface.callback.OnPrintListener;
+import com.stkj.deviceinterface.callback.OnReadICCardListener;
+import com.stkj.deviceinterface.callback.OnReadWeightListener;
+import com.stkj.deviceinterface.callback.OnScanQRCodeListener;
+import com.stkj.deviceinterface.model.DeviceHardwareInfo;
+import com.stkj.deviceinterface.model.PrinterData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -363,7 +363,7 @@ public abstract class DeviceInterface {
     }
 
     public ComponentName getLaunchActivity() {
-        return new ComponentName("com.stkj.plate.weight", "com.stkj.plate.weight.home.ui.activity.MainActivity");
+        return new ComponentName("com.stkj.cashier2", "com.stkj.cashier.home.ui.activity.MainActivity");
     }
 
     public int getConsumeLayRes() {

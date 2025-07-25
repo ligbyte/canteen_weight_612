@@ -2,7 +2,7 @@ package com.stkj.plate.weight.base.device;
 
 import android.content.Context;
 
-import com.plate.deviceinterface.DeviceInterface;
+import com.stkj.deviceinterface.DeviceInterface;
 
 /**
  * 默认设备接口实现

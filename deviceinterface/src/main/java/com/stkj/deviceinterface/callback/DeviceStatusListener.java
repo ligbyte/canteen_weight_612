@@ -1,6 +1,6 @@
-package com.plate.deviceinterface.callback;
+package com.stkj.deviceinterface.callback;
 
-import com.plate.deviceinterface.model.DeviceHardwareInfo;
+import com.stkj.deviceinterface.model.DeviceHardwareInfo;
 
 public interface DeviceStatusListener {
     void onAttachDevice(DeviceHardwareInfo deviceHardwareInfo);

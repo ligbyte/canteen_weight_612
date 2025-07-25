@@ -29,8 +29,8 @@ import com.stkj.common.rx.DefaultDisposeObserver;
 import com.stkj.common.rx.DefaultObserver;
 import com.stkj.common.rx.RxTransformerUtils;
 import com.stkj.common.ui.fragment.BaseRecyclerFragment;
-import com.plate.deviceinterface.callback.OnReadICCardListener;
-import com.plate.deviceinterface.callback.OnScanQRCodeListener;
+import com.stkj.deviceinterface.callback.OnReadICCardListener;
+import com.stkj.deviceinterface.callback.OnScanQRCodeListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

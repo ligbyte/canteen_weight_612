@@ -1,4 +1,4 @@
-package com.plate.device.vz_k58_youxin_2mipi;
+package com.stkj.device.vz_k58_youxin_2mipi;
 
 import java.math.BigInteger;
 import java.util.Arrays;

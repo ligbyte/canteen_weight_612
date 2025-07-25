@@ -1,4 +1,4 @@
-package com.plate.deviceinterface.callback;
+package com.stkj.deviceinterface.callback;
 
 import android.hardware.usb.UsbDevice;
 

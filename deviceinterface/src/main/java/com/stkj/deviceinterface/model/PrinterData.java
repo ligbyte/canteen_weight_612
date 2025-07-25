@@ -1,4 +1,4 @@
-package com.plate.deviceinterface.model;
+package com.stkj.deviceinterface.model;
 
 /**
  * 打印机一行文本
