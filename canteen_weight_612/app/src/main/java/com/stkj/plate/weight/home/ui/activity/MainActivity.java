@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                 warning_tips_view.delayHideTipsView();
                 getWeakRefHolder(TTSVoiceHelper.class).speakByTTSVoice("请先选择菜品");
             }
-        }, 6 * 1000);
+        }, 3 * 1000);
 
     }
 

@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.core.Observable;
 /**
  * 间隔时间回调
  */
-public class CountDownHelper extends ActivityWeakRefHolder {
+public class CountDownHelper extends com.stkj.common.core.ActivityWeakRefHolder {
 
     //默认一秒钟
     private long intervalTime = 1000;
