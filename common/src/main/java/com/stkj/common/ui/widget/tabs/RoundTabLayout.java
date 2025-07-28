@@ -56,8 +56,8 @@ public class RoundTabLayout extends HorizontalScrollView implements ViewPager.On
     private void init(Context context, AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundTabLayout);
-            tabStrokeColor = typedArray.getColor(R.styleable.RoundTabLayout_accent, 0x00ffffff);
-            cornerRadius = typedArray.getInt(R.styleable.RoundTabLayout_corner1Radius, 50);
+            tabStrokeColor = typedArray.getColor(R.styleable.RoundTabLayout_accent, 0x1a2d4e);
+            cornerRadius = typedArray.getInt(R.styleable.RoundTabLayout_corner1Radius, 40);
             hasStroke = typedArray.getBoolean(R.styleable.RoundTabLayout_withStroke, true);
             iconRes = typedArray.getDrawable(R.styleable.RoundTabLayout_src);
             typedArray.recycle();
@@ -67,11 +67,11 @@ public class RoundTabLayout extends HorizontalScrollView implements ViewPager.On
                 if (background instanceof ColorDrawable) {
                     tabBackColor = ((ColorDrawable) background).getColor();
                 } else {
-                    tabBackColor = 0xffffff; // default fallback
+                    tabBackColor = 0x1a2d4e; // default fallback
                 }
             } catch (ClassCastException e) {
                 Log.d(TAG, "Tab layout background color Class Cast Exception");
-                tabBackColor = 0xffffff;
+                tabBackColor = 0x1a2d4e;
             }
         }
 
@@ -104,11 +104,11 @@ public class RoundTabLayout extends HorizontalScrollView implements ViewPager.On
             RoundTab tab = new RoundTab(getContext(), cornerRadius, iconRes, hasStroke).initTab(tabText);
 
             if (i == viewPager.getCurrentItem()) {
-                tab.setTabBackgroundColor(tabStrokeColor);
+                tab.setTabBackgroundColor(Color.parseColor("#2196F3"));
                 tab.setTabTextColor(Color.parseColor("#FFFFFF"));
             } else {
-                tab.setTabBackgroundColor(Color.parseColor("#FFFFFF"));
-                tab.setTabTextColor(Color.parseColor("#666666"));
+                tab.setTabBackgroundColor(Color.parseColor("#1a2d4e"));
+                tab.setTabTextColor(Color.parseColor("#FFFFFF"));
             }
 
             tab.setTabStrokeColor(tabStrokeColor);
@@ -181,19 +181,19 @@ public class RoundTabLayout extends HorizontalScrollView implements ViewPager.On
 
         switch (animType) {
             case ANIMATION_FADE_IN:
-                tabBackgroundFrom = 0xffffff;
+                tabBackgroundFrom = 0x1a2d4e;
                 tabBackgroundTo = Color.parseColor("#2196F3");
                 contentColorFrom = tabStrokeColor;
                 contentColorTo = Color.parseColor("#FFFFFF");
                 break;
             case ANIMATION_FADE_OUT:
                 tabBackgroundFrom = Color.parseColor("#2196F3");
-                tabBackgroundTo = Color.parseColor("#FFFFFF");
+                tabBackgroundTo = Color.parseColor("#1a2d4e");
                 contentColorFrom = tabBackColor;
-                contentColorTo = Color.parseColor("#666666");
+                contentColorTo = Color.parseColor("#FFFFFF");
                 break;
             default:
-                tabBackgroundFrom = 0x00ffffff;
+                tabBackgroundFrom = 0x1a2d4e;
                 tabBackgroundTo = tabStrokeColor;
                 contentColorFrom = tabStrokeColor;
                 contentColorTo = tabBackColor;

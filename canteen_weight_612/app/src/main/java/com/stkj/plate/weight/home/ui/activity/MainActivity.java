@@ -352,7 +352,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private void initYxSDK() {
         try {
             Log.e("settingTAG", "isInit SN: " + DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber());
-            ToastUtils.toastMsgSuccess("sninit:" + DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber());
+            //ToastUtils.toastMsgSuccess("sninit:" + DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber());
             YxDeviceSDK.InitSDK(this, DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(), new DeviceInitCallBlack() {
                 @Override
                 public void initStatus(boolean isInit, String message) {
@@ -948,7 +948,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                                 fl_screen_success.setVisibility(View.VISIBLE);
                                 ledLightShow(LED_GREEN_TYPE);
                                 tv_account_info.setText(baseNetResponse.getData().getUser().getName() + " · 账户余额：￥" +PriceUtils.formatPrice(baseNetResponse.getData().getAmount().getAmount()));
-                                updateWeightAndPrice(0,0,0);
+                                updateWeightAndPrice(0,0,baseNetResponse.getData().getOrderAmount().getAmount());
                                 onTTSSpeakEvent(new TTSSpeakEvent("绑定成功，请取餐"));
 
 

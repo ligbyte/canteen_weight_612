@@ -11,6 +11,7 @@ public class DeviceSettingMMKV {
     public static final String KEY_SCREEN_PROTECT_NAME = "screen_protect_time";
     public static final String KEY_OPEN_SYS_LOG = "open_sys_log";
     public static final String KEY_WARNING_SWITCH = "key_warning_switch";
+    public static final String KEY_COAST_WARNING_SWITCH = "key_coast_warning_switch";
 
     public static void putScreenProtectTime(int interval) {
         MMKV serverSettingMMKV = getSettingMMKV();
@@ -39,6 +40,15 @@ public class DeviceSettingMMKV {
 
     public static void putOpenWarning(boolean openWarning) {
         getSettingMMKV().putBoolean(KEY_WARNING_SWITCH, openWarning);
+    }
+
+    public static boolean isOpenCoastWarning() {
+        MMKV mmkv = getSettingMMKV();
+        return mmkv.getBoolean(KEY_COAST_WARNING_SWITCH, true);
+    }
+
+    public static void putOpenCoastWarning(boolean openWarning) {
+        getSettingMMKV().putBoolean(KEY_COAST_WARNING_SWITCH, openWarning);
     }
 
 

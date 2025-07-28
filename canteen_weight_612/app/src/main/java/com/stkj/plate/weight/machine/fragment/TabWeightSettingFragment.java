@@ -25,7 +25,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.jakewharton.rxbinding4.view.RxView;
-import com.stkj.common.utils.TimeUtils;
 import com.stkj.plate.weight.BuildConfig;
 import com.stkj.plate.weight.MainApplication;
 import com.stkj.plate.weight.R;
@@ -43,6 +42,7 @@ import com.stkj.plate.weight.base.ui.dialog.CommonBindAlertDialogFragment;
 import com.stkj.plate.weight.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.plate.weight.base.ui.dialog.FacePassSettingBindAlertFragment;
 import com.stkj.plate.weight.base.utils.CommonDialogUtils;
+import com.stkj.plate.weight.home.model.StoreInfo;
 import com.stkj.plate.weight.home.ui.widget.switchbutton.LimeSwitchButton;
 import com.stkj.plate.weight.machine.adapter.SettingBindTabInfoViewHolder;
 import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
@@ -69,6 +69,7 @@ import com.stkj.plate.weight.setting.callback.FacePassSettingCallback;
 import com.stkj.plate.weight.setting.data.DeviceSettingMMKV;
 import com.stkj.plate.weight.setting.data.PaymentSettingMMKV;
 import com.stkj.plate.weight.setting.helper.AppUpgradeHelper;
+import com.stkj.plate.weight.setting.helper.StoreInfoHelper;
 import com.stkj.plate.weight.setting.model.FoodBean;
 import com.stkj.plate.weight.setting.model.FoodInfoTable;
 import com.stkj.plate.weight.setting.model.FoodListInfo;
@@ -139,6 +140,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private RecyclerView rv_goods_storage_list;
     private GoodsAutoSearchLayout goods_auto_search;
     private LimeSwitchButton switch_warning;
+    private LimeSwitchButton switch_coast_warning;
     private TextView tv_face_count;
     private TextView tv_app_version;
     private TextView tv_server_addr;
@@ -179,6 +181,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         tv_title_name = (TextView) findViewById(R.id.tv_title_name);
         tv_sync_foods = (TextView) findViewById(R.id.tv_sync_foods);
         switch_warning = (LimeSwitchButton) findViewById(R.id.switch_warning);
+        switch_coast_warning = (LimeSwitchButton) findViewById(R.id.switch_coast_warning);
         tv_add_food = (TextView) findViewById(R.id.tv_add_food);
         goodsDetailLay = (GoodsWeightDetailInfoLayout) findViewById(R.id.goods_detail_lay);
         tv_face_count = (TextView) findViewById(R.id.tv_face_count);
@@ -324,8 +327,20 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             switch_warning.toggleOff();
         }
 
-        initTab();
-        foodCategory("2");
+
+        switch_coast_warning.setOnToggleChanged(new LimeSwitchButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                DeviceSettingMMKV.putOpenCoastWarning(on);
+            }
+        });
+
+        if (DeviceSettingMMKV.isOpenCoastWarning()){
+            switch_coast_warning.toggleOn();
+        }else {
+            switch_coast_warning.toggleOff();
+        }
+
     }
 
     public void updateChooseFood(final int position) {
@@ -541,6 +556,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     tv_sync_foods.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("菜品设置");
+                    initTab();
+                    foodCategory("2");
                     pageNumberGlobal = 0;
                     initFoodInfoTableDao();
                     foodInfoTableDao.detachAll();
@@ -637,7 +654,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             rvTopTab.setVisibility(View.GONE);
             tv_title_name.setText("新增菜品");
             tv_sync_foods.setText("保存");
-
+            //设备信息
+            StoreInfoHelper storeInfoHelper = mActivity.getWeakRefHolder(StoreInfoHelper.class);
+            StoreInfo storeInfo = storeInfoHelper.getStoreInfo();
+            if (storeInfo != null) {
+                //goodsDetailLay.getEt_goods_canting().setText(storeInfo.getCompany());
+                goodsDetailLay.getEt_goods_chuangkou().setText(storeInfo.getDeviceName());
+            }
         }else if (v.getId() == R.id.stv_page_back){
             if (pageNumberGlobal < 0){
                 return;
@@ -843,6 +866,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                         Log.d(TAG, "limefoodSyncCallback: " + 322);
                         ToastUtils.toastMsgSuccess("菜品更新成功");
                         EventBus.getDefault().post(new RefreshUpdateGoodsEvent());
+                        pageNumberGlobal = 0;
+                        nextPage(pageNumberGlobal);
                     }
 
                     @Override

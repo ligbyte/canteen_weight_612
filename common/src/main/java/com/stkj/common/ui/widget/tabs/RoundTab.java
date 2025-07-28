@@ -16,8 +16,8 @@ public class RoundTab extends View {
     private final float INNER_VERTICAL_PADDING = DimensUtils.dpToPx(getContext(), 10f);
     private final float INNER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 10f) * 2;
 
-    private final float OUTER_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 10f);
-    private final float OUTER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 6f);
+    private final float OUTER_HORIZONTAL_EDGE_PADDING = DimensUtils.dpToPx(getContext(), 5f);
+    private final float OUTER_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 3f);
 
     private final int ICON_SIZE = DimensUtils.dpToPx(getContext(), 24);
     private final int ICON_HORIZONTAL_PADDING = DimensUtils.dpToPx(getContext(), 8);
@@ -31,7 +31,7 @@ public class RoundTab extends View {
     private Paint textPaint;
 
     private int tabBackgroundColor = Color.parseColor("#FFFFFF");
-    private int tabStrokeColor = 0;
+    private int tabStrokeColor = Color.parseColor("#1a2d4e");
     private int tabTextColor = Color.parseColor("#666666");
     private int tabIconColor = Color.parseColor("#FFFFFF");
 
@@ -86,10 +86,15 @@ public class RoundTab extends View {
 
         tabStrokePaint.setStyle(Paint.Style.STROKE);
         tabStrokePaint.setColor(tabStrokeColor);
-        tabStrokePaint.setStrokeWidth(DimensUtils.dpToPx(getContext(), 1.5f));
+        tabStrokePaint.setStrokeWidth(DimensUtils.dpToPx(getContext(), 2f));
         tabStrokePaint.setAntiAlias(true);
 
-        tabPaint.setStyle(Paint.Style.FILL);
+        if (tabBackgroundColor == Color.parseColor("#1a2d4e")) {
+            tabPaint.setStyle(Paint.Style.STROKE);
+        }else {
+            tabPaint.setStyle(Paint.Style.FILL);
+        }
+
         tabPaint.setColor(tabBackgroundColor);
         tabPaint.setStrokeWidth(DimensUtils.dpToPx(getContext(), 1.5f));
         tabPaint.setAntiAlias(true);
