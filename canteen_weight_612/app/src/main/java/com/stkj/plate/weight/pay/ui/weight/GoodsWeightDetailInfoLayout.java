@@ -76,7 +76,7 @@ public class GoodsWeightDetailInfoLayout extends FrameLayout {
     private String[] mTabs = {};
     private FoodInfoTableDao foodInfoTableDao;
     private DaoSession daoSession;
-    public static String queryPricingMethod =  "1";
+    public static String queryPricingMethod =  "2";
     private List<FoodInfoTable>  foods;
     private List<FlowDataBean> listTagFl = new ArrayList<>();
     SelectExpandListPopWindow selectExpandListPopWindowTc;

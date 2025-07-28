@@ -21,7 +21,7 @@ public class FoodGridAdapter extends BaseQuickAdapter<FoodInfoTable, BaseViewHol
     @Override
     protected void convert(BaseViewHolder holder, FoodInfoTable item) {
         holder.setText(R.id.tv_cai_name, item.getName());
-        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()) + "/50g");
+        holder.setText(R.id.tv_cai_price, "￥" + PriceUtils.formatPrice(item.getUnitPriceMoney_amount()) + "/1000g");
 
         if (item.getHasChoose() == 1){
             holder.setBackgroundResource(R.id.rl_root,R.mipmap.bg_selected);

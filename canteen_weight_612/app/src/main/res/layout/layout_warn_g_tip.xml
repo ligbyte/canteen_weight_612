@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.stkj.plate.weight.base.ui.widget.transformerstip.view.TransformersTipLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    app:ad_arrowExtraOffsetX="0dp"
+    app:ad_arrowExtraOffsetY="0dp"
+    app:ad_arrowGravity="to_top_center"
+    app:ad_arrowHeight="6dp"
+    app:ad_bgColor="#33000000"
+    app:ad_radius="4dp"
+    app:ad_shadowColor="#33000000"
+    app:ad_shadowSize="6dp">
+
+    <TextView
+        android:id="@+id/tv_tip_content0"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/sp_12"
+        android:text="5g"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tv_tip_content1"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/sp_12"
+        android:text="10g"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tv_tip_content2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/sp_12"
+        android:text="15g"
+        android:textColor="@android:color/white" />
+
+
+    <TextView
+        android:id="@+id/tv_tip_content3"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/sp_12"
+        android:text="20g"
+        android:textColor="@android:color/white" />
+
+
+    <TextView
+        android:id="@+id/tv_tip_content4"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/sp_12"
+        android:text="30g"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/iv_tip_close"
+        android:layout_width="50dp"
+        android:layout_height="@dimen/dp_15"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="center_vertical"
+        android:padding="4dp"
+        android:src="@mipmap/close"
+        android:textColor="@android:color/white" />
+
+</com.stkj.plate.weight.base.ui.widget.transformerstip.view.TransformersTipLinearLayout>

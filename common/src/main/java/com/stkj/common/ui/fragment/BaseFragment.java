@@ -94,7 +94,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void showLoadingDialog(int tag, String loadingText) {
-        mActivity.showLoadingDialog(tag, loadingText);
+        mActivity.showLoadingDialog("", loadingText);
     }
 
     public void hideLoadingDialog() {

@@ -15,8 +15,8 @@
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:radiusT="@dimen/dp_4"
-        app:solidColorT="@color/white"
-        app:strokeColorT="@color/color_EDF0F5"
+        app:solidColorT="@color/color_161E35"
+        app:strokeColorT="@color/color_253050"
         app:strokeWidthT="@dimen/dp_0_5">
 
     </com.stkj.common.ui.widget.shapelayout.ShapeRecyclerView>

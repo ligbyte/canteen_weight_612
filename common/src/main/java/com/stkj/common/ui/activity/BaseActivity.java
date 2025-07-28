@@ -22,6 +22,7 @@ import com.stkj.common.utils.ActivityUtils;
 import com.stkj.common.utils.FragmentUtils;
 import com.stkj.common.utils.ScreenUtils;
 import com.stkj.common.utils.StatusBarUtils;
+import com.wind.dialogtiplib.dialog_tip.TipLoadDialog;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,11 +35,13 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     protected Set<ActivityMethodProxy> methodProxySet = new HashSet<>();
     protected ActivityHolderHelper activityHolderHelper = new ActivityHolderHelper();
-    protected AppLoadingDialogHelper loadingDialogHelper = new AppLoadingDialogHelper();
+    private TipLoadDialog tipLoadDialog = null;
+    private BaseActivity baseActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseActivity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             ScreenUtils.setDisplayCutoutMode(this, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES);
         }
@@ -74,7 +77,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         methodProxySet.clear();
         activityHolderHelper.clear();
-        loadingDialogHelper.clear();
+        if (tipLoadDialog != null){
+            tipLoadDialog.dismiss();
+        }
         Log.d(TAG, "BaseActivity 周期 onDestroy -> this = " + this);
     }
 
@@ -82,7 +87,10 @@ public class BaseActivity extends AppCompatActivity {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.showLoadingDialog(BaseActivity.this, 0, "");
+                if (tipLoadDialog == null) {
+                    tipLoadDialog = new TipLoadDialog(baseActivity);
+                }
+                tipLoadDialog.setMsgAndType("", TipLoadDialog.ICON_TYPE_LOADING2).show();
             }
         });
     }
@@ -91,7 +99,10 @@ public class BaseActivity extends AppCompatActivity {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.showLoadingDialog(BaseActivity.this, 0, loadingText);
+                if (tipLoadDialog == null) {
+                    tipLoadDialog = new TipLoadDialog(baseActivity);
+                }
+                tipLoadDialog.setMsgAndType(loadingText, TipLoadDialog.ICON_TYPE_LOADING2).show();
             }
         });
     }
@@ -100,16 +111,28 @@ public class BaseActivity extends AppCompatActivity {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.showLoadingDialog(BaseActivity.this, tag, "");
+                if (tipLoadDialog == null) {
+                    tipLoadDialog = new TipLoadDialog(baseActivity);
+                }
+                tipLoadDialog.setMsgAndType("", TipLoadDialog.ICON_TYPE_LOADING2).show();
             }
         });
     }
 
-    public void showLoadingDialog(int tag, String loadingText) {
+    public void showLoadingDialog(String tag, String msg) {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.showLoadingDialog(BaseActivity.this, tag, loadingText);
+                if (tipLoadDialog == null) {
+                    tipLoadDialog = new TipLoadDialog(baseActivity);
+                }
+                if (tag.equals("SUCCESS")) {
+                    tipLoadDialog.setMsgAndType(msg, TipLoadDialog.ICON_TYPE_SUCCESS).show();
+                } else if (tag.equals("FAIL")) {
+                    tipLoadDialog.setMsgAndType(msg, TipLoadDialog.ICON_TYPE_FAIL).show();
+                } else {
+                    tipLoadDialog.setMsgAndType(msg, TipLoadDialog.ICON_TYPE_LOADING2).show();
+                }
             }
         });
     }
@@ -118,7 +141,10 @@ public class BaseActivity extends AppCompatActivity {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.hideLoadingDialog(0);
+                if (tipLoadDialog != null){
+                    tipLoadDialog.dismiss();
+                    tipLoadDialog = null;
+                }
             }
         });
     }
@@ -127,7 +153,9 @@ public class BaseActivity extends AppCompatActivity {
         runUIThreadWithCheck(new Runnable() {
             @Override
             public void run() {
-                loadingDialogHelper.hideLoadingDialog(tag);
+                if (tipLoadDialog != null){
+                    tipLoadDialog.dismiss();
+                }
             }
         });
     }

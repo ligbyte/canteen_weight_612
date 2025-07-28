@@ -3,6 +3,7 @@ package com.stkj.plate.weight.machine.fragment;
 import static java.lang.Math.ceil;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,12 +42,13 @@ import com.stkj.plate.weight.base.ui.dialog.BindingCoastAlertDialogFragment;
 import com.stkj.plate.weight.base.ui.dialog.CommonBindAlertDialogFragment;
 import com.stkj.plate.weight.base.ui.dialog.CommonBindSignleAlertDialogFragment;
 import com.stkj.plate.weight.base.ui.dialog.FacePassSettingBindAlertFragment;
+import com.stkj.plate.weight.base.ui.widget.transformerstip.TransformersTip;
+import com.stkj.plate.weight.base.ui.widget.transformerstip.gravity.TipGravity;
 import com.stkj.plate.weight.base.utils.CommonDialogUtils;
 import com.stkj.plate.weight.home.model.StoreInfo;
 import com.stkj.plate.weight.home.ui.widget.switchbutton.LimeSwitchButton;
 import com.stkj.plate.weight.machine.adapter.SettingBindTabInfoViewHolder;
 import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
-import com.stkj.plate.weight.machine.model.PlateBinding;
 import com.stkj.plate.weight.machine.model.SettingBindTabInfo;
 import com.stkj.plate.weight.machine.service.MachineService;
 import com.stkj.plate.weight.machine.utils.ToastUtils;
@@ -99,7 +101,6 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
@@ -124,6 +125,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private LinearLayout ll_app_food_add;
     private TextView tv_title_name;
     private TextView tv_sync_foods;
+    private TextView tv_warning_time;
+    private TextView tv_warning_g;
     private ShapeTextView stv_page_back;
     private ShapeTextView stv_page_next;
     private GoodsWeightDetailInfoLayout goodsDetailLay;
@@ -183,6 +186,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         switch_warning = (LimeSwitchButton) findViewById(R.id.switch_warning);
         switch_coast_warning = (LimeSwitchButton) findViewById(R.id.switch_coast_warning);
         tv_add_food = (TextView) findViewById(R.id.tv_add_food);
+        tv_warning_time = (TextView) findViewById(R.id.tv_warning_time);
+        tv_warning_g = (TextView) findViewById(R.id.tv_warning_g);
         goodsDetailLay = (GoodsWeightDetailInfoLayout) findViewById(R.id.goods_detail_lay);
         tv_face_count = (TextView) findViewById(R.id.tv_face_count);
         goods_auto_search = (GoodsAutoSearchLayout) findViewById(R.id.goods_auto_search);
@@ -250,6 +255,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
         stv_page_back.setOnClickListener(this);
         stv_page_next.setOnClickListener(this);
+        tv_warning_time.setOnClickListener(this);
+        tv_warning_g.setOnClickListener(this);
         slidingTablayoutt = (RoundTabLayout) findViewById(R.id.sliding_tablayoutt);
         rv_goods_storage_list = (RecyclerView) findViewById(R.id.rv_goods_storage_list);
         rv_goods_storage_list.setItemAnimator(null);
@@ -285,6 +292,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 foodGridAdapter.getData().get(position).setHasChoose(1);
+                 DeviceSettingMMKV.putBeforeChooseFood(JSON.toJSONString(foodGridAdapter.getData().get(position)));
                 daoSession.runInTx(new Runnable() {
                     @Override
                     public void run() {
@@ -340,6 +348,9 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         }else {
             switch_coast_warning.toggleOff();
         }
+
+        tv_warning_time.setText(DeviceSettingMMKV.getWarningTime()+"秒");
+        tv_warning_g.setText(DeviceSettingMMKV.getWarningg()+"g");
 
     }
 
@@ -680,11 +691,158 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 ToastUtils.toastMsgError("当前为菜品最后一页");
             }
             nextPage(pageNumberGlobal);
+        }else if (v.getId() == R.id.tv_warning_time){
+           selectWarnTime();
+        }else if (v.getId() == R.id.tv_warning_g){
+            selectWarng();
         }
 
 
     }
 
+
+    private void selectWarnTime() {
+        new TransformersTip(tv_warning_time, R.layout.layout_warn_time_tip) {
+            @Override
+            protected void initView(View contentView) {
+                // 点击浮窗中自定按钮关闭浮窗
+                contentView.findViewById(R.id.iv_tip_close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content0).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_time.setText("5秒");
+                        DeviceSettingMMKV.putWarningTime(5);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_time.setText("10秒");
+                        DeviceSettingMMKV.putWarningTime(10);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_time.setText("15秒");
+                        DeviceSettingMMKV.putWarningTime(15);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content3).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_time.setText("20秒");
+                        DeviceSettingMMKV.putWarningTime(20);
+                        dismissTip();
+                    }
+                });
+
+
+                contentView.findViewById(R.id.tv_tip_content4).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_time.setText("30秒");
+                        DeviceSettingMMKV.putWarningTime(30);
+                        dismissTip();
+                    }
+                });
+
+            }
+        }
+                .setTipGravity(TipGravity.TO_TOP_CENTER)
+                .setBgColor(Color.parseColor("#88000000"))
+                .setShadowColor(Color.parseColor("#33000000"))
+                .setTipOffsetXDp(0)
+                .setTipOffsetYDp(0)
+                .setArrowHeightDp(6)
+                .setArrowOffsetXDp(110)
+                .setBackgroundDimEnabled(true)
+                .setDismissOnTouchOutside(true)
+                .show(); // 显示浮窗
+    }
+
+
+    private void selectWarng() {
+        new TransformersTip(tv_warning_g, R.layout.layout_warn_g_tip) {
+            @Override
+            protected void initView(View contentView) {
+                // 点击浮窗中自定按钮关闭浮窗
+                contentView.findViewById(R.id.iv_tip_close).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content0).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_g.setText("5g");
+                        DeviceSettingMMKV.putWarningg(5);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_g.setText("10g");
+                        DeviceSettingMMKV.putWarningg(10);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_g.setText("15g");
+                        DeviceSettingMMKV.putWarningg(15);
+                        dismissTip();
+                    }
+                });
+
+                contentView.findViewById(R.id.tv_tip_content3).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_g.setText("20g");
+                        DeviceSettingMMKV.putWarningg(20);
+                        dismissTip();
+                    }
+                });
+
+
+                contentView.findViewById(R.id.tv_tip_content4).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tv_warning_g.setText("30g");
+                        DeviceSettingMMKV.putWarningg(30);
+                        dismissTip();
+                    }
+                });
+
+            }
+        }
+                .setTipGravity(TipGravity.TO_TOP_CENTER) // 设置浮窗相对于锚点控件展示的位置
+                .setTipOffsetXDp(0) // 设置浮窗在 x 轴的偏移量
+                .setTipOffsetYDp(0) // 设置浮窗在 y 轴的偏移量
+                .setArrowHeightDp(6)
+                .setArrowOffsetXDp(110)
+                .setBackgroundDimEnabled(true) // 设置是否允许浮窗的背景变暗
+                .setDismissOnTouchOutside(true) // 设置点击浮窗外部时是否自动关闭浮窗
+                .show(); // 显示浮窗
+    }
 
     /**
      * 保存商品入库
@@ -761,7 +919,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
 
         DeviceFoodTemplateParam deviceFoodTemplateParam = new DeviceFoodTemplateParam(PayConstants.createOrderNumber(),goodsName,goodsType.equals("单品") ? 1: 2,categoryMap,DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(),
-                0,goodsPriceType.equals("按份") ? 1 : 2,goodsPriceType.equals("按份")?"份":"1kg",null,Double.parseDouble(goodsPriceUnit),"0",null,null,null);
+                0,goodsPriceType.equals("按份") ? 1 : 2,goodsPriceType.equals("按份")?"份":"1kg",null,Double.parseDouble(goodsPriceUnit),"1",null,null,null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             foodSaveParams.put("foodSaveParam", Base64.getEncoder().encodeToString(JSON.toJSONString(deviceFoodTemplateParam).getBytes()));
@@ -934,6 +1092,11 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                                 );
 
                             }
+
+                            if (!TextUtils.isEmpty(DeviceSettingMMKV.getBeforeChooseFood())){
+                                FoodInfoTable foodInfoTable = JSON.parseObject(DeviceSettingMMKV.getBeforeChooseFood(),FoodInfoTable.class);
+                                foodInfoTableDao.insertOrReplace(foodInfoTable);
+                            }
                             QueryBuilder<FoodInfoTable> qbDelete   = foodInfoTableDao.queryBuilder();
                             qbDelete.where(FoodInfoTableDao.Properties.DeleteFlag.eq("DELETED"));
                             DeleteQuery<FoodInfoTable> dq = qbDelete.buildDelete();
@@ -946,6 +1109,11 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                                     qb.where(FoodInfoTableDao.Properties.Status.eq(1));
                                     qb.where(FoodInfoTableDao.Properties.DeleteFlag.eq("NOT_DELETE"));
                                     refreshFacePassTotalCount(qb.count());
+                                    ll_app_food_add.setVisibility(View.GONE);
+                                    ll_app_foods.setVisibility(View.VISIBLE);
+                                    tv_sync_foods.setText("更新菜品");
+                                    pageNumberGlobal = 0;
+                                    nextPage(pageNumberGlobal);
 
                                 }
                             });

@@ -13,6 +13,20 @@ public class DeviceSettingMMKV {
     public static final String KEY_WARNING_SWITCH = "key_warning_switch";
     public static final String KEY_COAST_WARNING_SWITCH = "key_coast_warning_switch";
 
+    public static final String KEY_WARNING_TIME = "key_warning_time";
+    public static final String KEY_WARNING_G = "key_warning_g";
+    public static final String KEY_BEFORE_CHOOSE_FOOD = "key_before_choose_food";
+
+    public static void putBeforeChooseFood(String choose_food) {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        serverSettingMMKV.putString(KEY_BEFORE_CHOOSE_FOOD, choose_food);
+    }
+
+    public static String getBeforeChooseFood() {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        return serverSettingMMKV.decodeString(KEY_BEFORE_CHOOSE_FOOD, "");
+    }
+
     public static void putScreenProtectTime(int interval) {
         MMKV serverSettingMMKV = getSettingMMKV();
         serverSettingMMKV.putInt(KEY_SCREEN_PROTECT_NAME, interval);
@@ -21,6 +35,27 @@ public class DeviceSettingMMKV {
     public static int getScreenProtectTime() {
         MMKV serverSettingMMKV = getSettingMMKV();
         return serverSettingMMKV.decodeInt(KEY_SCREEN_PROTECT_NAME, -1);
+    }
+
+
+    public static void putWarningTime(int interval) {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        serverSettingMMKV.putInt(KEY_SCREEN_PROTECT_NAME, interval);
+    }
+
+    public static int getWarningTime() {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        return serverSettingMMKV.decodeInt(KEY_WARNING_TIME, 15);
+    }
+
+    public static void putWarningg(int interval) {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        serverSettingMMKV.putInt(KEY_WARNING_G, interval);
+    }
+
+    public static int getWarningg() {
+        MMKV serverSettingMMKV = getSettingMMKV();
+        return serverSettingMMKV.decodeInt(KEY_WARNING_G, 5);
     }
 
     public static boolean isOpenSysLog() {
