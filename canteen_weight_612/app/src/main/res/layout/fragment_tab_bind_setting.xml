@@ -743,7 +743,7 @@
                                 android:id="@+id/sliding_tablayoutt"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_30"
-                                android:layout_marginLeft="-8dp"
+                                android:layout_marginLeft="-3dp"
                                 android:background="@null"
                                 app:accent="#0087FA"
                                 app:corner1Radius="rounded"
