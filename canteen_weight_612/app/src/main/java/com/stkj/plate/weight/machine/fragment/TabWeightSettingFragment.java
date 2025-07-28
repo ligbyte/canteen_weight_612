@@ -562,6 +562,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     ll_app_coast.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("消费设置");
+                    consumeDaySummary();
                 }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_FOODS)){
                     ll_app_foods.setVisibility(View.VISIBLE);
                     tv_sync_foods.setVisibility(View.VISIBLE);

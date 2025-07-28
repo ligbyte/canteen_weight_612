@@ -146,6 +146,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private WarningTipsView warning_tips_view;
     private HomeTabPageAdapter homeTabPageAdapter;
     private static BindingHomeTitleLayout htlConsumer;
+    private FoodInfoTable foodInfoTable;
     //是否需要重新恢复消费者页面
     private boolean needRestartConsumer;
     //是否初始化了菜单数据
@@ -162,6 +163,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private DaoSession daoSession;
     private DefaultDisposeObserver<Long> canSpeakFacePassFailObserver;
     private List<FoodInfoTable>  foods;
+    private String customerId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -360,7 +362,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     if (tv_food_name.getText().toString().equals("暂未选择菜品")){
                         ledLightShow(LED_RED_TYPE);
                     }else {
-                        ledLightShow(LED_WHITE_TYPE);
+                        ledLightShow(LED_GREEN_TYPE);
                     }
                     openYxDeviceSDK();
 //                    flScreenWelcom.postDelayed(new Runnable() {
@@ -443,6 +445,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     }
 
     private void initTvUnit(FoodInfoTable foodInfoTable) {
+        this.foodInfoTable = foodInfoTable;
         tv_food_name.setText(foodInfoTable.getName());
         tv_price.setText(PriceUtils.formatPrice(foodInfoTable.getUnitPriceMoney_amount()));
         tv_success_name.setText(foodInfoTable.getName());
@@ -451,7 +454,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         warning_tips_view.setVisibility(View.GONE);
         tv_price_flag.setVisibility(View.VISIBLE);
         tv_price_unit.setVisibility(View.VISIBLE);
-        ledLightShow(LED_WHITE_TYPE);
+        ledLightShow(LED_GREEN_TYPE);
     }
 
 
@@ -768,7 +771,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             if (tv_food_name.getText().toString().equals("暂未选择菜品")){
                 ledLightShow(LED_RED_TYPE);
             }else {
-                ledLightShow(LED_WHITE_TYPE);
+                ledLightShow(LED_GREEN_TYPE);
             }
 
         }else {
@@ -946,6 +949,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
                                 flScreenWelcom.setVisibility(View.GONE);
                                 fl_screen_success.setVisibility(View.VISIBLE);
+                                customerId = baseNetResponse.getData().getUser().getId();
                                 ledLightShow(LED_GREEN_TYPE);
                                 tv_account_info.setText(baseNetResponse.getData().getUser().getName() + " · 账户余额：￥" +PriceUtils.formatPrice(baseNetResponse.getData().getAmount().getAmount()));
                                 updateWeightAndPrice(0,0,baseNetResponse.getData().getOrderAmount().getAmount());
@@ -1009,7 +1013,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("addOrderFood");
 
         DeviceFoodConsumeParam deviceFoodConsumeParam = new DeviceFoodConsumeParam(DeviceManager.INSTANCE.getDeviceInterface().getMachineNumber(),
-                "customerId", MainApplication.barcode, "foodId", "foodName", 0, 0, new BigDecimal("0"), new BigDecimal("0"));
+                customerId, MainApplication.barcode, foodInfoTable.getId(), foodInfoTable.getName(), 1, 0, new BigDecimal(foodInfoTable.getUnitPriceMoney_amount()), new BigDecimal("0"));
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

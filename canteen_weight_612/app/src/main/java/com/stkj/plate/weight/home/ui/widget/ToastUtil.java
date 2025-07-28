@@ -43,7 +43,7 @@ public class ToastUtil {
         }
         //设置toast居中显示
         mToast.setGravity(Gravity.CENTER, 0, 0);
-        mToast.setDuration(Toast.LENGTH_LONG);
+        mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.setView(view);
     }
 
@@ -91,7 +91,7 @@ public class ToastUtil {
                 Log.i("ToastUtil", "Toast showUntilCancel...");
                 showUntilCancel();
             }
-        }, Toast.LENGTH_LONG);
+        }, Toast.LENGTH_SHORT);
     }
 
     /**
