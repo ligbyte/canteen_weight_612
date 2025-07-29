@@ -27,8 +27,8 @@ public class ToastUtil {
     private String message;
     private Handler mHandler = new Handler();
     private boolean canceled = true;
-
-    public ToastUtil(Context context, int layoutId, String msg) {
+    private int gravity = Gravity.BOTTOM;
+    public ToastUtil(Context context, int layoutId, String msg,int gravity) {
         message = msg;
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //自定义布局
@@ -41,8 +41,9 @@ public class ToastUtil {
             mToast = new Toast(context);
             Log.i("ToastUtil", "Toast create...");
         }
+        this.gravity = gravity;
         //设置toast居中显示
-        mToast.setGravity(Gravity.CENTER, 0, 0);
+        mToast.setGravity(gravity, 0, 0);
         mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.setView(view);
     }

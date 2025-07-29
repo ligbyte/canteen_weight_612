@@ -105,9 +105,10 @@ public class HeartBeatHelper extends ActivityWeakRefHolder implements CountDownH
         if (activityWithCheck == null) {
             return;
         }
+        TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("ReportDeviceStatus");
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(HomeService.class)
-                .reportDeviceStatus(ParamsUtils.newMachineParamsMap())
+                .reportDeviceStatus(ParamsUtils.signSortParamsMap(paramsMap))
                 .compose(RxTransformerUtils.mainSchedulers())
                 .to(AutoDisposeUtils.onDestroyDispose((LifecycleOwner) activityWithCheck))
                 .subscribe(new DefaultObserver<BaseNetResponse<HeartBeatInfo>>() {
