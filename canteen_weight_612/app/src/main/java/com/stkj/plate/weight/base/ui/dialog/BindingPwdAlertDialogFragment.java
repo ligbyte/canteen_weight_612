@@ -88,6 +88,9 @@ public class BindingPwdAlertDialogFragment extends BaseDialogFragment {
                 if (!needHandleDismiss) {
                     dismiss();
                 }
+
+                etAlertContent.setText("");
+
                 if (mRightNavClickListener != null) {
                     mRightNavClickListener.onClick(BindingPwdAlertDialogFragment.this);
                 }

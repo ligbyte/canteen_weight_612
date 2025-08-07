@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.stkj.plate.weight.R;
@@ -40,8 +41,8 @@ public class ChartBarView extends View {
     private static final int DEF_DEF_AXIS_LINE_HEIGHT = 1; // 默认刻度线高度(dp)
     private static final int DEF_AXIS_GRID_COUNT = 6; // 默认刻度线数量
 
-    private static final int DEF_AXIS_TEXT_SIZE = 13; // 默认刻度线字体大小(dp)
-    private static final int DEF_AXIS_TEXT_WIDTH = 24; // 默认刻度线字体宽度(dp)
+    private static final int DEF_AXIS_TEXT_SIZE = 11; // 默认刻度线字体大小(dp)
+    private static final int DEF_AXIS_TEXT_WIDTH = 30; // 默认刻度线字体宽度(dp)
     private static final int DEF_AXIS_TEXT_COLOR = 0Xff8F8E8E; // 默认刻度线字体颜色(dp)
 
     private static final int DEF_BOTTOM_HEIGHT = 20; // 默认底部文字高度(dp)
@@ -442,8 +443,8 @@ public class ChartBarView extends View {
         for (int i = 0; i < axisGridCount; i++) {
             RectF rectF = axisRectFs.get(i);
             float axis = avgAxisValue * i;
-            String axisStr = formatValue(itemList, axis);
-
+            String axisStr = formatIntValue(itemList, axis);
+            Log.d(TAG, "limeformatValue 448: " + axis);
             Paint.FontMetricsInt fm = axisTextPaint.getFontMetricsInt();
             float axisTextHeight = fm.descent + (fm.descent - fm.ascent) / 2F;
             float sx;
@@ -461,14 +462,27 @@ public class ChartBarView extends View {
     private String formatValue (ItemList itemList, float value) {
         String axisStr;
         if (itemList.getAxisValueType() == ItemList.AxisValueType.FLOAT) {
-            axisStr = value == 0F ? "0" : String.valueOf(Math.round(value * 10) / 10F);
+            axisStr = value == 0F ? "0.00" : String.format("%.2f", value);
         } else if (itemList.getAxisValueType() == ItemList.AxisValueType.PERCENT) {
-            axisStr = Math.round(value * 100) + "";
+            axisStr = String.format("%.2f", value * 100) + "%";
         } else {
             axisStr = String.valueOf((int) value);
         }
         return axisStr;
     }
+
+    private String formatIntValue (ItemList itemList, float value) {
+        String axisStr;
+        if (itemList.getAxisValueType() == ItemList.AxisValueType.FLOAT) {
+            axisStr = String.valueOf(Math.round(value));
+        } else if (itemList.getAxisValueType() == ItemList.AxisValueType.PERCENT) {
+            axisStr = Math.round(value * 100) + "%";
+        } else {
+            axisStr = String.valueOf((int) value);
+        }
+        return axisStr;
+    }
+
 
     private boolean isExistAxis (AxisAlign singleLeft) {
         return Utils.isIn(axisAlign, AxisAlign.LEFT_RIGHT, singleLeft);

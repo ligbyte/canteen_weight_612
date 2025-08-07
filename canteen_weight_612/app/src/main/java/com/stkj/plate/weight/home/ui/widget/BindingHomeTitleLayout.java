@@ -122,7 +122,7 @@ public class BindingHomeTitleLayout extends FrameLayout implements SystemEventWa
         ivSysSettings.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new BindFragmentSwitchEvent(1));
+                //EventBus.getDefault().post(new BindFragmentSwitchEvent(1));
                 CommonDialogUtils.showBindTipsDialog(context,"管理员密码", new BindingPwdAlertDialogFragment.OnSweetClickListener() {
                     @Override
                     public void onClick(BindingPwdAlertDialogFragment alertDialogFragment) {

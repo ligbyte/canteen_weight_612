@@ -26,6 +26,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.jakewharton.rxbinding4.view.RxView;
+import com.stkj.common.utils.NetworkUtils;
 import com.stkj.plate.weight.BuildConfig;
 import com.stkj.plate.weight.MainApplication;
 import com.stkj.plate.weight.R;
@@ -46,6 +47,7 @@ import com.stkj.plate.weight.base.ui.widget.transformerstip.TransformersTip;
 import com.stkj.plate.weight.base.ui.widget.transformerstip.gravity.TipGravity;
 import com.stkj.plate.weight.base.utils.CommonDialogUtils;
 import com.stkj.plate.weight.home.model.StoreInfo;
+import com.stkj.plate.weight.home.ui.activity.MainActivity;
 import com.stkj.plate.weight.home.ui.widget.switchbutton.LimeSwitchButton;
 import com.stkj.plate.weight.machine.adapter.SettingBindTabInfoViewHolder;
 import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
@@ -59,6 +61,7 @@ import com.stkj.plate.weight.pay.model.BindFragmentSwitchEvent;
 import com.stkj.plate.weight.pay.model.CategoryBean;
 import com.stkj.plate.weight.pay.model.DeviceFoodTemplateParam;
 import com.stkj.plate.weight.pay.model.FoodCategoryListInfo;
+import com.stkj.plate.weight.pay.model.ReadWeightEvent;
 import com.stkj.plate.weight.pay.model.RefreshUpdateGoodsEvent;
 import com.stkj.plate.weight.pay.model.TTSSpeakEvent;
 import com.stkj.plate.weight.pay.service.PayService;
@@ -137,6 +140,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private RelativeLayout rl_face_value;
     private RelativeLayout rl_face_sync;
     private RelativeLayout rl_coast_total;
+    private RelativeLayout rl_weight_reset;
     private LinearLayout ll_app_weight;
     private RoundTabLayout slidingTablayoutt;
     private LinearLayout rv_goods_storage_list_empty;
@@ -149,6 +153,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private TextView tv_server_addr;
     private TextView tv_total_count;
     private TextView tv_page_index;
+    private TextView tv_read_weight;
+    private TextView tv_g;
     private BaseDialogFragment dialogFragment;
     private FoodGridAdapter foodGridAdapter;
     private FoodInfoTableDao foodInfoTableDao;
@@ -168,6 +174,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     private int offset = 0;
     public static String queryPricingMethod =  "2";
     public static String queryTab = "";
+    public boolean canReadWeight = false;
+    private double beforeWeight = -10000;
 
     @Override
     protected int getLayoutResId() {
@@ -190,6 +198,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         tv_warning_g = (TextView) findViewById(R.id.tv_warning_g);
         goodsDetailLay = (GoodsWeightDetailInfoLayout) findViewById(R.id.goods_detail_lay);
         tv_face_count = (TextView) findViewById(R.id.tv_face_count);
+        tv_read_weight = (TextView) findViewById(R.id.tv_read_weight);
         goods_auto_search = (GoodsAutoSearchLayout) findViewById(R.id.goods_auto_search);
         rl_server_addr = (RelativeLayout) findViewById(R.id.rl_server_addr);
         rl_version = (RelativeLayout) findViewById(R.id.rl_version);
@@ -197,6 +206,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rl_face_value = (RelativeLayout) findViewById(R.id.rl_face_value);
         rl_face_sync = (RelativeLayout) findViewById(R.id.rl_face_sync);
         tv_app_version = (TextView) findViewById(R.id.tv_app_version);
+        rl_weight_reset = (RelativeLayout) findViewById(R.id.rl_weight_reset);
         tv_server_addr = (TextView) findViewById(R.id.tv_server_addr);
         ll_app_weight = (LinearLayout) findViewById(R.id.ll_app_weight);
         ll_app_warning = (LinearLayout) findViewById(R.id.ll_app_warning);
@@ -205,6 +215,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rl_coast_total = (RelativeLayout) findViewById(R.id.rl_coast_total);
         tv_total_count = (TextView) findViewById(R.id.tv_total_count);
         tv_page_index = (TextView) findViewById(R.id.tv_page_index);
+        tv_g = (TextView) findViewById(R.id.tv_g);
         rv_goods_storage_list_empty = (LinearLayout) findViewById(R.id.rv_goods_storage_list_empty);
         rv_goods_storage_list = (RecyclerView) findViewById(R.id.rv_goods_storage_list);
         stv_page_back = (ShapeTextView) findViewById(R.id.stv_page_back);
@@ -257,6 +268,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         stv_page_next.setOnClickListener(this);
         tv_warning_time.setOnClickListener(this);
         tv_warning_g.setOnClickListener(this);
+        tv_read_weight.setOnClickListener(this);
+        rl_weight_reset.setOnClickListener(this);
         slidingTablayoutt = (RoundTabLayout) findViewById(R.id.sliding_tablayoutt);
         rv_goods_storage_list = (RecyclerView) findViewById(R.id.rv_goods_storage_list);
         rv_goods_storage_list.setItemAnimator(null);
@@ -272,22 +285,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         rv_goods_storage_list.setClipChildren(false);
         rv_goods_storage_list.setVisibility(View.GONE);
         rv_goods_storage_list_empty.setVisibility(View.VISIBLE);
-//        List<FoodInfoTable> foods = new ArrayList<>();
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foods.add(new FoodInfoTable());
-//        foodGridAdapter.getData().clear();
-//        foodGridAdapter.addData(foods);
-//        foodGridAdapter.notifyDataSetChanged();
+
         foodGridAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -451,6 +449,8 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     }
 
 
+
+
     public void onBackEvent(){
 
         if (dialogFragment != null && dialogFragment.isVisible()){
@@ -459,6 +459,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
         }
 
         if (ll_app_food_add.getVisibility() == View.VISIBLE ||ll_app_foods.getVisibility() == View.VISIBLE ||ll_app_coast.getVisibility() == View.VISIBLE || ll_app_settings.getVisibility() == View.VISIBLE || ll_app_face.getVisibility() == View.VISIBLE|| ll_app_weight.getVisibility() == View.VISIBLE|| ll_app_warning.getVisibility() == View.VISIBLE){
+            canReadWeight = false;
             ll_app_face.setVisibility(View.GONE);
             ll_app_settings.setVisibility(View.GONE);
             ll_app_weight.setVisibility(View.GONE);
@@ -479,6 +480,18 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBindFragmentBackEvent(BindFragmentBackEvent eventBus) {
         onBackEvent();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReadWeightEvent(ReadWeightEvent eventBus) {
+        if (canReadWeight) {
+            if (eventBus.getWeight() != beforeWeight) {
+                beforeWeight = eventBus.getWeight();
+                tv_g.setText(eventBus.getWeight() + "g");
+            }
+        }
+
     }
 
 
@@ -550,8 +563,11 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("系统设置");
                 } else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WEIGHT)){
+                    canReadWeight = false;
+                    beforeWeight = -10000;
                     ll_app_weight.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
+                    tv_g.setText("暂未读值");
                     tv_title_name.setText("称重校准");
                 }
                 else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_WARNING)){
@@ -562,7 +578,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     ll_app_coast.setVisibility(View.VISIBLE);
                     rvTopTab.setVisibility(View.GONE);
                     tv_title_name.setText("消费设置");
-                    consumeDaySummary();
+
                 }else if (settingTabInfo.getTabName().equals(SettingBindTabInfo.TAB_NAME_FOODS)){
                     ll_app_foods.setVisibility(View.VISIBLE);
                     tv_sync_foods.setVisibility(View.VISIBLE);
@@ -603,10 +619,10 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     public void onClick(View v) {
 
         if (v.getId() == R.id.rl_coast_total){
-            BindingCoastAlertDialogFragment.build()
-                    .setAlertTitleTxt("营业统计")
-                    .setRightNavTxt("取消")
-                    .show(getActivity());
+
+            consumeDaySummary();
+
+
         }else if (v.getId() == R.id.rl_version){
 
         }else if (v.getId() == R.id.rl_restart_app){
@@ -646,7 +662,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             }else {
                 dialogFragment = CommonBindAlertDialogFragment.build()
                         .setAlertTitleTxt("提示")
-                        .setAlertContentTxt("全量更新将删除本地数据库?")
+                        .setAlertContentTxt("全量更新将删除本地所有数据?")
                         .setLeftNavTxt("确认")
                         .setLeftNavClickListener(new CommonBindAlertDialogFragment.OnSweetClickListener() {
                             @Override
@@ -696,6 +712,21 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
            selectWarnTime();
         }else if (v.getId() == R.id.tv_warning_g){
             selectWarng();
+        }else if (v.getId() == R.id.tv_read_weight){
+            canReadWeight = true;
+            ((MainActivity)getActivity()).openScale();
+        }else if (v.getId() == R.id.rl_weight_reset){
+            dialogFragment = CommonBindAlertDialogFragment.build()
+                    .setAlertTitleTxt("提示")
+                    .setAlertContentTxt("重置后，称的初始值将归零！")
+                    .setLeftNavTxt("确认")
+                    .setLeftNavClickListener(new CommonBindAlertDialogFragment.OnSweetClickListener() {
+                        @Override
+                        public void onClick(CommonBindAlertDialogFragment alertDialogFragment) {
+                            ToastUtils.toastMsgSuccess("重置成功");
+                        }
+                    }).setRightNavTxt("取消");
+            dialogFragment.show(mActivity);
         }
 
 
@@ -850,6 +881,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
      */
     @SuppressLint("AutoDispose")
     public void saveGoodsStorage() {
+
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.toastMsgError("网络已断开，提交失败");
+            EventBus.getDefault().post(new TTSSpeakEvent("网络已断开，提交失败"));
+            return;
+        }
+
         //菜品/套餐名称
         String goodsName = goodsDetailLay.getGoodsName();
         if (TextUtils.isEmpty(goodsName)) {
@@ -926,7 +964,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             foodSaveParams.put("foodSaveParam", Base64.getEncoder().encodeToString(JSON.toJSONString(deviceFoodTemplateParam).getBytes()));
         }
         Log.d(TAG, "limesaveGoodsStorage deviceFoodTemplateParam: " + JSON.toJSONString(deviceFoodTemplateParam));
-        showLoadingDialog();
+        showLoadingDialog("提交中");
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(PayService.class)
                 .foodSave(ParamsUtils.signSortParamsMap(foodSaveParams))
@@ -936,7 +974,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     protected void onSuccess(FoodSave foodSave) {
                         hideLoadingDialog();
                         if (foodSave != null && foodSave.getData() != null) {
-                            ToastUtils.toastMsgError("保存成功!");
+                            ToastUtils.toastMsgError("提交成功!");
                             List<FoodBean> foodInfoList = new ArrayList<>();
                             foodInfoList.add(foodSave.getData());
                             Log.d(TAG, "limeFoodSave: " + JSON.toJSONString(foodSave.getData()));
@@ -951,7 +989,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     @Override
                     public void onError(Throwable e) {
                         hideLoadingDialog();
-                        ToastUtils.toastMsgError("保存失败!");
+                        ToastUtils.toastMsgError("提交失败!");
 
                     }
                 });
@@ -965,6 +1003,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
     @SuppressLint("AutoDispose")
     public void foodSync(int inferior_type) {
 
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.toastMsgError("网络已断开，同步失败");
+            EventBus.getDefault().post(new TTSSpeakEvent("网络已断开，同步失败"));
+            return;
+        }
+        Log.d(TAG, "limefoodSync: " + 1011);
+        showLoadingDialog("同步中");
         TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("foodSync");
         paramsMap.put("inferior_type", String.valueOf(inferior_type));
         paramsMap.put("pageIndex", String.valueOf(pageIndex));
@@ -976,17 +1021,17 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 .subscribe(new DefaultObserver<BaseNetResponse<FoodListInfo>>() {
                     @Override
                     protected void onSuccess(BaseNetResponse<FoodListInfo> baseNetResponse) {
+                        hideLoadingDialog();
                         FoodListInfo responseData = baseNetResponse.getData();
                         if (responseData != null && responseData.getResults() != null && !responseData.getResults().isEmpty()) {
                             syncNo = responseData.getSyncNo();
                             List<FoodBean> foodInfoList = responseData.getResults();
                             addFacePassToLocal(foodInfoList);
-
+                            pageIndex++;
                             if (pageIndex >= responseData.getTotalPage()){
                                 pageIndex = 0;
                                 foodSyncCallback();
                             }else {
-                                pageIndex++;
                                 foodSync(inferior_type);
                             }
 
@@ -1000,6 +1045,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
                     @Override
                     public void onError(Throwable e) {
+                        hideLoadingDialog();
                         ToastUtils.toastMsgError(e.getMessage());
 //                        callbackFinishFacePass(e.getMessage(), true);
                     }
@@ -1012,6 +1058,13 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
      */
     @SuppressLint("AutoDispose")
     public void foodSyncCallback() {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.toastMsgError("网络已断开，处理失败");
+            EventBus.getDefault().post(new TTSSpeakEvent("网络已断开，处理失败"));
+            return;
+        }
+        Log.d(TAG, "limefoodSync: " + 1011);
+        showLoadingDialog("处理中");
         TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("foodSyncCallback");
         paramsMap.put("syncNo", syncNo);
         //paramsMap.put("pageSize", String.valueOf(50));
@@ -1022,6 +1075,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 .subscribe(new DefaultObserver<BaseNetResponse<FoodSyncCallback>>() {
                     @Override
                     protected void onSuccess(BaseNetResponse<FoodSyncCallback> baseNetResponse) {
+                        hideLoadingDialog();
                         Log.d(TAG, "limefoodSyncCallback: " + 322);
                         ToastUtils.toastMsgSuccess("菜品更新成功");
                         EventBus.getDefault().post(new RefreshUpdateGoodsEvent());
@@ -1031,6 +1085,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
 
                     @Override
                     public void onError(Throwable e) {
+                        hideLoadingDialog();
 
                     }
                 });
@@ -1390,7 +1445,14 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
      */
     @SuppressLint("AutoDispose")
     public void consumeDaySummary() {
-        Log.i(TAG, "limefoodSyncCallback: " + 177);
+        Log.i(TAG, "limeconsumeDaySummary: " + 1411);
+
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.toastMsgError("网络已断开，获取失败");
+            EventBus.getDefault().post(new TTSSpeakEvent("网络已断开，获取失败"));
+            return;
+        }
+        showLoadingDialog("加载中");
         TreeMap<String, String> paramsMap = ParamsUtils.newSortParamsMapWithMode("consumeDaySummary");
         RetrofitManager.INSTANCE.getDefaultRetrofit()
                 .create(MachineService.class)
@@ -1399,19 +1461,23 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                 .subscribe(new DefaultObserver<BaseNetResponse<ConsumeDaySummaryResponse>>() {
                     @Override
                     protected void onSuccess(BaseNetResponse<ConsumeDaySummaryResponse> baseNetResponse) {
-                        Log.i(TAG, "limeplateBinding 336: " + JSON.toJSONString(baseNetResponse));
+                        Log.i(TAG, "limeconsumeDaySummary 1420: " + JSON.toJSONString(baseNetResponse));
+                        hideLoadingDialog();
                         try {
 
-//                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null && baseNetResponse.getData().getCustomerInfo() != null) {
-//
-//
-//                            } else {
-//                                ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
-//                                EventBus.getDefault().post(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));
-//
-//                            }
+                            if (baseNetResponse.isSuccess() && baseNetResponse.getData() != null) {
+                                BindingCoastAlertDialogFragment.build(baseNetResponse.getData())
+                                        .setAlertTitleTxt("营业统计")
+                                        .setRightNavTxt("取消")
+                                        .show(getActivity());
+
+                            } else {
+                                ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
+                                EventBus.getDefault().post(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));
+
+                            }
                         } catch (Exception e) {
-                            Log.e(TAG, "limeplateBinding 342: " + e.getMessage());
+                            Log.e(TAG, "limeconsumeDaySummary 1432: " + e.getMessage());
                         }
 
                     }
@@ -1419,6 +1485,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     @Override
                     public void onError(Throwable e) {
                         //AppToast.toastMsg(e.getMessage());
+                        hideLoadingDialog();
                         Log.e(TAG, "limeplateBinding: " + e.getMessage());
                     }
                 });

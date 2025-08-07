@@ -8,10 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stkj.plate.weight.R;
+import com.stkj.plate.weight.base.utils.PriceUtils;
 import com.stkj.plate.weight.home.ui.widget.charview.ChartBarView;
 import com.stkj.plate.weight.home.ui.widget.charview.bean.Item;
 import com.stkj.plate.weight.home.ui.widget.charview.bean.ItemList;
 import com.stkj.common.ui.fragment.BaseDialogFragment;
+import com.stkj.plate.weight.machine.model.ConsumeDaySummaryBean;
+import com.stkj.plate.weight.machine.model.ConsumeDaySummaryResponse;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,8 +29,19 @@ public class BindingCoastAlertDialogFragment extends BaseDialogFragment {
     private ImageView iv_close;
     private TextView tv_pwd_error_tips;
     private boolean needHandleDismiss;
+    private double zaocan = 0;
+    private double wucan = 0;
+    private double wancan = 0;
+    private double yecan = 0;
+    private double maxValue = 0;
+
     private ChartBarView chartbarview;
+    private ConsumeDaySummaryResponse consumeDaySummaryResponse;
     private final Random random = new Random();
+
+    public BindingCoastAlertDialogFragment(ConsumeDaySummaryResponse consumeDaySummaryResponse) {
+        this.consumeDaySummaryResponse = consumeDaySummaryResponse;
+    }
 
     @Override
     protected int getLayoutResId() {
@@ -42,6 +56,7 @@ public class BindingCoastAlertDialogFragment extends BaseDialogFragment {
         chartbarview = (ChartBarView) findViewById(R.id.chartbarview);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/D-DIN-PRO-700-Bold.otf");
         tv_alert_content.setTypeface(typeface);
+        tv_alert_content.setText(PriceUtils.formatPrice(consumeDaySummaryResponse.getTotal().getAmount()));
         if (!TextUtils.isEmpty(alertTitleTxt)) {
             tvTitle.setText(alertTitleTxt);
         }
@@ -58,6 +73,34 @@ public class BindingCoastAlertDialogFragment extends BaseDialogFragment {
         });
 
 
+        for (ConsumeDaySummaryBean consumeDaySummaryBean:consumeDaySummaryResponse.getData()){
+            switch (consumeDaySummaryBean.getFeeTypeKey()){
+                case 1:
+                    zaocan = consumeDaySummaryBean.getFee().getAmount();
+                    if (zaocan > maxValue){
+                        maxValue = zaocan;
+                    }
+                    break;
+                case 2:
+                    wucan = consumeDaySummaryBean.getFee().getAmount();
+                    if (wucan > maxValue){
+                        maxValue = wucan;
+                    }
+                    break;
+                case 3:
+                    wancan = consumeDaySummaryBean.getFee().getAmount();
+                    if (wancan > maxValue){
+                        maxValue = wancan;
+                    }
+                    break;
+                case 4:
+                    yecan = consumeDaySummaryBean.getFee().getAmount();
+                    if (yecan > maxValue){
+                        maxValue = yecan;
+                    }
+                    break;
+            }
+        }
         configSingLeftChart();
     }
 
@@ -145,12 +188,10 @@ public class BindingCoastAlertDialogFragment extends BaseDialogFragment {
 
     private static volatile BindingCoastAlertDialogFragment instance;
 
-    public static BindingCoastAlertDialogFragment build() {
+    public static BindingCoastAlertDialogFragment build(ConsumeDaySummaryResponse consumeDaySummaryResponse) {
         if (instance == null) {
             synchronized (BindingCoastAlertDialogFragment.class) {
-                if (instance == null) {
-                    instance = new BindingCoastAlertDialogFragment();
-                }
+                    instance = new BindingCoastAlertDialogFragment(consumeDaySummaryResponse);
             }
         }
         return instance;
@@ -162,15 +203,17 @@ public class BindingCoastAlertDialogFragment extends BaseDialogFragment {
         ItemList.TreeInfo treeInfo = new ItemList.TreeInfo(dp2px(20), true);
         ArrayList<Item> data = new ArrayList<>();
         float min = 0;
-        float max = 1F;
-        data.add(new Item("早餐", random.nextFloat()));
-        data.add(new Item("午餐", random.nextFloat()));
-        data.add(new Item("晚餐", random.nextFloat()));
-        data.add(new Item("夜餐", random.nextFloat()));
-        data.get(data.size() - 1).setValue(max);
-        data.get(0).setValue(min);
+        data.add(new Item("早餐", (float) zaocan));
+        data.add(new Item("午餐", (float) wucan));
+        data.add(new Item("晚餐", (float) wancan));
+        data.add(new Item("夜餐", (float) yecan));
+
+        double tempValue = maxValue % 100;
+        tempValue = 100 - tempValue;
+        maxValue = maxValue + tempValue;
+
         ItemList rightAxisPercent = new ItemList(treeInfo, data);
-        rightAxisPercent.setAxis(ItemList.AxisAlign.LEFT, ItemList.AxisValueType.PERCENT, max, min);
+        rightAxisPercent.setAxis(ItemList.AxisAlign.LEFT, ItemList.AxisValueType.FLOAT, (float) maxValue, min);
         rightAxisPercent.setColor(0xff3584FF);
 
         rightAxisPercent.setShowTip(true);

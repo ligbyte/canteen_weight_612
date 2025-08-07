@@ -112,7 +112,6 @@ public class CBGCameraHelper extends ActivityWeakRefHolder {
                             MainApplication.height = height;
                             Log.w(TAG, "limewidth width: " + width  + "   height: " + height);
 
-                            int orientation = DeviceManager.INSTANCE.getDeviceInterface().needUseCameraPreviewOrientation() ? previewOrientation : displayOrientation;
 
                         } catch (Throwable e) {
                             e.printStackTrace();

@@ -29,15 +29,15 @@ public class DeviceFoodConsumeParam {
     private Integer foodCount;
 
     //"菜品重量 单位 g"
-    private Integer foodWeight;
+    private double foodWeight;
 
     //"菜品单价 元/kg"
-    private BigDecimal foodUnitPrice;
+    private double foodUnitPrice;
 
     //"菜品总价 元"
-    private BigDecimal foodTotalPrice;
+    private double foodTotalPrice;
 
-    public DeviceFoodConsumeParam(String deviceNo, String customerId, String plateCode, String foodId, String foodName, Integer foodCount, Integer foodWeight, BigDecimal foodUnitPrice, BigDecimal foodTotalPrice) {
+    public DeviceFoodConsumeParam(String deviceNo, String customerId, String plateCode, String foodId, String foodName, Integer foodCount, double foodWeight, double foodUnitPrice, double foodTotalPrice) {
         this.deviceNo = deviceNo;
         this.customerId = customerId;
         this.plateCode = plateCode;
@@ -97,27 +97,27 @@ public class DeviceFoodConsumeParam {
         this.foodCount = foodCount;
     }
 
-    public Integer getFoodWeight() {
+    public double getFoodWeight() {
         return foodWeight;
     }
 
-    public void setFoodWeight(Integer foodWeight) {
+    public void setFoodWeight(double foodWeight) {
         this.foodWeight = foodWeight;
     }
 
-    public BigDecimal getFoodUnitPrice() {
+    public double getFoodUnitPrice() {
         return foodUnitPrice;
     }
 
-    public void setFoodUnitPrice(BigDecimal foodUnitPrice) {
+    public void setFoodUnitPrice(double foodUnitPrice) {
         this.foodUnitPrice = foodUnitPrice;
     }
 
-    public BigDecimal getFoodTotalPrice() {
+    public double getFoodTotalPrice() {
         return foodTotalPrice;
     }
 
-    public void setFoodTotalPrice(BigDecimal foodTotalPrice) {
+    public void setFoodTotalPrice(double foodTotalPrice) {
         this.foodTotalPrice = foodTotalPrice;
     }
 }

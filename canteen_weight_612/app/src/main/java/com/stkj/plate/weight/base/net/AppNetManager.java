@@ -26,7 +26,7 @@ public enum AppNetManager {
      // 万基正式
     //public static final String API_OFFICIAL_URL = "https://cater.wanjigroup.com:9997";
     //子寓电脑
-    public static final String API_TEST_URL = "http:/10.10.10.111:9003";
+    public static final String API_TEST_URL = "http://192.168.2.111:9003";
 
 
     private AppOkhttpIntercept appOkhttpIntercept;

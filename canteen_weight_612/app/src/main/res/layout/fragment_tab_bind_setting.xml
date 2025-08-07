@@ -97,7 +97,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/stv_left_bt"
+                android:id="@+id/tv_read_weight"
                 android:layout_width="@dimen/dp_69"
                 android:layout_height="@dimen/dp_28"
                 android:layout_marginTop="@dimen/dp_20"
