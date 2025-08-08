@@ -4,6 +4,8 @@ import static com.youxin.myseriallib.base.Constants.ReadDeviceType.READ_DEVICE3;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_BLUE_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_GREEN_TYPE;
 import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RED_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_RG_TYPE;
+import static com.youxin.myseriallib.deviceIoCtrl.LedCtrlApi.LED_WHITE_TYPE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -166,11 +168,21 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     private int weightStatus;
     private double weight;
     private long beforeWeightTime = 0;
-    private long beforeBalanceTime;
+    private long beforeBalanceTime = 0;
+    private long beforeMaxWeightTime = 0;
+
     private double beforeWeight = -10000;
+    private double maxWeight = 0;
     private boolean trakCardStatus;
     private boolean hasAddOrderFood = false;
     private boolean canHandleQRData = true;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        AndroidUtils.restartApp();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -307,11 +319,6 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         return R.id.fl_main_content;
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        initYxSDK();
-    }
 
     @Override
     protected void onPause() {
@@ -370,7 +377,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                     if (tv_food_name.getText().toString().equals("暂未选择菜品")){
                         ledLightShow(LED_RED_TYPE);
                     }else {
-                        ledLightShow(LED_GREEN_TYPE);
+                        ledLightShow(LED_WHITE_TYPE);
                     }
                     canHandleQRData = true;
                     openYxDeviceSDK();
@@ -457,7 +464,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         warning_tips_view.setVisibility(View.GONE);
         tv_price_flag.setVisibility(View.VISIBLE);
         tv_price_unit.setVisibility(View.VISIBLE);
-        ledLightShow(LED_GREEN_TYPE);
+        ledLightShow(LED_WHITE_TYPE);
     }
 
 
@@ -774,7 +781,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
             if (tv_food_name.getText().toString().equals("暂未选择菜品")){
                 ledLightShow(LED_RED_TYPE);
             }else {
-                ledLightShow(LED_GREEN_TYPE);
+                ledLightShow(LED_WHITE_TYPE);
             }
 
         }else {
@@ -934,9 +941,14 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
 
     private void ledLightShow(final int ledType){
         Log.d(TAG, "limeopenLed 817 ledType: " + ledType);
-        if (DeviceSettingMMKV.isOpenWarning()) {
-            LedCtrlUtil.getInstance().openLed(ledType);
+
+        if (!NetworkUtils.isConnected()) {
+            LedCtrlUtil.getInstance().openLed(LED_RG_TYPE);
+            return;
         }
+
+        LedCtrlUtil.getInstance().openLed(ledType);
+
     }
 
     /**
@@ -977,6 +989,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                                 hasAddOrderFood = true;
                                 canHandleQRData = true;
                                 beforeWeight = -10000;
+                                maxWeight = 0;
                                 flScreenWelcom.setVisibility(View.GONE);
                                 fl_screen_success.setVisibility(View.VISIBLE);
                                 customerId = baseNetResponse.getData().getUser().getId();
@@ -1056,8 +1069,26 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                                 return;
                             }
 
+
+
                             if (weight != beforeWeight && weight > 0) {
                                 beforeWeight = weight;
+                                if (DeviceSettingMMKV.isOpenWarning()) {
+                                    if (System.currentTimeMillis() - beforeMaxWeightTime > 1500) {
+                                        if ((maxWeight - weight) >= DeviceSettingMMKV.getWarningg()){
+                                            maxWeight = weight;
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    beforeMaxWeightTime = System.currentTimeMillis();
+                                                    ToastUtils.toastMsgError("菜品减重");
+                                                    onTTSSpeakEvent(new TTSSpeakEvent("菜品减重"));
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -1098,6 +1129,9 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
     }
 
     private void updateWeightAndPrice(double weight,double price,double orderPrice) {
+        if (weight > maxWeight){
+            maxWeight = weight;
+        }
         if ((orderPrice + price) > balance) {
             if (System.currentTimeMillis() - beforeBalanceTime > 2000) {
                 beforeBalanceTime = System.currentTimeMillis();
@@ -1108,6 +1142,9 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
         }else {
             ledLightShow(LED_GREEN_TYPE);
         }
+
+
+
         tv_success_weight.setText(PriceUtils.formatPrice(weight) + "g");
         tv_success_price.setText("¥" + PriceUtils.formatPrice(price));
         tv_success_order_price.setText("¥" + PriceUtils.formatPrice(orderPrice + price));
@@ -1155,6 +1192,7 @@ public class MainActivity extends BaseActivity implements AppNetCallback, Consum
                                 flScreenWelcom.setVisibility(View.VISIBLE);
                                 ToastUtils.toastMsgSuccess("取餐成功");
                                 onTTSSpeakEvent(new TTSSpeakEvent("取餐成功"));
+                                ledLightShow(LED_WHITE_TYPE);
                             }else {
                                 ToastUtils.toastMsgError(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg());
                                 onTTSSpeakEvent(new TTSSpeakEvent(TextUtils.isEmpty(baseNetResponse.getMsg()) ? baseNetResponse.getMessage() : baseNetResponse.getMsg()));

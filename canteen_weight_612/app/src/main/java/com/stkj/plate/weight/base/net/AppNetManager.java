@@ -21,12 +21,12 @@ import java.util.Set;
  */
 public enum AppNetManager {
     INSTANCE;
-//    public static final String API_TEST_URL = "http://101.43.252.67:9003";
+    public static final String API_TEST_URL = "http://101.43.252.67:9003";
     public static final String API_OFFICIAL_URL = "http://101.42.54.44:9003";
      // 万基正式
     //public static final String API_OFFICIAL_URL = "https://cater.wanjigroup.com:9997";
     //子寓电脑
-    public static final String API_TEST_URL = "http://192.168.2.111:9003";
+//    public static final String API_TEST_URL = "http://192.168.2.111:9003";
 
 
     private AppOkhttpIntercept appOkhttpIntercept;

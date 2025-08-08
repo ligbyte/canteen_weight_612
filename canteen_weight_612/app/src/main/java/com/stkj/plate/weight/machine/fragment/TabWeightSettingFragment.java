@@ -458,7 +458,17 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             return ;
         }
 
-        if (ll_app_food_add.getVisibility() == View.VISIBLE ||ll_app_foods.getVisibility() == View.VISIBLE ||ll_app_coast.getVisibility() == View.VISIBLE || ll_app_settings.getVisibility() == View.VISIBLE || ll_app_face.getVisibility() == View.VISIBLE|| ll_app_weight.getVisibility() == View.VISIBLE|| ll_app_warning.getVisibility() == View.VISIBLE){
+        if(ll_app_food_add.getVisibility() == View.VISIBLE){
+            ll_app_food_add.setVisibility(View.GONE);
+            ll_app_foods.setVisibility(View.VISIBLE);
+            tv_sync_foods.setVisibility(View.VISIBLE);
+            rvTopTab.setVisibility(View.GONE);
+            tv_title_name.setText("菜品设置");
+            tv_sync_foods.setText("更新菜品");
+            return;
+        }
+
+        if (ll_app_foods.getVisibility() == View.VISIBLE ||ll_app_coast.getVisibility() == View.VISIBLE || ll_app_settings.getVisibility() == View.VISIBLE || ll_app_face.getVisibility() == View.VISIBLE|| ll_app_weight.getVisibility() == View.VISIBLE|| ll_app_warning.getVisibility() == View.VISIBLE){
             canReadWeight = false;
             ll_app_face.setVisibility(View.GONE);
             ll_app_settings.setVisibility(View.GONE);
@@ -633,6 +643,7 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
                     .setLeftNavClickListener(new CommonBindAlertDialogFragment.OnSweetClickListener() {
                         @Override
                         public void onClick(CommonBindAlertDialogFragment alertDialogFragment) {
+                            showLoadingDialog("重启中");
                             DeviceManager.INSTANCE.getDeviceInterface().release();
                             AndroidUtils.restartApp();
                         }
@@ -716,6 +727,12 @@ public class TabWeightSettingFragment extends BaseRecyclerFragment implements Vi
             canReadWeight = true;
             ((MainActivity)getActivity()).openScale();
         }else if (v.getId() == R.id.rl_weight_reset){
+            if (!canReadWeight){
+                ToastUtils.toastMsgError("请先读取称的重量");
+                EventBus.getDefault().post(new TTSSpeakEvent("请先读取称的重量"));
+                return;
+            }
+
             dialogFragment = CommonBindAlertDialogFragment.build()
                     .setAlertTitleTxt("提示")
                     .setAlertContentTxt("重置后，称的初始值将归零！")

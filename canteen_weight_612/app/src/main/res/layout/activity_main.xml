@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:includeFontPadding="false"
-                    android:text="小炒黄牛肉"
+                    android:text="--"
                     android:textColor="@color/white"
                     android:textSize="66sp"
                     android:textStyle="bold" />
@@ -138,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:layout_toRightOf="@+id/tv_price_flag"
-                            android:text="99.00"
+                            android:text="00.00"
                             android:textColor="@color/white"
                             android:textSize="66sp"
                             android:textStyle="bold" />

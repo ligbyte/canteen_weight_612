@@ -201,13 +201,9 @@ public class BindingPwdAlertDialogFragment extends BaseDialogFragment {
     private static volatile BindingPwdAlertDialogFragment instance;
 
     public static BindingPwdAlertDialogFragment build() {
-        if (instance == null) {
             synchronized (BindingPwdAlertDialogFragment.class) {
-                if (instance == null) {
                     instance = new BindingPwdAlertDialogFragment();
-                }
             }
-        }
         return instance;
     }
 

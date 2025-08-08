@@ -53,6 +53,7 @@ public class BindingHomeTitleLayout extends FrameLayout implements SystemEventWa
     private TextView tvNetDelayTime;
     private ShapeTextView stvConsumerMode;
     private Context context;
+    private BindingPwdAlertDialogFragment bindingPwdAlertDialogFragment;
 
     public BindingHomeTitleLayout(@NonNull Context context) {
         super(context);
@@ -123,11 +124,19 @@ public class BindingHomeTitleLayout extends FrameLayout implements SystemEventWa
             @Override
             public void onClick(View v) {
                 //EventBus.getDefault().post(new BindFragmentSwitchEvent(1));
-                CommonDialogUtils.showBindTipsDialog(context,"管理员密码", new BindingPwdAlertDialogFragment.OnSweetClickListener() {
-                    @Override
-                    public void onClick(BindingPwdAlertDialogFragment alertDialogFragment) {
-                    }
-                });
+                if (bindingPwdAlertDialogFragment != null){
+                    bindingPwdAlertDialogFragment.dismiss();
+                }
+                bindingPwdAlertDialogFragment = BindingPwdAlertDialogFragment.build()
+                        .setAlertTitleTxt("管理员密码")
+                        .setRightNavTxt("取消")
+                        .setLeftNavClickListener(new BindingPwdAlertDialogFragment.OnSweetClickListener() {
+                            @Override
+                            public void onClick(BindingPwdAlertDialogFragment alertDialogFragment) {
+
+                            }
+                        });
+                bindingPwdAlertDialogFragment.show(getContext());
             }
         });
         refreshDate();
